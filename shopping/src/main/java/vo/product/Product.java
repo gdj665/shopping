@@ -9,6 +9,9 @@ public class Product {
 	private String productStatus;
 	private int productStock;
 	private String productInfo;
+	// 화면 표시할때 하나의 클래스로 표시해야 ArrayList에서 데이터 넣기 편함
+	private String productSaveFilename;
+	private String productFiletype;
 	private String createdate;
 	private String updatedate;
 	public int getProductNo() {
@@ -58,6 +61,19 @@ public class Product {
 	}
 	public void setProductInfo(String productInfo) {
 		this.productInfo = productInfo;
+	}
+	
+	public String getProductSaveFilename() {
+		return productSaveFilename;
+	}
+	public void setProductSaveFilename(String productSaveFilename) {
+		this.productSaveFilename = productSaveFilename;
+	}
+	public String getProductFiletype() {
+		return productFiletype;
+	}
+	public void setProductFiletype(String productFiletype) {
+		this.productFiletype = productFiletype;
 	}
 	public String getCreatedate() {
 		return createdate;
