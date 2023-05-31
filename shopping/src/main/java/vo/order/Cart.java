@@ -3,12 +3,48 @@ package vo.order;
 public class Cart {
 	private int cartNo;
 	private String id;
-	private int product_no;
+	private int productNo;
+	private String productName;
 	private int cartCnt;
 	private String productSaveFilename;
+	private int price;
+	private int sumPrice;
+	private String checked;
 	private String createdate;
 	private String updatedate;
 	
+	
+	
+	public String getChecked() {
+		return checked;
+	}
+	public void setChecked(String checked) {
+		this.checked = checked;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public int getSumPrice() {
+		return sumPrice;
+	}
+	public void setSumPrice(int sumPrice) {
+		this.sumPrice = sumPrice;
+	}
+	public int getProductNo() {
+		return productNo;
+	}
+	public void setProductNo(int productNo) {
+		this.productNo = productNo;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 	public String getProductSaveFilename() {
 		return productSaveFilename;
 	}
@@ -26,12 +62,6 @@ public class Cart {
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public int getProduct_no() {
-		return product_no;
-	}
-	public void setProduct_no(int product_no) {
-		this.product_no = product_no;
 	}
 	public int getCartCnt() {
 		return cartCnt;
