@@ -3,7 +3,7 @@ package vo.id;
 public class Customer {
 	private String id;
 	private String cstmName;
-	private String cstmAddrees;
+	private String cstmAddress;
 	private String cstmEmail;
 	private String cstmBirth;
 	private String cstmGender;
@@ -19,17 +19,18 @@ public class Customer {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 	public String getCstmName() {
 		return cstmName;
 	}
 	public void setCstmName(String cstmName) {
 		this.cstmName = cstmName;
 	}
-	public String getCstmAddrees() {
-		return cstmAddrees;
+	public String getCstmAddress() {
+		return cstmAddress;
 	}
-	public void setCstmAddrees(String cstmAddrees) {
-		this.cstmAddrees = cstmAddrees;
+	public void setCstmAddress(String cstmAddress) {
+		this.cstmAddress = cstmAddress;
 	}
 	public String getCstmEmail() {
 		return cstmEmail;
@@ -85,5 +86,6 @@ public class Customer {
 	public void setUpdatedate(String updatedate) {
 		this.updatedate = updatedate;
 	}
+	
 	
 }
