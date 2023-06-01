@@ -9,6 +9,7 @@ public class Product {
 	private String productStatus;
 	private int productStock;
 	private String productInfo;
+	private String productSinger;
 	// 화면 표시할때 하나의 클래스로 표시해야 ArrayList에서 데이터 넣기 편함
 	private String productSaveFilename;
 	private String productFiletype;
@@ -62,7 +63,12 @@ public class Product {
 	public void setProductInfo(String productInfo) {
 		this.productInfo = productInfo;
 	}
-	
+	public String getProductSinger() {
+		return productSinger;
+	}
+	public void setProductSinger(String productSinger) {
+		this.productSinger = productSinger;
+	}
 	public String getProductSaveFilename() {
 		return productSaveFilename;
 	}
