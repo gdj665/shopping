@@ -50,18 +50,18 @@
 		<!-- 장바구니 리스트 출력문 -->
 		<%
 			for(HashMap<String,Object> m : list){
-				int productNo = (int)m.get("c.product_no");
-				int cartCnt = (int)m.get("c.cart_cnt");
-				String checked = (String)m.get("c.checked");
+				int productNo = (int)m.get("productNo");
+				int cartCnt = (int)m.get("cartCnt");
+				String checked = (String)m.get("checked");
 				
 				// 3) 각 제품의 재고량을 구하는 메서드
 				int tcnt = orderdao.totalstock(productNo);
 		%>
 		<tr>
 			<td style="width:200px;"><input type="checkbox" <%= (checked.equals("Y")) ? "checked" : "" %>/></td>
-			<td style="width:200px;"><img src="<%=(String)m.get("i.product_save_filename")%>"><%=(String)m.get("i.product_save_filename")%></td>
-			<td style="width:200px;"><%=(String)m.get("p.product_name") %></td>
-			<td style="width:200px;"><%=m.get("discount_price")%></td>
+			<td style="width:200px;"><img src="<%=(String)m.get("productSaveFilename")%>"><%=(String)m.get("productSaveFilename")%></td>
+			<td style="width:200px;"><%=(String)m.get("productName") %></td>
+			<td style="width:200px;"><%=m.get("discountPrice")%></td>
 			<td style="width:200px;">
 				<select>
 					<%
@@ -74,8 +74,8 @@
 					%>
 				</select>
 			</td>
-			<td style="width:200px;"><%=m.get("total_price") %></td>
-			<td><a href="<%=request.getContextPath()%>/order/deleteCart.jsp?cartNo=<%=(int)m.get("cart_no")%>">삭제</a></td>
+			<td style="width:200px;"><%=m.get("totalPrice") %></td>
+			<td><a href="<%=request.getContextPath()%>/order/deleteCart.jsp?cartNo=<%=(int)m.get("cartNo")%>">삭제</a></td>
 		</tr>
 		<%
 			}
@@ -90,5 +90,6 @@
 			<td><%=row%>원</td>
 		</tr>
 	</table>
+	<a href="<%=request.getContextPath()%>/order/cartAction.jsp?id=<%=id%>">구매하기</a>
 </body>
 </html>

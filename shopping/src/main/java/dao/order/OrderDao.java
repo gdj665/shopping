@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import test.cartTest;
+
 import util.*;
 import vo.id.Customer;
 import vo.order.*;
@@ -51,17 +51,17 @@ public class OrderDao {
 		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
 		while(rs.next()) {
 			HashMap<String,Object> m = new HashMap<String,Object>();
-			m.put("c.product_no",rs.getInt("c.product_no"));
-			m.put("cart_no",rs.getInt("cart_no"));
-			m.put("c.id",rs.getString("c.id"));
-			m.put("p.product_name",rs.getString("p.product_name"));
-			m.put("discount_price",rs.getInt("discount_price"));
-			m.put("i.product_save_filename",rs.getString("i.product_save_filename"));
-			m.put("c.cart_cnt",rs.getInt("c.cart_cnt"));
-			m.put("total_price",rs.getInt("total_price"));
-			m.put("c.checked",rs.getString("c.checked"));
-			m.put("c.createdate",rs.getString("c.createdate"));
-			m.put("c.updatedate",rs.getString("c.updatedate"));
+			m.put("productNo",rs.getInt("c.product_no"));
+			m.put("cartNo",rs.getInt("c.cart_no"));
+			m.put("id",rs.getString("c.id"));
+			m.put("productName",rs.getString("p.product_name"));
+			m.put("discountPrice",rs.getInt("discount_price"));
+			m.put("productSaveFilename",rs.getString("i.product_save_filename"));
+			m.put("cartCnt",rs.getInt("c.cart_cnt"));
+			m.put("totalPrice",rs.getInt("total_price"));
+			m.put("checked",rs.getString("c.checked"));
+			m.put("createdate",rs.getString("c.createdate"));
+			m.put("updatedate",rs.getString("c.updatedate"));
 			list.add(m);
 		}
 		return list;
@@ -129,8 +129,9 @@ public class OrderDao {
 		return row;
 	}
 	
-	// 5) 장바구니 checked 된 값의 합계
-	public int sumtotalprice(String id) throws Exception {
+	// 5) 장바구니 checked 된 값의 합계를 더하는 메서드
+	// 합계를 가져온 다음에 insert문을 추가하여 order 테이블에 정보기입
+	public int insertsumtotalprice(String id) throws Exception {
 		int row = 0;
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
@@ -146,31 +147,17 @@ public class OrderDao {
 		if(rs.next()) {
 			row = rs.getInt("total_price");
 		}
+		// 5) 합계 값을 받아와서 insert 시킴
 		String sql2 = "INSERT INTO orders(id,order_price,createdate,updatedate) values(?,?,now(),now())";
 		PreparedStatement stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, id);
 		stmt2.setInt(2,rs.getInt("total_price"));
 		int row2 = stmt2.executeUpdate();
-		return row;
+		return row2;
 	}
 	
-	// 6) id에 매칭되는 포인트 소지량
-	public int totalpoint(String id) throws Exception {
-		int row = 0;
-		DBUtil DBUtil = new DBUtil();
-		Connection conn = DBUtil.getConnection();
-		
-		String sql = "SELECT cstm_point FROM customer WHERE id = ?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, id);
-		ResultSet rs = stmt.executeQuery();
-		if(rs.next()) {
-			row = rs.getInt("cstm_point");
-		}
-		return row;
-	}
 	// 7) 받을 주소 조회
-	public ArrayList<String> addressName(String id) throws Exception {
+	public ArrayList<HashMap<String,Object>> addressName(String id) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
@@ -178,10 +165,12 @@ public class OrderDao {
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();
-		ArrayList<String> list = new ArrayList<>();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
 	    while(rs.next()) {
-	        list.add(rs.getString("address"));
-	        list.add(rs.getString("recently_use_date"));
+	    	HashMap<String,Object> m = new HashMap<String,Object>();
+	    	m.put("address",rs.getString("address"));
+	    	m.put("recentlyUseDate",rs.getString("recently_use_date"));
+			list.add(m);
 	    }
 	    return list;
 	}
@@ -207,7 +196,6 @@ public class OrderDao {
 	
 	// 9) 주문자 정보 받아오기
 	public ArrayList<Customer> orderinfo(String id) throws Exception {
-		int row = 0;
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
@@ -229,7 +217,34 @@ public class OrderDao {
 		return list;
 	}
 	
-	
+	// 10) order테이블 정보 가져오기
+	public ArrayList<HashMap<String,Object>> selordertable(String id) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "SELECT order_no,order_status,order_price,order_point_use,createdate,updatedate,\r\n"
+				+ "order_price-order_point_use total_price\r\n"
+				+ "FROM orders\r\n"
+				+ "WHERE id = 'admin'\r\n"
+				+ "ORDER BY createdate DESC\r\n"
+				+ "LIMIT 1;";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, id);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
+		while(rs.next()){
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("orderNo",rs.getInt("order_no"));
+			m.put("orderStatus",rs.getInt("order_status"));
+			m.put("orderPrice",rs.getInt("order_price"));
+			m.put("orderPointUse",rs.getInt("order_point_use"));
+			m.put("createdate",rs.getString("createdate"));
+			m.put("updatedate",rs.getString("updatedate"));
+			m.put("totalPrice",rs.getInt("total_price"));
+			list.add(m);
+		}
+		return list;
+	}
 	
 	
 	
