@@ -8,6 +8,7 @@ public class OrdersHistory {
 	private int orderHistoryStatus;
 	private String createdate;
 	private String updatedate;
+		
 	public int getOrderNo() {
 		return orderNo;
 	}

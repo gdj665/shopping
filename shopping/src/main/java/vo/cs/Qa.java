@@ -4,7 +4,6 @@ public class Qa {
 	private int qNo;
 	private int productNo;
 	private String id;
-	private int categoryNo;
 	private String qTitle;
 	private String qContent;
 	private String createdate;
@@ -27,12 +26,6 @@ public class Qa {
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public int getCategoryNo() {
-		return categoryNo;
-	}
-	public void setCategoryNo(int categoryNo) {
-		this.categoryNo = categoryNo;
 	}
 	public String getqTitle() {
 		return qTitle;

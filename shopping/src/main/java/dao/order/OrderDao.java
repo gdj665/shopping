@@ -11,7 +11,7 @@ import vo.order.*;
 
 public class OrderDao {
 	
-	// 1) 고객id를 받아서 장바구니 목록을 받아오는 메서드
+	// 1) 고객 id를 받아서 장바구니 목록을 받아오는 메서드
 	public ArrayList<HashMap<String,Object>> cartList(String id) throws Exception {
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
@@ -33,17 +33,6 @@ public class OrderDao {
 				+ "	LEFT OUTER JOIN product_img i ON p.product_no = i.product_no \r\n"
 				+ "	LEFT OUTER JOIN customer m ON c.id = m.id \r\n"
 				+ "WHERE m.id = ?";
-		//c.product_no
-		//c.cart_no
-		//c.id
-		//p.product_name
-		//discount_price
-		//i.product_save_filename
-		//c.cart_cnt
-		//total_price
-		//c.checked
-		//c.createdate
-		//c.updatedate
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1,id);
 		ResultSet rs = stmt.executeQuery();
@@ -67,7 +56,7 @@ public class OrderDao {
 		return list;
 	}
 	
-	// 2) 선택된 사용자가 장바구니에서 선택한 제품에 한하여 총 합계 출력
+	// 2) 특정 사용자가 장바구니에서 선택한 제품 중 체크되어 있는 항목에 한하여 총 합계 출력
 	public int totalPrice(String id) throws Exception {
 		int row = 0;
 		DBUtil dbUtil = new DBUtil();
@@ -80,19 +69,16 @@ public class OrderDao {
 				+ "	LEFT OUTER JOIN discount d ON p.product_no = d.product_no \r\n"
 				+ "	LEFT OUTER JOIN customer m ON c.id = m.id \r\n"
 				+ "WHERE m.id = 'admin' AND c.checked='Y'";
-		//seltotal
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1,id);
 		ResultSet rs = stmt.executeQuery();
-		
 		if(rs.next()) {
 			row = rs.getInt("seltotal");
 		}
-		
 		return row;
 	}
 	
-	// 3) 장바구니에서 수량 선택 최대갯수 출력문
+	// 3) 장바구니에서 수량 선택가능한 최대 수 조회(product 테이블의 재고량 조회)
 	public int totalstock(int productNo) throws Exception {
 		int row = 0;
 		DBUtil dbUtil = new DBUtil();
@@ -106,11 +92,9 @@ public class OrderDao {
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1,productNo);
 		ResultSet rs = stmt.executeQuery();
-		
 		if(rs.next()) {
 			row = rs.getInt("product_stock");
 		}
-		
 		return row;
 	}
 	
@@ -147,7 +131,7 @@ public class OrderDao {
 		if(rs.next()) {
 			row = rs.getInt("total_price");
 		}
-		// 5) 합계 값을 받아와서 insert 시킴
+
 		String sql2 = "INSERT INTO orders(id,order_price,createdate,updatedate) values(?,?,now(),now())";
 		PreparedStatement stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, id);
@@ -156,25 +140,50 @@ public class OrderDao {
 		return row2;
 	}
 	
+	// 6) 장바구니에서 checked 가 Y인 목록
+	public ArrayList<HashMap<String,Object>> finishorder(String id) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "SELECT c.cart_no,c.id,p.product_name,c.cart_cnt\r\n"
+				+ "FROM cart c\r\n"
+				+ "	LEFT OUTER JOIN product p ON c.product_no = p.product_no\r\n"
+				+ "	LEFT OUTER JOIN customer m ON c.id = m.id\r\n"
+				+ "WHERE m.id = ? AND c.checked = 'Y'";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, id);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		while(rs.next()) {
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("cartNo",rs.getInt("c.cart_no"));
+			m.put("id",rs.getString("c.id"));
+			m.put("productName",rs.getString("p.product_name"));
+			m.put("cartCnt",rs.getInt("c.cart_cnt"));
+			list.add(m);
+		}
+		return list;
+	}
 	// 7) 받을 주소 조회
 	public ArrayList<HashMap<String,Object>> addressName(String id) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
-		String sql = "SELECT address,recently_use_date FROM address WHERE id = ?";
+		String sql = "SELECT address_no,address,recently_use_date FROM address WHERE id = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();
 		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
 	    while(rs.next()) {
 	    	HashMap<String,Object> m = new HashMap<String,Object>();
+	    	m.put("addressNo",rs.getInt("address_no"));
 	    	m.put("address",rs.getString("address"));
 	    	m.put("recentlyUseDate",rs.getString("recently_use_date"));
 			list.add(m);
 	    }
 	    return list;
 	}
-	// 8) 카트 사이즈 구하기
+	// 8) 카트 넘버받기
 	public ArrayList<Cart> selectCart(String id) throws Exception{
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
@@ -246,8 +255,147 @@ public class OrderDao {
 		return list;
 	}
 	
+	// 11) order_cart 리스트에 order_no에 따른 cart_no기입
+	public ArrayList<Integer> insertOrdersCart() throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String selectOrderNoSql = "SELECT order_no orderNo, id\r\n"
+				+ "FROM orders\r\n"
+				+ "ORDER BY createdate DESC\r\n"
+				+ "LIMIT 1";
+		PreparedStatement selectOrderStmt = conn.prepareStatement(selectOrderNoSql);
+		ResultSet selectOrderRs = selectOrderStmt.executeQuery();
+		int selectOrderNo = 0;
+		String selectOrderId = null;
+		if (selectOrderRs.next()) {
+			// OrderNo와 id값 추출
+			selectOrderNo = selectOrderRs.getInt("orderNo");
+			selectOrderId = selectOrderRs.getString("id");
+		}
+		
+		// OrderDao 8번을 사용하여 cart_no리스트 받아오기
+		ArrayList<Cart> cartNoList = new ArrayList<>();
+		cartNoList = selectCart(selectOrderId);
+		System.out.println(cartNoList);
+		
+		ArrayList<Integer> checkInsertList = new ArrayList<>();
+		String insertOrdersCartSql = "INSERT INTO orders_cart(order_no, cart_no)\r\n"
+				+ "VALUES (?, ?)";
+		for (Cart c : cartNoList) {
+			PreparedStatement insertOrdersCartStmt = conn.prepareStatement(insertOrdersCartSql);
+			insertOrdersCartStmt.setInt(1, selectOrderNo);
+			insertOrdersCartStmt.setInt(2, c.getCartNo());
+			int row = insertOrdersCartStmt.executeUpdate();
+			checkInsertList.add(row);
+		}
+		return checkInsertList;
+	}
 	
+	// 12) order_no마다 있는 cart테이블 내부정보를 order_history로 이동
+	public ArrayList<Integer> insertOrdersHistory(String id) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String selectDataSql = "SELECT o.order_no,o.id,c.product_no,c.cart_cnt\r\n"
+				+ "FROM orders o\r\n"
+				+ "	INNER JOIN orders_cart oc ON oc.order_no = o.order_no\r\n"
+				+ "	INNER JOIN cart c ON oc.cart_no = c.cart_no\r\n"
+				+ "WHERE o.id=?;";
+		PreparedStatement selectDataStmt = conn.prepareStatement(selectDataSql);
+		selectDataStmt.setString(1, id);
+		ResultSet selectDataRs = selectDataStmt.executeQuery();
+		ArrayList<OrdersHistory> orderHistoryList = new ArrayList<>();
+		while (selectDataRs.next()) {
+			OrdersHistory oh = new OrdersHistory();
+			oh.setOrderNo(selectDataRs.getInt("o.order_no"));
+			oh.setId(selectDataRs.getString("o.id"));
+			oh.setProductNo(selectDataRs.getInt("c.product_no"));
+			oh.setOrderCnt(selectDataRs.getInt("c.cart_cnt"));
+			orderHistoryList.add(oh);
+		}
+		
+		ArrayList<Integer> checkInsertList = new ArrayList<>();
+		String insertDataSql = "INSERT INTO orders_history(order_no, product_no, order_cnt, createdate)\r\n"
+				+ "VALUES(?, ?, ?, NOW())";
+		for (OrdersHistory oh : orderHistoryList) {
+			PreparedStatement insertOrdersCartStmt = conn.prepareStatement(insertDataSql);
+			insertOrdersCartStmt.setInt(1, oh.getOrderNo());
+			insertOrdersCartStmt.setInt(2, oh.getProductNo());
+			insertOrdersCartStmt.setInt(3, oh.getOrderCnt());
+			
+			int row = insertOrdersCartStmt.executeUpdate();
+			checkInsertList.add(row);
+		}
+		return checkInsertList;
+	}
+	// 13) order_status 변경
+	public int updateOrderStatus(int orderNo) throws Exception {
+		int row = 0;
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String updateSql = "UPDATE orders SET order_status = 1 WHERE order_no = ?";
+		PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+		updateStmt.setInt(1,orderNo);
+		row = updateStmt.executeUpdate();
+		return row;
+	}
+	// 14) 주문자 카트, orders테이블에 구매하기만하고 주문진행을 하지않은 테이블 모두삭제
+	public int deleteData(String id) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String deleteOrderSql = "DELETE FROM orders WHERE order_status = 0 AND id = ?";
+		PreparedStatement deleteOrderStmt = conn.prepareStatement(deleteOrderSql);
+		deleteOrderStmt.setString(1, id);
+		int row = deleteOrderStmt.executeUpdate();
+		//위의 row 값은 작성자가 결제를 진행하지않고 뒤로 간 경우가 없다면 실행되지 않는다
+		
+		String deleteCartSql = "DELETE FROM cart WHERE checked = 'Y' AND id = ?";
+		PreparedStatement deleteCartStmt = conn.prepareStatement(deleteCartSql);
+		deleteCartStmt.setString(1, id);
+		row = deleteCartStmt.executeUpdate();
+		
+		return row;
+	}
 	
+	// 15) 포인트 히스토리에 포인트 값넣기
+	public int pointstat(int orderNo) throws Exception {
+		int row = 0;
+		int pointcnt = 0;
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String pointSql = "SELECT 0.01*order_price pointcnt\r\n"
+				+ "FROM orders\r\n"
+				+ "WHERE order_no = ?";
+		PreparedStatement pointStmt = conn.prepareStatement(pointSql);
+		pointStmt.setInt(1, orderNo);
+		ResultSet pointRs = pointStmt.executeQuery();
+		if(pointRs.next()) {
+			pointcnt = pointRs.getInt("pointcnt");
+		}
+		
+		String deleteCartSql = "INSERT INTO point_history(order_no,point_pm,point,createdate) values(?,'+',?,now())";
+		PreparedStatement deleteCartStmt = conn.prepareStatement(deleteCartSql);
+		deleteCartStmt.setInt(1, orderNo);
+		deleteCartStmt.setInt(2, pointcnt);
+		row = deleteCartStmt.executeUpdate();
+		return row;
+	}
+	
+	// 16) 주소고르고 주소값을 넘기면 해당 주소로 업데이트
+	public int addressOrder(String address,int orderNo) throws Exception {
+		int row = 0;
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "UPDATE orders SET order_address = ? WHERE order_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, address);
+		stmt.setInt(2, orderNo);
+		row = stmt.executeUpdate();
+		return row;
+	}
 	//테스트 용
 	public static void main(String[] args) throws Exception {
 		OrderDao orderdao = new OrderDao();
