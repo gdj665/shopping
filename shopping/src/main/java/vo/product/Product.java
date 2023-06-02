@@ -2,14 +2,16 @@ package vo.product;
 
 public class Product {
 	private int productNo;
-	private String categoryNo;
+	private int categoryNo;
 	private String productName;
 	private int productPrice;
 	private int productDiscountPrice;
 	private String productStatus;
 	private int productStock;
 	private String productInfo;
+	private int trackSumTime;
 	private String productSinger;
+	private String trackName;
 	// 화면 표시할때 하나의 클래스로 표시해야 ArrayList에서 데이터 넣기 편함
 	private String productSaveFilename;
 	private String productFiletype;
@@ -21,10 +23,10 @@ public class Product {
 	public void setProductNo(int productNo) {
 		this.productNo = productNo;
 	}
-	public String getCategoryNo() {
+	public int getCategoryNo() {
 		return categoryNo;
 	}
-	public void setCategoryNo(String categoryNo) {
+	public void setCategoryNo(int categoryNo) {
 		this.categoryNo = categoryNo;
 	}
 	public String getProductName() {
@@ -63,11 +65,23 @@ public class Product {
 	public void setProductInfo(String productInfo) {
 		this.productInfo = productInfo;
 	}
+	public int getTrackSumTime() {
+		return trackSumTime;
+	}
+	public void setTrackSumTime(int trackSumTime) {
+		this.trackSumTime = trackSumTime;
+	}
 	public String getProductSinger() {
 		return productSinger;
 	}
 	public void setProductSinger(String productSinger) {
 		this.productSinger = productSinger;
+	}
+	public String getTrackName() {
+		return trackName;
+	}
+	public void setTrackName(String trackName) {
+		this.trackName = trackName;
 	}
 	public String getProductSaveFilename() {
 		return productSaveFilename;

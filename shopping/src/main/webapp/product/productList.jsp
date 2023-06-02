@@ -8,6 +8,8 @@
 	if (request.getParameter("currentPage") != null){
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
+	
+	// categoryNo 매개변수
 	String mainName = "한국";
 	if (request.getParameter("mainName") != null){
 		mainName = request.getParameter("mainName");
@@ -16,14 +18,14 @@
 	if (request.getParameter("subName") != null){
 		subName = request.getParameter("subName");
 	}
+	
 	int rowPerPage = 10;
 	int beginRow = (currentPage - 1) * rowPerPage;
 	
 	// model
 	MainDao md = new MainDao();
-	int categoryNo = md.checkCategory(mainName, subName);
 	ArrayList<Product> productList = new ArrayList<>();
-	productList = md.selectProduct(categoryNo, beginRow, rowPerPage);
+	productList = md.selectProduct(mainName, subName, beginRow, rowPerPage);
 %>
 <!DOCTYPE html>
 <html>
@@ -32,7 +34,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>앨범 리스트</h1>
+	<div>
+		<jsp:include page="/inc/search.jsp"></jsp:include>
+	</div>
+	<h1>최신 앨범</h1>
+	<div>
+		<jsp:include page="/inc/head.jsp"></jsp:include>
+	</div>
+	<h4>앨범 리스트</h4>
 	<table>
 		<tr>
 		<%
@@ -46,7 +55,19 @@
 				}
 		%>
 				<td>
-					<%=p.getProductName()%>
+					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+						<%=p.getProductName()%>
+					</a>
+				</td>
+				<td>
+					<a href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
+						수정
+					</a>
+				</td>
+				<td>
+					<a href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
+						삭제
+					</a>
 				</td>
 		<%
 			cnt++;
@@ -54,5 +75,8 @@
 		%>
 		</tr>
 	</table>
+	<a href="<%=request.getContextPath()%>/product/insertProduct.jsp">
+		추가
+	</a>
 </body>
 </html>

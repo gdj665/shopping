@@ -17,6 +17,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<div>
+		<jsp:include page="/inc/search.jsp"></jsp:include>
+	</div>
+	<div>
+		<jsp:include page="/inc/head.jsp"></jsp:include>
+	</div>
 	<h1>최신 앨범</h1>
 	<table>
 		<tr>
@@ -31,7 +37,9 @@
 				}
 		%>
 				<td>
-					<%=p.getProductName()%>
+					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+						<%=p.getProductName()%>
+					</a>
 				</td>
 		<%
 			cnt++;
@@ -53,7 +61,9 @@
 				}
 		%>
 				<td>
-					<%=p.getProductName()%>
+					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+						<%=p.getProductName()%>
+					</a>
 				</td>
 		<%
 			cnt++;

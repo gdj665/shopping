@@ -4,17 +4,24 @@
 <%@ page import = "java.util.*" %>
 <%
 	//controller
-	/*
 	if (request.getParameter("productNo") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
 	}
-	*/
 	
-	int productNo = 1;
+	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	MainDao md = new MainDao();
+	
+	// 앨범 세부 내용
 	Product p = new Product();
 	p = md.selectProductOne(productNo);
+	
+	// 수록곡 리스트
+	ArrayList<Track> trackList = new ArrayList<>();
+	trackList = md.selectTrack(productNo);
+	
+	// 초로 분계산
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -23,13 +30,52 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>앨범 상세보기</h1>
+	<div>
+		<jsp:include page="/inc/search.jsp"></jsp:include>
+	</div>
+	<div>
+		<jsp:include page="/inc/head.jsp"></jsp:include>
+	</div>
+	<h1>앨범 정보</h1>
 	<table>
 		<tr>
 			<td>
 				<%=p.getProductName()%>
 			</td>
+			<td>
+				<%=md.calculateTime(p.getTrackSumTime())%>
+			</td>
 		</tr>
+	</table>
+	<h2>수록곡(<%=trackList.size()%>)</h2>
+	<table>
+		<tr>
+			<th>번호</th>
+			<th>곡정보</th>
+			<th>재생시간</th>
+		</tr>
+	<%
+		for (Track t : trackList){
+	%>
+		<tr>
+			<td rowspan="2">
+				<%=t.getTrackNo()%>
+			</td>
+			<td>
+				<%=t.getTrackName()%>
+			</td>
+			<td rowspan="2">
+				<%=md.calculateTime(t.getTrackTime())%>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%=t.getProductSinger()%>
+			</td>
+		</tr>
+	<%
+		}
+	%>
 	</table>
 </body>
 </html>
