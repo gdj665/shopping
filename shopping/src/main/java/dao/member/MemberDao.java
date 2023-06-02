@@ -1,6 +1,5 @@
 package dao.member;
 
-
 import java.sql.*;
 import java.util.*;
 import util.*;
@@ -9,35 +8,37 @@ import vo.id.*;
 public class MemberDao {
 	
 	// 회원가입시 id테이블에 데이터값 넣기
-	public int insertId(String id, String lastPw) throws Exception{
+	public int insertId(String id, String pw) throws Exception{
 		int row = 0;
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
+		
 		//id테이블 데이터값 입력쿼리
-		String idSql = "INSERT INTO id_list(id, last_pw, active, createdate, updatedate) values(?, PASSWORD(?), 'y', now(), now())";
-		// 비밀번호 이력 테이블에 데이터값 입력 쿼리
-		String pwSql = "INSERT INTO pw_history(id, pw_no, createdate) values(?,PASSWORD(?),now())";
-		// id테이블 벨류값 넣기
-		PreparedStatement  idStmt = conn.prepareStatement(idSql);
+		PreparedStatement idStmt = conn.prepareStatement("INSERT INTO id_list(id, last_pw, active, createdate, updatedate) values(?, PASSWORD(?), 'y', now(), now())");
+		
+		// id테이블값 넣기
 		idStmt.setString(1, id);
-		idStmt.setString(2, lastPw);
+		idStmt.setString(2, pw);
+	
 		int row1 = idStmt.executeUpdate();
 		System.out.println(row1+"<-- row1");
 		if(row1 == 0) {
 			return row1;
 		}
-		PreparedStatement pwStmt = conn.prepareStatement(pwSql);
+		// 비밀번호 이력 테이블에 데이터값 입력 쿼리
+		PreparedStatement pwStmt = conn.prepareStatement("INSERT INTO pw_history(id, pw_no, createdate) values(?,PASSWORD(?),now())");
+		
 		pwStmt.setString(1, id);
-		pwStmt.setString(2, lastPw);
+		pwStmt.setString(2, pw);
 		int row2 = pwStmt.executeUpdate();
 		System.out.println(row2+"<-- row2");
 		if(row2 == 0) {
 			return row2;
 		}
 		if(row1 > 0 && row2 > 0) {
-			row = 1;
+			row1 = 1;
 		}
-		return row;
+		return row1;
 	}
 	
 	// 회원가입시 고객테이블에 데이터 값 넣기
@@ -47,18 +48,21 @@ public class MemberDao {
 		Connection conn =  dbUtil.getConnection();
 		
 		// 고객 테이블 데이터 값 입력 쿼리
-		String customerSql = "INSERT INTO customer(id, cstm_name, cstm_address, cstm_email, cstm_birth, cstm_phone, cstm_gender, cstm_rank, cstm_point, cstm_agress, createdate, updatedate) values(?,?,?,?,?,?,?,'BRONZE',0,?,now(),now())";
 		
-		PreparedStatement customerStmt = conn.prepareStatement(customerSql);
+		PreparedStatement customerStmt = conn.prepareStatement("INSERT INTO customer(id, cstm_name, cstm_address, cstm_email, cstm_birth, cstm_gender, cstm_phone"
+				+ "cstm_rank, cstm_point, cstm_agree, cstm_last_login, createdate, updatedate) "
+				+ "values(?,?,?,?,?,?,?,'BRONZE',0,?,now(),now())");
+		
 		customerStmt.setString(1, custm.getId());
 		customerStmt.setString(2, custm.getCstmName());
 		customerStmt.setString(3, custm.getCstmAddress());
 		customerStmt.setString(4, custm.getCstmEmail());
 		customerStmt.setString(5, custm.getCstmBirth());
-		customerStmt.setString(6, custm.getCstmAgree());
-		customerStmt.setString(7, custm.getCstmGender());
-		customerStmt.setString(8, custm.getCstmAgree());
+		customerStmt.setString(6, custm.getCstmGender());
+		customerStmt.setString(7, custm.getCstmAgree());
+		
 		row = customerStmt.executeUpdate();
+		
 		return row;
 	}
 	
@@ -68,19 +72,19 @@ public class MemberDao {
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
 		// 고객 테이블 데이터값 수정 쿼리
-		String customerSql = "UPDATE customer SET cstm_address = ?, cstm_email = ?, cstm_phone = ? updatedate = now() WHERE id = ? ";
-		PreparedStatement stmt = conn.prepareStatement(customerSql);
-		stmt.setString(1, custm.getCstmAddress());
-		stmt.setString(2, custm.getCstmEmail());
-		stmt.setString(3, custm.getCstmAgree());
+		PreparedStatement stmt = conn.prepareStatement("UPDATE customer SET cstm_name, cstm_address = ?, cstm_email = ? updatedate = now() WHERE id = ? ");
+		stmt.setString(1, custm.getCstmName());
+		stmt.setString(2, custm.getCstmAddress());
+		stmt.setString(3, custm.getCstmEmail());
 		stmt.setString(4, custm.getId());
+		
 		row = stmt.executeUpdate();
 		
 		return row;
 	}
 	
 	// 로그인
-	public int login(IdList id) throws Exception {
+	public int login(IdList list) throws Exception {
 		int row = 0;
 		// 아이디 활성화여부
 		String active = "";
@@ -88,33 +92,82 @@ public class MemberDao {
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
 		PreparedStatement stmt = conn.prepareStatement("SELECT id, active FROM id_list WHERE id = ? AND last_pw = PASSWORD(?)");
-		stmt.setString(1, id.getId());
-		stmt.setString(2, id.getLastPw());
+		stmt.setString(1, list.getId());
+		stmt.setString(2, list.getLastPw());
 		row = stmt.executeUpdate();
-		ResultSet acRs = stmt.executeQuery();
-		if(acRs.next()) {
-			active = acRs.getString(2);
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			active = rs.getString(2);
+			return row;
+			
 		}
+		
 		//활성화가 y인지 n인지 확인하기
 		if(active.equals('y')) {
 			// 고객로그인시 마지막 로그인일자 업데이트
-			PreparedStatement csIdStmt = conn.prepareStatement("SELECT count(*) FROM customer WHERE id = ?");
-			csIdStmt.setString(1, id.getId());
-			ResultSet rs = csIdStmt.executeQuery();
+			PreparedStatement activeStmt = conn.prepareStatement("SELECT count(*) FROM customer WHERE id = ?");
+			activeStmt.setString(1, list.getId());
+			ResultSet activeRs = activeStmt.executeQuery();
 			int cnt = 0;
 			if(rs.next()) {
 				cnt = rs.getInt(1);
 			}
 			if(cnt>0) {
 				PreparedStatement csLoginStmt = conn.prepareStatement("UPDATE customer set cstm_last_login = now() WHERE id = ?");
-				stmt.setString(1, id.getId());
+				stmt.setString(1, list.getId());
 				System.out.println("로그인날짜 업데이트");
 			}
 		} else if(active.equals('y')) {
 			return row = 0;
 		}
+		
+		
+		// 관리자 로그인
+		
+		String level = "";
+		
+		PreparedStatement levelStmt = conn.prepareStatement("SELECT emp_name empName, emp_level empLevel, "
+				+ "count(*) FROM employees WHERE id=? ");
+		ResultSet levelRs = levelStmt.executeQuery();
+		if(level.equals(1)) {
+			System.out.println("1등급 관리자 입니다");
+		} else if(level.equals(2)) {
+			System.out.println("2등급 관리자 입니다");
+		} else {
+			System.out.println("3등급 관리자 입니다");
+		}
+		
 		return row;
 		
+	}
+	
+	// 관리자 로그인
+	public int adminLogin(String id) {
+	    int level = 0;
+
+	    try {
+	        Connection conn = null;
+			PreparedStatement levelStmt = conn.prepareStatement("SELECT emp_level FROM employees WHERE id = ?");
+	        levelStmt.setString(1, id);
+	        ResultSet levelRs = levelStmt.executeQuery();
+
+	        if (levelRs.next()) {
+	            level = levelRs.getInt("emp_level");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        // 오류 처리 로직 추가
+	    }
+
+	    if (level == 1) {
+	        System.out.println("1등급 관리자입니다.");
+	    } else if (level == 2) {
+	        System.out.println("2등급 관리자입니다.");
+	    } else {
+	        System.out.println("3등급 관리자입니다.");
+	    }
+
+	    return level;
 	}
 	
 	// 회원 비밀번호 변경시 이전 사용한 비밀번호인지 체크하기
@@ -156,7 +209,7 @@ public class MemberDao {
 		pwHistoryStmt.setString(2, list.getLastPw());
 		pwHistoryRow = pwHistoryStmt.executeUpdate();
 		// 비밀번호 이력 데이터값 갯수 새기
-		String cntSql = "  SELECT count(*) FROM pw_history WHERE id = ?";
+		String cntSql = "SELECT count(*) FROM pw_history WHERE id = ?";
 		PreparedStatement cntStmt = conn.prepareStatement(cntSql);
 		cntStmt.setString(1, list.getId());
 		ResultSet rs = cntStmt.executeQuery();
@@ -167,8 +220,9 @@ public class MemberDao {
 			
 		// 비밀번호 이력 3개 이상이면 삭제
 			
-		String historyDelSql = "DELETE FROM pw_history WHERE id = ? AND createdate =  SELECT MIN(createdate) FROM pw_history WHERE id = ?)";
-		PreparedStatement historyDelStmt = conn.prepareStatement(historyDelSql);
+		PreparedStatement historyDelStmt = conn.prepareStatement("DELETE FROM pw_history WHERE id = ? "
+				+ "AND createdate =  SELECT MIN(createdate) FROM pw_history WHERE id = ?)");
+		
 		historyDelStmt.setString(1, list.getId());
 		historyDelStmt.setString(2, list.getId());
 		int pwHistoryDeleteRow = historyDelStmt.executeUpdate();
@@ -183,8 +237,7 @@ public class MemberDao {
 		int row = 0;
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
-		String sql = "SELECT count(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?)";
-		PreparedStatement stmt = conn.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement("SELECT count(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?)");
 		stmt.setString(1, list.getId());
 		stmt.setString(2, list.getLastPw());
 		ResultSet rs = stmt.executeQuery();
@@ -198,9 +251,11 @@ public class MemberDao {
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
-		String sql = "SELECT cstm_name cstmName, cstm_address cstmAddress, cstm_email cstmEmail, cstm_birth cstmBirth, cstm_rank cstmRank, cstm_point cstmPoint, createdate "
-				+ "FROM customer WHERE id = ?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
+		
+		PreparedStatement stmt = conn.prepareStatement("SELECT cstm_name cstmName, cstm_address cstmAddress, cstm_email cstmEmail, "
+				+ "cstm_birth cstmBirth, cstm_rank cstmRank, cstm_point cstmPoint, createdate "
+				+ "FROM customer WHERE id = ?");
+		
 		stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();
 		if(rs.next()) {
@@ -229,33 +284,17 @@ public class MemberDao {
 		return row;
 	}
 	
-	// 관리자가 모든 고객 포인트 내역 조회 
-	public ArrayList<HashMap<String, Object>> pointList(int beginRow, int rowPerPage) throws Exception{
-		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-		DBUtil dbUtil = new DBUtil(); 
-		Connection conn =  dbUtil.getConnection();
-		String sql = "SELECT id 고객아이디,cstm_point 포인트 FROM customer LIMIT ?, ?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, beginRow);
-		stmt.setInt(2, rowPerPage);
-		ResultSet rs = stmt.executeQuery();
-		while(rs.next()) {
-			HashMap<String, Object> m = new HashMap<String, Object>();
-			m.put("고객아이디", rs.getString("고객아이디"));
-			m.put("포인트", rs.getInt("포인트"));
-			list.add(m);
-		}
-		return list;
-	}
+	
 	// 고객 포인트 내역조회
 	public ArrayList<HashMap<String, Object>> cstmPointList(int beginRow, int rowPerPage, String id) throws Exception{
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
-		String sql = "  SELECT p.order_no orderNo, p.point_pm pointPm, p.point point, p.createdate createdate "
+		
+		PreparedStatement stmt =conn.prepareStatement( "SELECT p.order_no orderNo, p.point_pm pointPm, p.point point, p.createdate createdate "
 				+ "FROM customer c INNER JOIN orders o ON  c.id = o.id INNER JOIN point_history p ON o.order_no = p.order_no "
-				+ "WHERE c.id = ? ORDER BY p.createdate DESC LIMIT ?,? ";
-		PreparedStatement stmt =conn.prepareStatement(sql);
+				+ "WHERE c.id = ? ORDER BY p.createdate DESC LIMIT ?,? ");
+	
 		stmt.setString(1, id);
 		stmt.setInt(2, beginRow);
 		stmt.setInt(3, rowPerPage);
@@ -275,10 +314,11 @@ public class MemberDao {
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
-		String sql = "SELECT o.order_no orderNo, p.product_name productName, o.order_status orderStatus, o.order_cnt orderCnt, o.order_price orderPrice, o.createdate createdate "
+	
+		PreparedStatement stmt = conn.prepareStatement("SELECT o.order_no orderNo, p.product_name productName, o.order_status orderStatus, o.order_cnt orderCnt, o.order_price orderPrice, o.createdate createdate "
 				+ "FROM customer c INNER JOIN orders o ON c.id = o.id INNER JOIN product p ON p.product_no = o.product_no "
-				+ "WHERE c.id = ? ORDER BY o.updatedate LIMIT ?,?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
+				+ "WHERE c.id = ? ORDER BY o.updatedate LIMIT ?,?");
+		
 		stmt.setString(1, id);
 		stmt.setInt(2, beginRow);
 		stmt.setInt(3, rowPerPage);
