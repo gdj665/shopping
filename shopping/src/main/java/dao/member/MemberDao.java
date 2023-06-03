@@ -189,7 +189,8 @@ public class MemberDao {
 	// 회원 비밀번호 변경
 	public int updateIdList(IdList list) throws Exception {
 		//아이디 쿼리 실행값 변수
-		int idListRow = 0;
+		int idListRow = 0
+				;
 		// 비밀번호 이력 쿼리 실행값
 		int pwHistoryRow = 0;
 		// 비밀번호 이력 갯수

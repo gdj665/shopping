@@ -10,9 +10,6 @@
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
-	
-	
-	
 %>
 
 <!DOCTYPE html>
@@ -128,7 +125,7 @@
 			</table>
 		</fieldset>
 		<div>
-			<button type="button" id="signinBtn">회원가입</button>
+			<button type="button">회원가입</button>
 		</div>
 	</form>
 	<br>

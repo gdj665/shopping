@@ -27,6 +27,9 @@
 	
 	if(request.getParameter("id") ==null || request.getParameter("id").equals("")){
 		response.sendRedirect(request.getContextPath()+"/member/memberJoin.jsp");
+		return;
+		
+		
 	}
 	
 	String msg = null;
@@ -46,7 +49,10 @@
 		msg = "전화번호를 입력하세요";
 	} else if(request.getParameter("cstmGender") == null || request.getParameter("cstmGender").equals("")){
 		msg = "성별을 입력하세요";
-	} 
+	} if(msg != null){
+		response.sendRedirect(request.getContextPath()+"/member/memberJoin.jsp?msg="+msg);
+		return;
+	}
 
 	
 	//요청값 변수에 저장
@@ -69,29 +75,25 @@
 	int row = insertId.insertId(id, pw);
 	// Method 받아오는 값에 따라 상황별 분기
 	if(row == 3){
-		msg = URLEncoder.encode("이미 있는 아이디입니다. 다른아이디로 바꿔주시길바랍니다.","utf-8");
-		response.sendRedirect(request.getContextPath()+"/customer/insertCustomer.jsp?msg="+msg);
+		msg = URLEncoder.encode("사용중인 아이디 입니다","utf-8");
+		response.sendRedirect(request.getContextPath()+"/member/memberJoin.jsp?msg="+msg);
 			return;
 	}
-	if(row == 0){
-		msg = URLEncoder.encode("잘못된정보입니다. 다시입력해주시길바랍니다.","utf-8");
-		response.sendRedirect(request.getContextPath()+"/customer/insertCustomer.jsp?msg="+msg);
+	
+	//클래스에 회원정보 담기
+	Customer customer = new Customer();
+	customer.setId(id);
+	customer.setCstmName(cstmName);
+	customer.setCstmAddress(cstmAddress);
+	customer.setCstmEmail(cstmEmail);
+	customer.setCstmBirth(cstmBirth);
+	customer.setCstmGender(cstmGender);
+			
+	MemberDao insertCstm = new MemberDao();
+	int inRow = insertCstm.insertCustomer(customer);
+	if(inRow > 0){
+		msg = URLEncoder.encode("회원가입 완료되었습니다.","utf-8");
+		response.sendRedirect(request.getContextPath()+"/member/login.jsp?msg="+msg);
 		return;
 	}
-	//클래스에 회원정보 담기
-		Customer customer = new Customer();
-		customer.setId(id);
-		customer.setCstmName(cstmName);
-		customer.setCstmAddress(cstmAddress);
-		customer.setCstmEmail(cstmEmail);
-		customer.setCstmBirth(cstmBirth);
-		customer.setCstmGender(cstmGender);
-			
-		MemberDao insertCstm = new MemberDao();
-		int inRow = insertCstm.insertCustomer(customer);
-		if(inRow > 0){
-			msg = URLEncoder.encode("회원가입 완료되었습니다..","utf-8");
-			response.sendRedirect(request.getContextPath()+"/login/login.jsp?msg="+msg);
-			return;
-			}
 %>
