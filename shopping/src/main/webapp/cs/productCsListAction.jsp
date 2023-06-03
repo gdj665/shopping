@@ -7,5 +7,32 @@
 <%@ page import = "java.util.*" %>
 <%@ page import = "java.net.*" %>
 <%
+	//한글 깨짐 방지
+	request.setCharacterEncoding("utf-8");
+	
+	// 메세지 출력 설정
+	String msg = null;
+	
+	// 값받기
+	int productNo = Integer.parseInt(request.getParameter("productNo"));
+	int qNo = Integer.parseInt(request.getParameter("qNo"));
+	String aContent = request.getParameter("aContent");
+	String id = "admin";
 
+	//CsDao.java 선언
+	CsDao csdao = new CsDao();
+	
+	
+	// 3) 댓글입력시 댓글 정보 추가
+	int row = csdao.insertProductContent(qNo,aContent,id);
+	
+	if(row==1){
+		System.out.println("productCsListAction row값 정상");
+		response.sendRedirect(request.getContextPath()+"/cs/productCsList.jsp?id="+productNo);
+		return;
+	} else {
+		System.out.println("productCsListAction row값 오류");
+		response.sendRedirect(request.getHeader("Referer"));
+		return;
+	}
 %>

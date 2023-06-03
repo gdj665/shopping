@@ -135,7 +135,7 @@ public class OrderDao {
 		String sql2 = "INSERT INTO orders(id,order_price,createdate,updatedate) values(?,?,now(),now())";
 		PreparedStatement stmt2 = conn.prepareStatement(sql2);
 		stmt2.setString(1, id);
-		stmt2.setInt(2,rs.getInt("total_price"));
+		stmt2.setInt(2,row);
 		int row2 = stmt2.executeUpdate();
 		return row2;
 	}
@@ -359,13 +359,15 @@ public class OrderDao {
 	}
 	
 	// 15) 포인트 히스토리에 포인트 값넣기
-	public int pointstat(int orderNo) throws Exception {
+	public int pointstat(int orderNo, String id) throws Exception {
 		int row = 0;
 		int pointcnt = 0;
+		int usePoint = 0;
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
-		String pointSql = "SELECT 0.01*order_price pointcnt\r\n"
+		String pointSql = "SELECT floor(0.01*(order_price-order_point_use)) pointcnt,\r\n"
+				+ "order_point_use\r\n"
 				+ "FROM orders\r\n"
 				+ "WHERE order_no = ?";
 		PreparedStatement pointStmt = conn.prepareStatement(pointSql);
@@ -373,13 +375,32 @@ public class OrderDao {
 		ResultSet pointRs = pointStmt.executeQuery();
 		if(pointRs.next()) {
 			pointcnt = pointRs.getInt("pointcnt");
+			usePoint = pointRs.getInt("order_point_use");
 		}
 		
-		String deleteCartSql = "INSERT INTO point_history(order_no,point_pm,point,createdate) values(?,'+',?,now())";
-		PreparedStatement deleteCartStmt = conn.prepareStatement(deleteCartSql);
-		deleteCartStmt.setInt(1, orderNo);
-		deleteCartStmt.setInt(2, pointcnt);
-		row = deleteCartStmt.executeUpdate();
+		String insertPointSql = "INSERT INTO point_history(order_no,point_pm,point,createdate) values(?,'+',?,now())";
+		PreparedStatement insertPointStmt = conn.prepareStatement(insertPointSql);
+		insertPointStmt.setInt(1, orderNo);
+		insertPointStmt.setInt(2, pointcnt);
+		row = insertPointStmt.executeUpdate();
+		
+		String minusPointSql = "INSERT INTO point_history(order_no,point_pm,point,createdate) values(?,'-',?,now())";
+		PreparedStatement minusPointStmt = conn.prepareStatement(minusPointSql);
+		minusPointStmt.setInt(1, orderNo);
+		minusPointStmt.setInt(2, usePoint);
+		row = minusPointStmt.executeUpdate();
+		
+		String addCstmPointSql = "UPDATE customer SET cstm_point = cstm_point + ? WHERE id = ?";
+		PreparedStatement addCstmPointStmt = conn.prepareStatement(addCstmPointSql);
+		addCstmPointStmt.setInt(1, pointcnt);
+		addCstmPointStmt.setString(2, id);
+		row = addCstmPointStmt.executeUpdate();
+		
+		String minusCstmPointSql = "UPDATE customer SET cstm_point = cstm_point - ? WHERE id = ?";
+		PreparedStatement minusCstmPointStmt = conn.prepareStatement(minusCstmPointSql);
+		minusCstmPointStmt.setInt(1, usePoint);
+		minusCstmPointStmt.setString(2, id);
+		row = minusCstmPointStmt.executeUpdate();
 		return row;
 	}
 	
@@ -396,9 +417,39 @@ public class OrderDao {
 		row = stmt.executeUpdate();
 		return row;
 	}
+	
+	// 17) 주문테이블의 포인트 사용량 변경
+	public int updateUsePoint(int orderPointUse,int orderNo) throws Exception {
+		int row = 0;
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "UPDATE orders SET order_point_use = ? WHERE order_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, orderPointUse);
+		stmt.setInt(2, orderNo);
+		row = stmt.executeUpdate();
+		return row;
+	}
+	
+	// 18) 카트 테이블에서 제품수량과 구매 할 목록 변경
+	public int updateCartData(String checked,int cartCnt,String id,int cartNo) throws Exception {
+		int row = 0;
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "UPDATE cart SET checked=? , cart_cnt = ? WHERE id = ? AND cart_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, checked);
+		stmt.setInt(2, cartCnt);
+		stmt.setString(3, id);
+		stmt.setInt(4, cartNo);
+		row = stmt.executeUpdate();
+		return row;
+	}
+	
 	//테스트 용
 	public static void main(String[] args) throws Exception {
-		OrderDao orderdao = new OrderDao();
 		
 		/*
 		// 5번 장바구니 합계 정상

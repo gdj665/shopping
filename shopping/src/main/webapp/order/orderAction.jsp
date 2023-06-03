@@ -43,7 +43,7 @@
 	System.out.println(row2);
 	
 	// 15) point_history 테이블에 결제금액 의 1퍼센트 적립
-	int row3 = orderdao.pointstat(orderNo);
+	int row3 = orderdao.pointstat(orderNo,id);
 	System.out.println(row3);
 	
 	// 성공 여부에 따른 페이지 출력

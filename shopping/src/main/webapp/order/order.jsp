@@ -58,7 +58,8 @@
 	<!-- 주문자 정보 //9번 메서드사용 -->
 	<hr>
 	<h3>구매자 정보</h3>
-	<form action="<%=request.getContextPath()%>/order/orderAction.jsp">
+	
+	<form action="<%=request.getContextPath() %>/order/orderPointAction.jsp">
 		<table>
 			<%
 				for(Customer c : list3){
@@ -71,6 +72,20 @@
 				<th>보유 포인트량</th>
 				<th><%=c.getCstmPoint() %></th>
 			</tr>
+			<%
+				for(HashMap<String,Object> m : list4){
+			%>
+				<tr>
+					<th>포인트 사용량</th>
+					<td>
+						<input type="hidden" name="orderNo" value="<%=(int)m.get("orderNo")%>">
+						<input type="number" name="usepoint" value="<%=(int)m.get("orderPointUse")%>" min="0" max="<%=c.getCstmPoint()%>" class="inputfield" onchange="limitInput(this)" value=0>
+						<button type="submit">포인트사용</button>
+					</td>
+				</tr>
+			<%	
+				}
+			%>
 			<tr>
 				<th>주문자 이메일</th>
 				<th><%=c.getCstmEmail() %></th>
@@ -79,7 +94,9 @@
 				}
 			%>
 		</table>
+	</form>
 		<!-- 주소정보 // 7번메서드 사용 -->
+	<form action="<%=request.getContextPath()%>/order/orderAction.jsp">
 		<h3>주소지 입력</h3>
 		<table>
 			<tr>
@@ -116,33 +133,27 @@
 		</table>
 		<!-- 총금액,포인트사용량,최종금액 기입 // 10번 메소드사용 -->
 		<h3>결제정보</h3>
-		<table>
-			<tr>
-				<th>총 금액</th>
-				<th>포인트 사용</th>
-				<th>최종 금액</th>
-			</tr>
-			<%
-				for(HashMap<String,Object> m : list4){
-			%>
+			<table>
 				<tr>
-					<td><%=(int)m.get("orderPrice")%></td>
-					<%
-						for(Customer c : list3){
-					%>
-						<td>
-						  <input type="number" min="0" max="<%=c.getCstmPoint()%>" class="inputfield" onchange="limitInput(this)" value=0>
-						</td>
-					<%
-						}
-					%>
-					<td><%=(int)m.get("totalPrice")%></td>
+					<th>총 금액</th>
+					<th>포인트 사용</th>
+					<th>최종 금액</th>
 				</tr>
-				<input type="hidden" name="orderNo" value="<%=(int)m.get("orderNo")%>">
-			<%	
-				}
-			%>
-		</table>
+				<%
+					for(HashMap<String,Object> m : list4){
+				%>
+					<tr>
+						<td><%=(int)m.get("orderPrice")%></td>
+						<td><%=(int)m.get("orderPointUse") %></td>
+						<td><%=(int)m.get("totalPrice")%></td>
+						<input type="hidden" name="orderNo" value="<%=(int)m.get("orderNo")%>">
+						<input type="hidden" name="id" value="<%=id %>">
+					</tr>
+					
+				<%	
+					}
+				%>
+			</table>
 		<button type="submit">결제하기</button>
 	</form>
 </body>

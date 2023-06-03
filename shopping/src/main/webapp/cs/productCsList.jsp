@@ -40,7 +40,6 @@
 </style>
 </head>
 <body>
-	<table>
 		<%
 			//질문부터출력
 			for(Qa q : list){
@@ -48,8 +47,8 @@
 				int qNo = q.getqNo();
 				// 저장된 질문번호를 받아서 변수값에 넣기
 				list2 = csdao.answerList(qNo);
-				System.out.println("qNo-->"+qNo);
 		%>
+		<table>
 				<tr>
 					<th colspan="3">질문</th>
 				</tr>
@@ -58,13 +57,12 @@
 					<td><%=q.getqContent() %></td>
 					<td><%=q.getCreatedate()%></td>
 				</tr>
-	</table>
+		</table>
 		<%
 				//질문번호와 answer 테이블에 있는 질문번호가 일치하면 출력
 				boolean answer = false;
 				for(HashMap<String,Object> m : list2){
 					int aqNo = (int)m.get("qNo");
-					System.out.println("aqNo-->"+aqNo);
 					if (qNo == aqNo){
 						answer = true;
 		%>
@@ -80,11 +78,10 @@
 						</table>
 		<%
 					}// qNo==apNo 비교 if문
-					
 				}// list2 for 문
 				if(answer != true){
 		%>
-					<form>
+					<form action="<%=request.getContextPath()%>/cs/productCsListAction.jsp">
 						<table>
 							<tr>
 								<td colspan="3">답변입력</td>
@@ -93,6 +90,8 @@
 								<td><input type = "text" name="aContent"></td>
 							</tr>
 						</table>
+						<input type="hidden" name="qNo" value="<%=qNo %>">
+						<input type="hidden" name="productNo" value="<%=productNo %>">
 						<button type="submit">입력</button>
 					</form>
 		<%	

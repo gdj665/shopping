@@ -53,15 +53,16 @@ public class CsDao {
 	}
 	
 	// 3) 답변 입력 메서드
-	public int insertProductContent(int qNo, String aContent) throws Exception {
+	public int insertProductContent(int qNo, String aContent, String id) throws Exception {
 		int row = 0;
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
-		String sql = "INSERT INTO answer(q_no,a_content,createdate,updatedate values(?,?,NOW(),NOW()";
+		String sql = "INSERT INTO answer(q_no,a_content,id,createdate,updatedate) values(?,?,?,NOW(),NOW())";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1,qNo);
 		stmt.setString(2,aContent);
+		stmt.setString(3,id);
 		row = stmt.executeUpdate();
 		return row;
 	}
