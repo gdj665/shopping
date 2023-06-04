@@ -14,6 +14,7 @@
 	
 	// 값 받아오기
 	String id = "admin";
+
 	
 
 	// 1) 장바구니 리스트 출력 메서드
@@ -21,6 +22,7 @@
 	ArrayList<HashMap<String,Object>> list = orderdao.cartList(id);
 	// 2) 장바구니 각 항목의 총 합계의 최종합계를 구하는 메서드
 	int row = orderdao.totalPrice(id);
+	
 	
 %>
 <!DOCTYPE html>
@@ -43,6 +45,17 @@
 			location.href = "<%=request.getContextPath()%>/order/cartAction.jsp?id=<%=id%>";
 		}
 	}
+	document.getElementById("input_check").addEventListener("change", function() {
+		  if (this.checked) {
+		    document.getElementById("input_check").value = "Y";
+		    document.getElementById("input_check_hidden").value = null;
+		    document.getElementById("input_check_hidden").disabled = true;
+		  } else {
+		    document.getElementById("input_check_hidden").value = "N";
+		    document.getElementById("input_check_hidden").disabled = false;
+		  }
+		});
+
 </script>
 </head>
 <body>
@@ -60,18 +73,21 @@
 			</tr>
 			
 			<!-- 장바구니 리스트 출력문 -->
-			<%
-				for(HashMap<String,Object> m : list){
-					int productNo = (int)m.get("productNo");
-					int cartCnt = (int)m.get("cartCnt");
-					String checked = (String)m.get("checked");
-					
-					// 3) 각 제품의 재고량을 구하는 메서드
-					int tcnt = orderdao.totalstock(productNo);
-			%>
+				<%
+					for(HashMap<String,Object> m : list){
+						int productNo = (int)m.get("productNo");
+						int cartCnt = (int)m.get("cartCnt");
+						String checked = (String)m.get("checked");
+						
+						// 3) 각 제품의 재고량을 구하는 메서드
+						int tcnt = orderdao.totalstock(productNo);
+				%>
 			<tr>
 				<input type="hidden" name="cartNo" value="<%=(int)m.get("cartNo")%>">
-				<td style="width:200px;"><input name="checked" type="checkbox" value="<%=(String)m.get("checked") %>" <%= (checked.equals("Y")) ? "checked" : "" %>/></td>
+				<td style="width:200px;">
+					<input name="checked" value="Y" type="checkbox" id="input_check" <%= (checked != null && checked.equals("Y")) ? "checked" : "" %>/>
+					<input name="checked" value="N" type="hidden" id="input_check_hidden"/>
+				</td>
 				<td style="width:200px;"><img src="<%=(String)m.get("productSaveFilename")%>"><%=(String)m.get("productSaveFilename")%></td>
 				<td style="width:200px;"><%=(String)m.get("productName") %></td>
 				<td style="width:200px;"><%=m.get("discountPrice")%></td>

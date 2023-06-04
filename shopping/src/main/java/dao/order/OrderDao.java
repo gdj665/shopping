@@ -276,7 +276,7 @@ public class OrderDao {
 		// OrderDao 8번을 사용하여 cart_no리스트 받아오기
 		ArrayList<Cart> cartNoList = new ArrayList<>();
 		cartNoList = selectCart(selectOrderId);
-		System.out.println(cartNoList);
+		System.out.println("cartNoList-->" +cartNoList);
 		
 		ArrayList<Integer> checkInsertList = new ArrayList<>();
 		String insertOrdersCartSql = "INSERT INTO orders_cart(order_no, cart_no)\r\n"
@@ -437,6 +437,8 @@ public class OrderDao {
 		int row = 0;
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
+		
+		
 		
 		String sql = "UPDATE cart SET checked=? , cart_cnt = ? WHERE id = ? AND cart_no = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);

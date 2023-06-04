@@ -13,20 +13,35 @@
 	
 	// 값 받아오기
 	String id = "admin";
-	String checked = null;
-	int cartCnt = Integer.parseInt(request.getParameter("cartCnt"));
-	int cartNo = Integer.parseInt(request.getParameter("cartNo"));
+	String[] checkedValues = request.getParameterValues("checked");
+	String[] cartCntValues = request.getParameterValues("cartCnt");
+	String[] cartNoValues = request.getParameterValues("cartNo");
+	int row = 0;
+	// 값 디버깅
+	System.out.println("checkedValues.length-->" + checkedValues.length);
+	System.out.println("checkedValues-->" + Arrays.toString(checkedValues));
+	System.out.println("cartCntValues.length-->" + cartCntValues.length);
+	System.out.println("cartNoValues.length-->" + cartNoValues.length);
 	
-	// 유효성검사
-	if(request.getParameter("checked")==null){
-		checked = "N";
-	} else {
-		checked = "Y";
+	// 받아온 모든 값이 null이 아닐경우 실행
+	if (checkedValues != null && cartCntValues != null && cartNoValues != null) {
+		// cartNo의 길이만큼 for문 실행
+		for (int i = 0; i < cartNoValues.length; i++) {
+			// checked는 Y또는 N으로 값이 들어오므로 
+			String checked = request.getParameter("checked");
+			checked = (checked != null && checked.equals("Y")) ? "Y" : "N";
+			System.out.println("checked-->" + checked);
+			int cartCnt = 0;
+			int cartNo = Integer.parseInt(cartNoValues[i]);
+		
+			if (cartCntValues.length > i && cartCntValues[i] != null) {
+				cartCnt = Integer.parseInt(cartCntValues[i]);
+			}
+			// for문 만큼 update메서드 실행
+			OrderDao orderdao = new OrderDao();
+			row = orderdao.updateCartData(checked, cartCnt, id, cartNo);
+		}
 	}
-	
-	OrderDao orderdao = new OrderDao();
-	// 18)
-	int row = orderdao.updateCartData(checked,cartCnt,id,cartNo);
 	
 	if(row==1){
 		System.out.println("updateCartAction row값 정상");
