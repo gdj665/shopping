@@ -57,7 +57,7 @@
 	
 	if(row==1){
 		System.out.println("updateCartAction row값 정상");
-		response.sendRedirect(request.getContextPath()+"/order/cart2.jsp?id="+id);
+		response.sendRedirect(request.getContextPath()+"/order/cart.jsp?id="+id);
 		return;
 	}else{
 		System.out.println("updateCartAction row값 오류");
