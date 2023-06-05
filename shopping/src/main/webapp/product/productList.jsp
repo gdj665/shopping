@@ -60,6 +60,11 @@
 					</a>
 				</td>
 				<td>
+					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+						<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+					</a>
+				</td>
+				<td>
 					<a href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
 						수정
 					</a>

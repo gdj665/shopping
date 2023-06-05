@@ -46,6 +46,12 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<div>
+		<jsp:include page="/inc/search.jsp"></jsp:include>
+	</div>
+	<div>
+		<jsp:include page="/inc/head.jsp"></jsp:include>
+	</div>
 	<h3>'<%=searchWord%>'에 대한 검색 결과 입니다.</h3>
 	<h2>가수(<%=searchSingerList.size()%>)</h2>
 	<table>
@@ -128,6 +134,9 @@
 		for(Product p : searchProductName){
 	%>
 			<tr>
+				<td>
+					<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+				</td>
 				<td>
 					<%=p.getProductName()%>
 				</td>

@@ -37,7 +37,7 @@
 			<th>
 				<a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=<%=mainName%>&subName=전체">
 					전체
-				</a>
+				</a> 
 			</th>
 			<th>
 				<a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=<%=mainName%>&subName=싱글">

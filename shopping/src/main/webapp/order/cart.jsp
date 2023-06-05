@@ -15,7 +15,7 @@
 	// 값 받아오기
 	String id = "admin";
 
-	
+	String[] array = new String[3] ;
 
 	// 1) 장바구니 리스트 출력 메서드
 	OrderDao orderdao = new OrderDao();

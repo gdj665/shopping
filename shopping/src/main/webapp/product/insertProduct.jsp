@@ -1,5 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	/* if (session.getAttribute("loginMember") == null){
+		response.sendRedirect(request.getContextPath() + "/home.jsp");
+		return;
+	} */
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +12,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>앨범 추가</h1>
+	<h1>앨범 입력</h1>
 	<form action="<%=request.getContextPath()%>/product/insertProductAction.jsp" method="post" enctype="multipart/form-data">
 	<table>
 		<tr>
@@ -28,31 +33,37 @@
 		<tr>
 			<th>앨범 제목</th>
 			<td>
-				<input type="text" name="productName">
+				<input type="text" name="productName" required="required">
 			</td>
 		</tr>
 		<tr>
 			<th>앨범 가격</th>
 			<td>
-				<input type="number" name="productPrice">
+				<input type="number" name="productPrice" required="required">
 			</td>
 		</tr>
 		<tr>
 			<th>앨범 재고량</th>
 			<td>
-				<input type="number" name="productStock">
+				<input type="number" name="productStock" required="required">
 			</td>
 		</tr>
 		<tr>
 			<th>앨범 가수명</th>
 			<td>
-				<input type="text" name="productSinger">
+				<input type="text" name="productSinger" required="required">
+			</td>
+		</tr>
+		<tr>
+			<th>앨범 수록곡 수</th>
+			<td>
+				<input type="number" name="totalTrackCnt" required="required">
 			</td>
 		</tr>
 		<tr>
 			<th>앨범 설명</th>
 			<td>
-				<textarea cols="50" rows="4" name="productInfo"></textarea>
+				<textarea cols="50" rows="4" name="productInfo" required="required"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -62,7 +73,7 @@
 			</td>
 		</tr>
 	</table>
-	<button type="submit">추가</button>
+	<button type="submit">입력</button>
 	</form>
 </body>
 </html>

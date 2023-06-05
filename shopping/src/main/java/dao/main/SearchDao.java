@@ -160,15 +160,13 @@ public class SearchDao {
 		String likeSql = "WHERE";
 		for (int i = 0; i < searchWord.length; i++) {
 			if (i < searchWord.length - 1) {
-				likeSql += " p.product_singer LIKE ? AND ";
+				likeSql += " p.product_name LIKE ? AND ";
 			} else {
-				likeSql += " p.product_singer LIKE ? ";
+				likeSql += " p.product_name LIKE ? ";
 			}
 		}
 		String sql = "SELECT p.product_singer productSinger, p.product_name productName, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype\r\n"
-				+ "FROM product p INNER JOIN product_track pt\r\n"
-				+ "	ON p.product_no = pt.product_no\r\n"
-				+ "	INNER JOIN product_img pi\r\n"
+				+ "FROM product p INNER JOIN product_img pi\r\n"
 				+ "	ON p.product_no = PI.product_no\r\n"
 				+ likeSql;
 		PreparedStatement stmt = conn.prepareStatement(sql);

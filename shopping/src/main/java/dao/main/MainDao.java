@@ -1,7 +1,10 @@
 package dao.main;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+
+import org.apache.catalina.connector.Response;
 
 import util.DBUtil;
 import vo.product.Product;
@@ -29,6 +32,25 @@ public class MainDao {
 		}
 		
 		return categoryNo;
+	}
+	
+	// categoryNo 을 받아서 메인, 서브 네임 출력
+	public String[] printCategory(int categoryNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT category_main_name categoryMainName, category_sub_name categorySubName\r\n"
+				+ "FROM category\r\n"
+				+ "WHERE category_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, categoryNo);
+		ResultSet rs = stmt.executeQuery();
+		String[] categoryName = new String[2];
+		if (rs.next()) {
+			categoryName[0] = rs.getString("categoryMainName");
+			categoryName[1] = rs.getString("categorySubName");
+		}
+		
+		return categoryName;
 	}
 	
 	// 앨범 출력
@@ -85,16 +107,34 @@ public class MainDao {
 	public Product selectProductOne(int productNo) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
+		
+		// discount 테이블에 할인 관련 있는지 체크
+		String checkSql = "SELECT count(discount_begin) cnt\r\n"
+				+ "FROM discount\r\n"
+				+ "WHERE product_no = ? AND discount_begin <= CURDATE() AND discount_end > CURDATE()";
+		
+		// cnt의 유무에 따라 where 조건문 변경
 		String sql = "SELECT p.product_name productName, p.product_status productStatus, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype, "
 				+ "p.product_price productPrice, p.product_price * (1 - NVL(d.discount_rate, 0)) productDiscountPrice, p.product_info productInfo, p.product_stock productStock, "
-				+ "SUM(pt.track_time) sum"
+				+ "p.product_singer productSinger, p.category_no categryNo, SUM(pt.track_time) sum"
 				+ " FROM product p INNER JOIN product_img pi"
 				+ " ON p.product_no = pi.product_no"
-				+ " INNER JOIN discount d"
-				+ " ON p.product_no = d.product_no"
 				+ " INNER JOIN product_track pt"
 				+ " ON p.product_no = pt.product_no"
-				+ " WHERE p.product_no = ? AND d.discount_begin <= CURDATE() AND d.discount_end > CURDATE()";
+				+ " LEFT OUTER JOIN discount d"
+				+ " ON p.product_no = d.product_no";
+		PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+		checkStmt.setInt(1, productNo);
+		ResultSet checkRs = checkStmt.executeQuery();
+		if(checkRs.next()) {
+			int checkCnt = checkRs.getInt("cnt");
+			if (checkCnt == 0 ) {
+				sql +=" WHERE p.product_no = ?";
+			} else {
+				sql +=" WHERE p.product_no = ? AND d.discount_begin <= CURDATE() AND d.discount_end > CURDATE()";
+			}
+		}
+		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, productNo);
 		ResultSet rs = stmt.executeQuery();
@@ -109,6 +149,8 @@ public class MainDao {
 			p.setProductStock(rs.getInt("productStock"));
 			p.setProductSaveFilename(rs.getString("productSaveFilename"));
 			p.setProductFiletype(rs.getString("productFiletype"));
+			p.setProductSinger(rs.getString("productSinger"));
+			p.setCategoryNo(rs.getInt("categryNo"));
 		}
 		return p;
 	}
@@ -200,7 +242,7 @@ public class MainDao {
 		
 		String time = second + "";
 		if (hour > 0) {
-			time = hour+"시 " + minute + "분 " + remainSecond + "초";
+			time = hour + "시 " + minute + "분 " + remainSecond + "초";
 		} else if (minute > 0) {
 			time = minute + "분 " + remainSecond + "초";
 		}
@@ -217,7 +259,7 @@ public class MainDao {
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, product.getCategoryNo());
 		stmt.setString(2, product.getProductName());
-		stmt.setInt(3, product.getProductNo());
+		stmt.setInt(3, product.getProductPrice());
 		stmt.setInt(4, product.getProductStock());
 		stmt.setString(5, product.getProductInfo());
 		stmt.setString(6, product.getProductSinger());
@@ -235,6 +277,32 @@ public class MainDao {
 		return productNo;
 	}
 	
+	// product 데이터 수정
+	public int updateProduct(Product product) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "UPDATE product SET product_name = ?,\r\n"
+				+ "						 product_status = ?,\r\n"
+				+ "						 product_price = ?,\r\n"
+				+ "						 product_Stock = ?,\r\n"
+				+ "						 product_singer = ?,\r\n"
+				+ "						 category_no = ?,\r\n"
+				+ "						 product_info = ?,\r\n"
+				+ "						 updatedate = NOW()\r\n"
+				+ "WHERE product_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, product.getProductName());
+		stmt.setString(2, product.getProductStatus());
+		stmt.setInt(3, product.getProductPrice());
+		stmt.setInt(4, product.getProductStock());
+		stmt.setString(5, product.getProductSinger());
+		stmt.setInt(6, product.getCategoryNo());
+		stmt.setString(7, product.getProductInfo());
+		stmt.setInt(8, product.getProductNo());
+		int row = stmt.executeUpdate();
+		return row;
+	}
+	
 	// productImg 데이터 삽입
 	public int insertProductImg(int productNo, ProductImg productImg) throws Exception {
 		DBUtil DBUtil = new DBUtil();
@@ -246,6 +314,124 @@ public class MainDao {
 		stmt.setString(2, productImg.getProductOriFilename());
 		stmt.setString(3, productImg.getProductSaveFilename());
 		stmt.setString(4, productImg.getProductFiletype());
+		int row = stmt.executeUpdate();
+		return row;
+	}
+	
+	// productImg 데이터 출력
+	public String selectProductImg(int productNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT product_save_filename productSaveFilename\r\n"
+				+ "FROM product_img\r\n"
+				+ "WHERE product_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, productNo);
+		ResultSet rs = stmt.executeQuery();
+		String productSaveFilename = null;
+		if (rs.next()) {
+			productSaveFilename = rs.getString("productSaveFilename");
+		}
+		return productSaveFilename;
+	}
+	
+	// productImg 데이터 수정
+	public int updateProductImg(int productNo, ProductImg productImg) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "UPDATE product_img SET product_ori_filename = ?,\r\n"
+				+ "							 product_save_filename = ?,\r\n"
+				+ "							 product_filetype = ?,\r\n"
+				+ "							 updatedate = NOW()\r\n"
+				+ "WHERE product_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, productImg.getProductOriFilename());
+		stmt.setString(2, productImg.getProductSaveFilename());
+		stmt.setString(3, productImg.getProductFiletype());
+		stmt.setInt(4, productNo);
+		int row = stmt.executeUpdate();
+		return row;
+	}
+	
+	// track 데이터 삽입
+	public int insertTrack(ArrayList<Track> trackList) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		ArrayList<Integer> checkList = new ArrayList<>();
+		for (Track t : trackList) {
+			String sql = "INSERT INTO product_track(product_no, track_no, track_title, track_time, createdate, updatedate)\r\n"
+					+ "VALUES(?, ?, ?, ?, NOW(), NOW())";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, t.getProductNo());
+			stmt.setInt(2, t.getTrackNo());
+			stmt.setString(3, t.getTrackName());
+			stmt.setInt(4, t.getTrackTime());
+			int row = stmt.executeUpdate();
+			checkList.add(row);
+		}
+		return checkList.size();
+	}
+
+	// track 데이터 수정
+	public int updateTrack(ArrayList<Track> trackList) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		ArrayList<Integer> checkList = new ArrayList<>();
+		int cnt = 1;
+		for (Track t : trackList) {
+			String sql = "UPDATE product_track SET  track_no = ?,\r\n"
+					+ "								track_title = ?,\r\n"
+					+ "								track_time = ?,\r\n"
+					+ "								updatedate = NOW()\r\n"
+					+ "WHERE product_no = ? AND track_no = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, cnt);
+			stmt.setString(2, t.getTrackName());
+			stmt.setInt(3, t.getTrackTime());
+			stmt.setInt(4, t.getProductNo());
+			stmt.setInt(5, t.getTrackNo());
+			int row = stmt.executeUpdate();
+			checkList.add(row);
+			cnt++;
+		}
+		return checkList.size();
+	}
+	
+	// 앨범 정보 삭제
+	public int deleteProduct(int productNo, String dir) throws Exception{
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String checkSql = "SELECT count(product_no) cnt\r\n"
+				+ "FROM orders_history\r\n"
+				+ "WHERE product_no = ?";
+		PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+		checkStmt.setInt(1, productNo);
+		ResultSet checkRs = checkStmt.executeQuery();
+		if(checkRs.next()) {
+			int checkCnt = checkRs.getInt("cnt");
+			if (checkCnt != 0 ) {
+				System.out.println("%s 에 대한 구매내역이 있으므로 삭제할 수 없습니다.");
+				return 0;
+			}
+		}
+		String selectSql = "SELECT product_save_filename saveFilename\r\n"
+				+ "FROM product_img\r\n"
+				+ "WHERE product_no = ?";
+		PreparedStatement selectStmt = conn.prepareStatement(selectSql);
+		selectStmt.setInt(1, productNo);
+		ResultSet selectRs = selectStmt.executeQuery();
+		String saveFilename = null;
+		if (selectRs.next()) {
+			saveFilename = selectRs.getString("saveFilename");
+		}
+		File f = new File(dir + "\\" + saveFilename);
+		if(f.exists()){
+			f.delete();
+			System.out.println(dir + "\\" + saveFilename + "파일삭제");
+		}
+		String deleteSql = "DELETE FROM product WHERE product_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(deleteSql);
+		stmt.setInt(1, productNo);
 		int row = stmt.executeUpdate();
 		return row;
 	}

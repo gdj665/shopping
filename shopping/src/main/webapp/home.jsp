@@ -37,6 +37,9 @@
 				}
 		%>
 				<td>
+					<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+				</td>
+				<td>
 					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
 						<%=p.getProductName()%>
 					</a>
@@ -60,6 +63,9 @@
 		<%
 				}
 		%>
+				<td>
+					<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+				</td>
 				<td>
 					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
 						<%=p.getProductName()%>

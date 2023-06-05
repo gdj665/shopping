@@ -40,6 +40,9 @@
 	<table>
 		<tr>
 			<td>
+				<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+			</td>
+			<td>
 				<%=p.getProductName()%>
 			</td>
 			<td>
