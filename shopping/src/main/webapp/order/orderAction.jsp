@@ -46,6 +46,10 @@
 	int row3 = orderdao.pointstat(orderNo,id);
 	System.out.println(row3);
 	
+	// 19) 제품 구매에 의한 재고량 변경
+	int row5 = orderdao.updateProductStock(orderNo);
+	System.out.println(row5);
+	
 	// 성공 여부에 따른 페이지 출력
 	if(row>0 && row2>0 && row3>0){
 		System.out.println("주문 결제완료");

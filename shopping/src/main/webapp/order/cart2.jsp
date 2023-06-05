@@ -15,7 +15,7 @@
 	// 값 받아오기
 	String id = "admin";
 
-	String[] array = new String[3] ;
+	int cnt = 0;
 
 	// 1) 장바구니 리스트 출력 메서드
 	OrderDao orderdao = new OrderDao();
@@ -45,17 +45,6 @@
 			location.href = "<%=request.getContextPath()%>/order/cartAction.jsp?id=<%=id%>";
 		}
 	}
-	document.getElementById("input_check").addEventListener("change", function() {
-		  if (this.checked) {
-		    document.getElementById("input_check").value = "Y";
-		    document.getElementById("input_check_hidden").value = null;
-		    document.getElementById("input_check_hidden").disabled = true;
-		  } else {
-		    document.getElementById("input_check_hidden").value = "N";
-		    document.getElementById("input_check_hidden").disabled = false;
-		  }
-		});
-
 </script>
 </head>
 <body>
@@ -74,6 +63,7 @@
 			
 			<!-- 장바구니 리스트 출력문 -->
 				<%
+					
 					for(HashMap<String,Object> m : list){
 						int productNo = (int)m.get("productNo");
 						int cartCnt = (int)m.get("cartCnt");
@@ -85,8 +75,7 @@
 			<tr>
 				<input type="hidden" name="cartNo" value="<%=(int)m.get("cartNo")%>">
 				<td style="width:200px;">
-					<input name="checked" value="Y" type="checkbox" id="input_check" <%= (checked != null && checked.equals("Y")) ? "checked" : "" %>/>
-					<input name="checked" value="N" type="hidden" id="input_check_hidden"/>
+					<input name="checked<%=cnt%>" value="Y" type="checkbox" <%= (checked != null && checked.equals("Y")) ? "checked" : "" %>/>
 				</td>
 				<td style="width:200px;"><img src="<%=(String)m.get("productSaveFilename")%>"><%=(String)m.get("productSaveFilename")%></td>
 				<td style="width:200px;"><%=(String)m.get("productName") %></td>
@@ -107,6 +96,7 @@
 				<td><a href="<%=request.getContextPath()%>/order/deleteCartAction.jsp?cartNo=<%=(int)m.get("cartNo")%>">삭제</a></td>
 			</tr>
 			<%
+				cnt++;
 				}
 			%>
 		</table>

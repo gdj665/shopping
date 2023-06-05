@@ -108,7 +108,7 @@
 			%>
 				<tr>
 	                <td>
-	                    <input type="radio" name="address" value="<%=(String) m.get("address")%>">
+	                    <input type="radio" name="address" value="<%=(String) m.get("address")%>" required="required">
 	                    <%=(String) m.get("address")%>
 	                </td>
                 <td><%=(String) m.get("recentlyUseDate")%></td>

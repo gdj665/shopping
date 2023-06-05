@@ -438,8 +438,6 @@ public class OrderDao {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
-		
-		
 		String sql = "UPDATE cart SET checked=? , cart_cnt = ? WHERE id = ? AND cart_no = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, checked);
@@ -450,6 +448,39 @@ public class OrderDao {
 		return row;
 	}
 	
+	// 19) 결제하기를 눌러서 구매진행 시에 재고량에서 구매수량 만큼 갯수를 줄이는 메서드
+	public int updateProductStock(int orderNo) throws Exception {
+		int row = 0;
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "SELECT oh.product_no,p.product_stock-oh.order_cnt productcnt\r\n"
+				+ "FROM orders_history oh\r\n"
+				+ "LEFT OUTER\r\n"
+				+ "JOIN orders o ON oh.order_no = o.order_no\r\n"
+				+ "LEFT OUTER\r\n"
+				+ "JOIN product p ON oh.product_no = p.product_no\r\n"
+				+ "WHERE oh.order_no=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, orderNo);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		while(rs.next()){
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("productNo",rs.getInt("oh.product_no"));
+			m.put("orderCnt",rs.getInt("productcnt"));
+			list.add(m);
+		}
+		
+		for(HashMap<String,Object> m : list) {
+			String sql2 = "UPDATE product SET product_stock = ? WHERE product_no = ?";
+			PreparedStatement stmt2 = conn.prepareStatement(sql2);
+			stmt2.setInt(1, (int)m.get("orderCnt"));
+			stmt2.setInt(2, (int)m.get("productNo"));
+			row = stmt2.executeUpdate();
+		}
+		return row;
+	}
 	//테스트 용
 	public static void main(String[] args) throws Exception {
 		
