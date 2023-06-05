@@ -2,7 +2,7 @@
 <%
 //새션 확인 로그인 되어있다면 못들어와야됩니다.
 	if(session.getAttribute("loginId") != null ){
-		response.sendRedirect(request.getContextPath()+"/main/home.jsp");
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
 %>

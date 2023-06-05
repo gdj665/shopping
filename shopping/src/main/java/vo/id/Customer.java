@@ -7,6 +7,7 @@ public class Customer {
 	private String cstmEmail;
 	private String cstmBirth;
 	private String cstmGender;
+	private String cstmPhone;
 	private String cstmRank;
 	private int cstmPoint;
 	private String cstmLastLogin;
@@ -19,7 +20,6 @@ public class Customer {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
 	public String getCstmName() {
 		return cstmName;
 	}
@@ -49,6 +49,12 @@ public class Customer {
 	}
 	public void setCstmGender(String cstmGender) {
 		this.cstmGender = cstmGender;
+	}
+	public String getCstmPhone() {
+		return cstmPhone;
+	}
+	public void setCstmPhone(String cstmPhone) {
+		this.cstmPhone = cstmPhone;
 	}
 	public String getCstmRank() {
 		return cstmRank;
@@ -86,6 +92,7 @@ public class Customer {
 	public void setUpdatedate(String updatedate) {
 		this.updatedate = updatedate;
 	}
+	
 	
 	
 }
