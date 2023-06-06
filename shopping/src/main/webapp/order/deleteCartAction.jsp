@@ -5,22 +5,31 @@
 <%@ page import = "java.util.*" %>
 <%@ page import = "java.net.*" %>
 <%
-	//한글 깨짐 방지
+	// 한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
 	
-	// 메세지 출력 설정
-	String msg = null;
-	
-	
+	// 유효성 검사
+	if(request.getParameter("cartNo")==null
+		||request.getParameter("cartNo").equals("")){
+		
+		// null값이 있을 경우 홈으로 이동
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
 	// 값 받아오기
 	int cartNo = Integer.parseInt(request.getParameter("cartNo"));
 	String id = "admin";
 	
 
-	// 4) 장바구니 단일 삭제 메서드
+	// OrderDao 사용 선언
 	OrderDao orderdao = new OrderDao();
+	
+	
+	// 4) 장바구니 단일 삭제 메서드
 	int row = orderdao.deletecart(cartNo);
 	
+	
+	// row값 분기 설정
 	if(row==1){
 		System.out.println("deleteCartAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/order/cart.jsp?id="+id);

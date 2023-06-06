@@ -10,8 +10,13 @@
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
 	
-	// 메세지 출력 설정
-	String msg = null;
+	//유효성 검사
+	if(request.getParameterValues("oqNo")==null){
+		
+		// null값이 있을 경우 홈으로 이동
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
 	
 	// 값 받아오기
 	String id = "admin";

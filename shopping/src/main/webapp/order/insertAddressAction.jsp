@@ -7,27 +7,37 @@
 <%
 	// 한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
-
+	
+	// 유효성 검사
+	if(request.getParameter("address")==null
+		||request.getParameter("address").equals("")){
+		
+		// null값이 있을 경우 홈으로 이동
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
+	
 	
 	// 값 받아오기
+	String address = request.getParameter("address");
 	String id = "admin";
 	
-	
-	// OrderDao 선언
+
+	// OrderDao 사용 선언
 	OrderDao orderdao = new OrderDao();
 	
 	
-	// 5) 카트안에 체크된 항목 금액 총합 데이터삽입
-	int row = orderdao.insertSumTotalPrice(id);
+	// 20) 주소 추가 메서드
+	int row = orderdao.insertAddress(id,address);
 	
 	
-	// row값에 따른 분기문 선언
+	// row값 분기 설정
 	if(row==1){
-		System.out.println("cartAction row값 정상");
+		System.out.println("insertAddressAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/order/order.jsp?id="+id);
 		return;
 	}else{
-		System.out.println("cartAction row값 오류");
+		System.out.println("insertAddressAction row값 오류");
 		response.sendRedirect(request.getHeader("Referer"));
 		return;
 	}

@@ -10,8 +10,6 @@
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
 	
-	// 메세지 출력 설정
-	String msg = null;
 	
 	// 값 받아오기
 	int productNo = 1;

@@ -115,7 +115,7 @@ public class OrderDao {
 	
 	// 5) 장바구니 checked 된 값의 합계를 더하는 메서드
 	// 합계를 가져온 다음에 insert문을 추가하여 order 테이블에 정보기입
-	public int insertsumtotalprice(String id) throws Exception {
+	public int insertSumTotalPrice(String id) throws Exception {
 		int row = 0;
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
@@ -183,7 +183,7 @@ public class OrderDao {
 	    }
 	    return list;
 	}
-	// 8) 카트 넘버받기
+	// 8) 카트 넘버받기 (11번에 사용)
 	public ArrayList<Cart> selectCart(String id) throws Exception{
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
@@ -481,6 +481,20 @@ public class OrderDao {
 		}
 		return row;
 	}
+	// 20) 주소추가하는 메서드
+	public int insertAddress(String id,String address) throws Exception {
+		int row = 0;
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String insertAddressSql = "INSERT INTO address(id,address,recently_use_date,createdate,updatedate) values(?,?,now(),now(),now())";
+		PreparedStatement insertAddressStmt = conn.prepareStatement(insertAddressSql);
+		insertAddressStmt.setString(1, id);
+		insertAddressStmt.setString(2, address);
+		row = insertAddressStmt.executeUpdate();
+		return row;
+	}
+	
 	//테스트 용
 	public static void main(String[] args) throws Exception {
 		
