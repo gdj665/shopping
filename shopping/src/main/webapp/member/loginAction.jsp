@@ -40,54 +40,57 @@
 	MemberDao memDao = new MemberDao();
 	int row = memDao.login(idList);
 	
-	if(row == 0){
-		msg = URLEncoder.encode("회원탈퇴한 아이디 입니다.","utf-8");
+	if(row == 3){
+		msg = URLEncoder.encode("탈퇴한 아이디 입니다","utf-8");
 		response.sendRedirect(request.getContextPath()+"/member/login.jsp?msg="+msg);
 		return;
 	}
-	int cstmCnt = memDao.login(idList);
-	
-	if(cstmCnt > 0){
-		session.setAttribute("loginId", id);
-		System.out.print("로그인성공" + session.getAttribute("loginId"));
-		response.sendRedirect(request.getContextPath()+"/home.jsp");
-		return;
+	if(row == 0){
+			msg = URLEncoder.encode("없는 아이디 입니다","utf-8");
+			response.sendRedirect(request.getContextPath()+"/member/login.jsp?msg="+msg);
+			return;
 	}
-	// 사원 등급에 맞게 세션정보를 저장해야되므로분기
-	// 등급 클래스에서 가져오기
-	MemberDao checkEmpId = new MemberDao();
-	IdList level = new IdList();
-	
-	// idList 객체를 적절히 초기화하고 값을 설정한다.
-
-	List<String> id_list = new ArrayList<>();
-	id_list.add("id1");
-	id_list.add("id2");
-	id_list.add("id3");
-	
-	MemberDao memberDao = new MemberDao();
-	
-	for (String Id : id_list) {
-	    memberDao.adminLogin(id);
-	}
-	
-	if(level.equals("3")){
-		session.setAttribute("loginEmpId3", id);
-		System.out.print("3등급 관리자  : " + session.getAttribute("loginCstmId3"));
-		response.sendRedirect(request.getContextPath()+"/home.jsp");
-		return;
-	}
-	if(level.equals("2")){
-		session.setAttribute("loginEmpId2", id);
-		System.out.print("2등급 관리자 : " + session.getAttribute("loginCstmId2"));
-		response.sendRedirect(request.getContextPath()+"/home.jsp");
-		return;
-	}
-	if(level.equals("1")){
-		session.setAttribute("loginEmpId1", id);
-		System.out.print("1등급 관리자 : " + session.getAttribute("loginCstmId1"));
-		response.sendRedirect(request.getContextPath()+"/home.jsp");
-		return;
-	}
+	if(row == 1){
+		
+		//dao 사용하여 고객인지 확인
+		MemberDao checkCstmId = new MemberDao();
+		int cstmCnt = checkCstmId.loginCstmId(idList);
+		
+		// dao 사용하여 사원인지 확인
+		MemberDao  checkEmpId = new MemberDao();
+		int empCnt = checkEmpId.loginEmpId(idList);
+		
+		//고객도 아니고 사원도 아니라면 로그인 하면 안되므로 정보가 없는 아이디라고 메세지와 함께 되돌려보낸다
+		if(cstmCnt == 0 && empCnt == 0){
+			msg = URLEncoder.encode("정보가 없는 아이디 이므로 로그인 할 수 없습니다. 고객센터에 문의바랍니다","utf-8");
+			response.sendRedirect(request.getContextPath()+"/member/login.jsp?msg="+msg);
+			return;
+		}
+		
+		if(cstmCnt > 0){
+			session.setAttribute("loginCstmId", id);
+			System.out.print("고객로그인 성공 새션정보 : " + session.getAttribute("loginCstmId"));
+			response.sendRedirect(request.getContextPath()+"/main/home.jsp");
+			return;
+		}
+		if(empCnt > 0){
+		// 사원 등급에 맞게 세션정보를 저장해야되므로분기
+		// 등급 클래스에서 가져오기
+		MemberDao checkEmpLebel = new MemberDao();
+		String level = checkEmpLebel.loginEmpLevel(idList);
+		if(level.equals("2")){
+			session.setAttribute("loginEmpId2", id);
+			System.out.println("최고관리자 로그인 성공 새션정보 : " + session.getAttribute("loginEmpId2"));
+			response.sendRedirect(request.getContextPath()+"/main/home.jsp");
+			return;
+		}
+		if(level.equals("1")){
+			session.setAttribute("loginEmpId1", id);
+			System.out.println("일반관리자 로그인 성공 새션정보 : " + session.getAttribute("loginEmpId1"));
+			response.sendRedirect(request.getContextPath()+"/main/home.jsp");
+			return;
+				}
+			}
+		}
 
 %>
