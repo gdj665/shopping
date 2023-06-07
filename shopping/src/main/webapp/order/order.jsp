@@ -55,6 +55,11 @@
 		  inputField.value = maxInput; 
 		}
 	}
+	function openNewWindow() {
+		var id = '<%= id %>';
+		var url = '<%= request.getContextPath() %>/order/insertAddress.jsp?id=' + id;
+		window.open(url, '신규 주소 추가', 'width=800,height=600');
+	}
 </script>
 </head>
 <body>
@@ -114,7 +119,7 @@
 			%>
 				<tr>
 	                <td>
-	                    <input type="radio" name="address" value="<%=(String) m.get("address")%>" required="required">
+	                    <input type="radio" name="addressNo" value="<%=(int) m.get("addressNo")%>" required="required">
 	                    <%=(String) m.get("address")%>
 	                </td>
                 <td><%=(String) m.get("recentlyUseDate")%></td>
@@ -124,7 +129,7 @@
 			%>
 		</table>
 		<!-- 주소 추가하기 -->
-		<a href="<%=request.getContextPath()%>/order/insertAddress.jsp?id=<%=id%>">추가하기</a>
+		<a href="#" onclick="openNewWindow()">추가하기</a>
 		
 		<!-- 주문내역 장바구니를 통해서 넘어온 제품 명과 제품 수량만 -->
 		<h3>주문 내역</h3>

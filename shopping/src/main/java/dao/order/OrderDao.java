@@ -169,7 +169,7 @@ public class OrderDao {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
-		String sql = "SELECT address_no,address,recently_use_date FROM address WHERE id = ?";
+		String sql = "SELECT address_no,address,recently_use_date FROM address WHERE id = ? ORDER BY recently_use_date DESC limit 5";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();
@@ -405,14 +405,14 @@ public class OrderDao {
 	}
 	
 	// 16) 주소고르고 주소값을 넘기면 해당 주소로 업데이트
-	public int addressOrder(String address,int orderNo) throws Exception {
+	public int addressOrder(int addressNo,int orderNo) throws Exception {
 		int row = 0;
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
-		String sql = "UPDATE orders SET order_address = ? WHERE order_no = ?";
+		String sql = "UPDATE orders SET address_no = ? WHERE order_no = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, address);
+		stmt.setInt(1, addressNo);
 		stmt.setInt(2, orderNo);
 		row = stmt.executeUpdate();
 		return row;
@@ -492,6 +492,19 @@ public class OrderDao {
 		insertAddressStmt.setString(1, id);
 		insertAddressStmt.setString(2, address);
 		row = insertAddressStmt.executeUpdate();
+		return row;
+	}
+	
+	// 21) 주문 결제시 사용한 주소 최근사용으로 당기기
+	public int updateAddressDate(int addressNo) throws Exception {
+		int row = 0;
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "UPDATE address SET recently_use_date = now() WHERE address_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, addressNo);
+		row = stmt.executeUpdate();
 		return row;
 	}
 	
