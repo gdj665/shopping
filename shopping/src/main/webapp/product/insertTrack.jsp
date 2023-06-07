@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	if (request.getParameter("productNo") == null
-			|| request.getParameter("totalTrackCnt") != null){
+	/* if (request.getParameter("productNo") == null
+			|| request.getParameter("totalTrackCnt") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
-	}
-	int productNo = Integer.parseInt(request.getParameter("productNo"));
-	int totalTrackCnt = Integer.parseInt(request.getParameter("totalTrackCnt"));
+	} */
+	// int productNo = Integer.parseInt(request.getParameter("productNo"));
+	int productNo = 1; 
+	// int totalTrackCnt = Integer.parseInt(request.getParameter("totalTrackCnt"));
+	int totalTrackCnt = 2;
 %>
 <!DOCTYPE html>
 <html>
@@ -31,7 +33,8 @@
 	%>
 				<tr>
 					<td>
-						<input type="number" name="trackNo" required="required">
+						<%=i + 1%>
+						<input type="hidden" name="trackNo" value ="<%=i + 1%>">
 					</td>
 					<td>
 						<input type="text" name="trackName" required="required">

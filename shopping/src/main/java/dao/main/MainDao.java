@@ -30,7 +30,6 @@ public class MainDao {
 		if (rs.next()) {
 			categoryNo = rs.getInt("categoryNo");
 		}
-		
 		return categoryNo;
 	}
 	
@@ -159,10 +158,11 @@ public class MainDao {
 	public ArrayList<Track> selectTrack(int productNo) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
-		String sql = "SELECT pt.track_no trackNo, pt.track_title trackTitle, p.product_singer productSinger, pt.track_time trackTime"
+		String sql = "SELECT p.product_no productNo, pt.track_no trackNo, pt.product_track_no productTrackNo, pt.track_title trackTitle, p.product_singer productSinger, pt.track_time trackTime"
 				+ " FROM product p INNER JOIN product_track pt"
 				+ " ON p.product_no = pt.product_no"
-				+ " WHERE p.product_no = ?";
+				+ " WHERE p.product_no = ?"
+				+ " ORDER BY pt.track_no";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, productNo);
 		ResultSet rs = stmt.executeQuery();
@@ -170,7 +170,9 @@ public class MainDao {
 		ArrayList<Track> trackList = new ArrayList<>();
 		while(rs.next()) {
 			Track t = new Track();
+			t.setProductNo(rs.getInt("productNo"));
 			t.setTrackNo(rs.getInt("trackNo"));
+			t.setProductTrackNo(rs.getInt("productTrackNo"));
 			t.setTrackName(rs.getString("trackTitle"));
 			t.setProductSinger(rs.getString("productSinger"));
 			t.setTrackTime(rs.getInt("trackTime"));
@@ -303,12 +305,53 @@ public class MainDao {
 		return row;
 	}
 	
+	// 앨범 정보 삭제
+	public int deleteProduct(int productNo, String dir) throws Exception{
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String checkSql = "SELECT count(product_no) cnt\r\n"
+				+ "FROM orders_history\r\n"
+				+ "WHERE product_no = ?";
+		PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+		checkStmt.setInt(1, productNo);
+		ResultSet checkRs = checkStmt.executeQuery();
+		if(checkRs.next()) {
+			int checkCnt = checkRs.getInt("cnt");
+			if (checkCnt != 0 ) {
+				System.out.println("%s 에 대한 구매내역이 있으므로 삭제할 수 없습니다.");
+				return 0;
+			}
+		}
+		
+		String selectSql = "SELECT product_save_filename saveFilename\r\n"
+				+ "FROM product_img\r\n"
+				+ "WHERE product_no = ?";
+		PreparedStatement selectStmt = conn.prepareStatement(selectSql);
+		selectStmt.setInt(1, productNo);
+		ResultSet selectRs = selectStmt.executeQuery();
+		String saveFilename = null;
+		if (selectRs.next()) {
+			saveFilename = selectRs.getString("saveFilename");
+		}
+		File f = new File(dir + "\\" + saveFilename);
+		if(f.exists()){
+			f.delete();
+			System.out.println(dir + "\\" + saveFilename + "파일삭제");
+		}
+		
+		String deleteSql = "DELETE FROM product WHERE product_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(deleteSql);
+		stmt.setInt(1, productNo);
+		int row = stmt.executeUpdate();
+		return row;
+	}
+
 	// productImg 데이터 삽입
 	public int insertProductImg(int productNo, ProductImg productImg) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		String sql = "INSERT INTO product_img(product_no, product_ori_filename, product_save_filename, product_filetype, createdate, updatedate)\r\n"
-						+ "VALUES(?, ?, ?, ?, NOW(), NOW())";
+				+ "VALUES(?, ?, ?, ?, NOW(), NOW())";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, productNo);
 		stmt.setString(2, productImg.getProductOriFilename());
@@ -371,68 +414,37 @@ public class MainDao {
 		}
 		return checkList.size();
 	}
-
 	// track 데이터 수정
 	public int updateTrack(ArrayList<Track> trackList) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		ArrayList<Integer> checkList = new ArrayList<>();
-		int cnt = 1;
 		for (Track t : trackList) {
 			String sql = "UPDATE product_track SET  track_no = ?,\r\n"
 					+ "								track_title = ?,\r\n"
 					+ "								track_time = ?,\r\n"
 					+ "								updatedate = NOW()\r\n"
-					+ "WHERE product_no = ? AND track_no = ?";
+					+ "WHERE product_no = ? AND product_track_no = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, cnt);
+			stmt.setInt(1, t.getTrackNo());
 			stmt.setString(2, t.getTrackName());
 			stmt.setInt(3, t.getTrackTime());
 			stmt.setInt(4, t.getProductNo());
-			stmt.setInt(5, t.getTrackNo());
+			stmt.setInt(5, t.getProductTrackNo());
 			int row = stmt.executeUpdate();
 			checkList.add(row);
-			cnt++;
 		}
 		return checkList.size();
 	}
-	
-	// 앨범 정보 삭제
-	public int deleteProduct(int productNo, String dir) throws Exception{
-		DBUtil DBUtil = new DBUtil();
-		Connection conn = DBUtil.getConnection();
-		String checkSql = "SELECT count(product_no) cnt\r\n"
-				+ "FROM orders_history\r\n"
-				+ "WHERE product_no = ?";
-		PreparedStatement checkStmt = conn.prepareStatement(checkSql);
-		checkStmt.setInt(1, productNo);
-		ResultSet checkRs = checkStmt.executeQuery();
-		if(checkRs.next()) {
-			int checkCnt = checkRs.getInt("cnt");
-			if (checkCnt != 0 ) {
-				System.out.println("%s 에 대한 구매내역이 있으므로 삭제할 수 없습니다.");
-				return 0;
-			}
+	// track 데이터 삭제
+		public int deleteTrack(int productNo, int trackNo) throws Exception{
+			DBUtil DBUtil = new DBUtil();
+			Connection conn = DBUtil.getConnection();
+			String deleteSql = "DELETE FROM product_track WHERE product_no = ? AND track_no = ?";
+			PreparedStatement stmt = conn.prepareStatement(deleteSql);
+			stmt.setInt(1, productNo);
+			stmt.setInt(2, trackNo);
+			int row = stmt.executeUpdate();
+			return row;
 		}
-		String selectSql = "SELECT product_save_filename saveFilename\r\n"
-				+ "FROM product_img\r\n"
-				+ "WHERE product_no = ?";
-		PreparedStatement selectStmt = conn.prepareStatement(selectSql);
-		selectStmt.setInt(1, productNo);
-		ResultSet selectRs = selectStmt.executeQuery();
-		String saveFilename = null;
-		if (selectRs.next()) {
-			saveFilename = selectRs.getString("saveFilename");
-		}
-		File f = new File(dir + "\\" + saveFilename);
-		if(f.exists()){
-			f.delete();
-			System.out.println(dir + "\\" + saveFilename + "파일삭제");
-		}
-		String deleteSql = "DELETE FROM product WHERE product_no = ?";
-		PreparedStatement stmt = conn.prepareStatement(deleteSql);
-		stmt.setInt(1, productNo);
-		int row = stmt.executeUpdate();
-		return row;
-	}
 }

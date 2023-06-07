@@ -77,6 +77,7 @@
 	String productInfo = mRequest.getParameter("productInfo");
 	// String으로 받고 값 넣을때 형변환
 	String[] trackNo = mRequest.getParameterValues("trackNo");
+	String[] productTrackNo = mRequest.getParameterValues("productTrackNo");
 	String[] trackName = mRequest.getParameterValues("trackName");
 	String[] trackTime = mRequest.getParameterValues("trackTime");
 	
@@ -104,11 +105,11 @@
 		Track track = new Track();
 		track.setProductNo(productNo);
 		track.setTrackNo(Integer.parseInt(trackNo[i]));
+		track.setProductTrackNo(Integer.parseInt(productTrackNo[i]));
 		track.setTrackName(trackName[i]);
 		track.setTrackTime(Integer.parseInt(trackTime[i]));
 		trackList.add(track);
 	}
-	
 	int checkUpdateTrack = md.updateTrack(trackList);
 	System.out.println(checkUpdateTrack + " <- checkUpdateTrack");
 	

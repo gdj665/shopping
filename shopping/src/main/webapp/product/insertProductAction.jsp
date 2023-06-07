@@ -16,10 +16,10 @@
 	// request 객체를 MultipartRequest의 API를 사용할 수 있도록 랩핑
 	MultipartRequest mRequest = new MultipartRequest(request, dir, maxFileSize, "utf-8", new DefaultFileRenamePolicy());
 	
-	if (mRequest.getParameter("productNo") == null){
+	/* if (mRequest.getParameter("productNo") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
-	}
+	} */
 	// MultipartRequest API를 사용하여 스트림내에서 문자값을 반환받을 수 있다.
 	// 업로드 파일이 jpg 파일이 아니면
 	if (mRequest.getContentType("productImgFile").equals("image/jpeg") == false
@@ -78,5 +78,4 @@
 	System.out.println(checkProductImg + " <- checkProductImg");
 	
 	response.sendRedirect(request.getContextPath() + "/product/insertTrack.jsp?productNo=" + productNo + "&totalTrackCnt=" + totalTrackCnt);
-	return;
 %>

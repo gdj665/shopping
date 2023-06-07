@@ -11,6 +11,7 @@
 	
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	MainDao md = new MainDao();
+	ReviewDao rd = new ReviewDao();
 	
 	// 앨범 세부 내용
 	Product p = new Product();
@@ -37,6 +38,12 @@
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
 	<h1>앨범 정보</h1>
+	<a href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=productNo%>">
+		수정
+	</a>
+	<a href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=productNo%>">
+		삭제
+	</a>
 	<table>
 		<tr>
 			<td>
@@ -80,5 +87,15 @@
 		}
 	%>
 	</table>
+	<%
+		if(rd.selectReviewTitleList(productNo).size() != 0){
+			
+	%>
+			<div>
+				<jsp:include page="/inc/reviewList.jsp"></jsp:include>
+			</div>
+	<%	
+		};
+	%>
 </body>
 </html>

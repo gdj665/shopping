@@ -2,8 +2,12 @@ package vo.product;
 
 public class Review {
 	private int reviewNo;
-	private int oderNo;
+	private String id;
+	private String productName;
+	private String productSaveFilename;
+	private int productNo;
 	private String reviewTitle;
+	private String reviewSaveFilename;
 	private String reviewContent;
 	private String createdate ;
 	private String updatedate ;
@@ -13,17 +17,41 @@ public class Review {
 	public void setReviewNo(int reviewNo) {
 		this.reviewNo = reviewNo;
 	}
-	public int getOderNo() {
-		return oderNo;
+	public String getId() {
+		return id;
 	}
-	public void setOderNo(int oderNo) {
-		this.oderNo = oderNo;
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public String getProductSaveFilename() {
+		return productSaveFilename;
+	}
+	public void setProductSaveFilename(String productSaveFilename) {
+		this.productSaveFilename = productSaveFilename;
+	}
+	public int getProductNo() {
+		return productNo;
+	}
+	public void setProductNo(int productNo) {
+		this.productNo = productNo;
 	}
 	public String getReviewTitle() {
 		return reviewTitle;
 	}
 	public void setReviewTitle(String reviewTitle) {
 		this.reviewTitle = reviewTitle;
+	}
+	public String getReviewSaveFilename() {
+		return reviewSaveFilename;
+	}
+	public void setReviewSaveFilename(String reviewSaveFilename) {
+		this.reviewSaveFilename = reviewSaveFilename;
 	}
 	public String getReviewContent() {
 		return reviewContent;

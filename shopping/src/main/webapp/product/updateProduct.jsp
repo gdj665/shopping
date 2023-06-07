@@ -1,3 +1,4 @@
+<%@page import="java.sql.PreparedStatement"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "dao.main.*" %>
 <%@ page import = "vo.product.*" %>
@@ -31,6 +32,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<div>
+		<jsp:include page="/inc/search.jsp"></jsp:include>
+	</div>
 	<h1>앨범 정보 수정</h1>
 	<form action="<%=request.getContextPath()%>/product/updateProductAction.jsp" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="productNo" value="<%=productNo%>">
@@ -120,20 +124,31 @@
 				<th>번호</th>
 				<th>제목</th>
 				<th>재생시간</th>
+				<th>삭제</th>
+				<th>
+					<a href="<%=request.getContextPath()%>/product/addTrackAction.jsp?productNo=<%=productNo%>&trackNo=<%=trackList.size() + 1%>">
+						추가
+					</a>
+				</th>
 			</tr>
 		<%
 			for (Track t : trackList){
 		%>
 			<tr>
 				<td>
-					<input type="hidden" name="trackNo" value="<%=t.getTrackNo()%>" required="required">
-					<%=t.getTrackNo()%>
+					<input type="number" name="trackNo" value="<%=t.getTrackNo()%>" required="required">
+					<input type="hidden" name="productTrackNo" value="<%=t.getProductTrackNo()%>">
 				</td>
 				<td>
 					<input type="text" name="trackName" value="<%=t.getTrackName()%>" required="required">
 				</td>
 				<td>
 					<input type="number" name="trackTime" value="<%=t.getTrackTime()%>" required="required">
+				</td>
+				<td>
+					<a href="<%=request.getContextPath()%>/product/deleteTrackAction.jsp?productNo=<%=t.getProductNo()%>&trackNo=<%=t.getTrackNo()%>">
+						삭제
+					</a>
 				</td>
 			</tr>
 		<%
