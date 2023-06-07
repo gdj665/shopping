@@ -62,15 +62,15 @@
 		
 		//고객도 아니고 사원도 아니라면 로그인 하면 안되므로 정보가 없는 아이디라고 메세지와 함께 되돌려보낸다
 		if(cstmCnt == 0 && empCnt == 0){
-			msg = URLEncoder.encode("정보가 없는 아이디 이므로 로그인 할 수 없습니다. 고객센터에 문의바랍니다","utf-8");
+			msg = URLEncoder.encode("정보가 없는 아이디 입니다","utf-8");
 			response.sendRedirect(request.getContextPath()+"/member/login.jsp?msg="+msg);
 			return;
 		}
 		
 		if(cstmCnt > 0){
-			session.setAttribute("loginCstmId", id);
-			System.out.print("고객로그인 성공 새션정보 : " + session.getAttribute("loginCstmId"));
-			response.sendRedirect(request.getContextPath()+"/main/home.jsp");
+			session.setAttribute("loginId", id);
+			System.out.print("고객로그인 : " + session.getAttribute("loginId"));
+			response.sendRedirect(request.getContextPath()+"/home.jsp");
 			return;
 		}
 		if(empCnt > 0){
@@ -80,14 +80,14 @@
 		String level = checkEmpLebel.loginEmpLevel(idList);
 		if(level.equals("2")){
 			session.setAttribute("loginEmpId2", id);
-			System.out.println("최고관리자 로그인 성공 새션정보 : " + session.getAttribute("loginEmpId2"));
-			response.sendRedirect(request.getContextPath()+"/main/home.jsp");
+			System.out.println("최고관리자 로그인 :" + session.getAttribute("loginEmpId2"));
+			response.sendRedirect(request.getContextPath()+"/home.jsp");
 			return;
 		}
 		if(level.equals("1")){
 			session.setAttribute("loginEmpId1", id);
-			System.out.println("일반관리자 로그인 성공 새션정보 : " + session.getAttribute("loginEmpId1"));
-			response.sendRedirect(request.getContextPath()+"/main/home.jsp");
+			System.out.println("일반관리자 로그인 : " + session.getAttribute("loginEmpId1"));
+			response.sendRedirect(request.getContextPath()+"/home.jsp");
 			return;
 				}
 			}

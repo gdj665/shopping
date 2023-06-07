@@ -24,7 +24,7 @@
         	}
       	 %>		
 	</h1>
-	<form action="<%=request.getContextPath()%>/customer/updatePasswordAction.jsp" method="get">
+	<form action="<%=request.getContextPath()%>/member/updatePasswordAction.jsp" method="get">
 		<table>
 			<tr>
 				<td>

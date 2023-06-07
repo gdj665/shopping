@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+	request.setCharacterEncoding("utf-8");
+	
 	// 로그인 세션 확인
 	if(session.getAttribute("loginId") == null ){
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
@@ -21,7 +23,7 @@
 			<tr>
 					<td>아이디</td>
 					<td>
-						<input type="text" id="email" name="cstmName">
+						<input type="text" id="id" name="id">
 					</td>
 				</tr>
 			<tr>

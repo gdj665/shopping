@@ -20,7 +20,7 @@
 </head>
 <body>
 	<h1> 회원가입 </h1>
-	<form action="<%=request.getContextPath()%>/member/memberJoinAction.jsp" method="get">
+	<form action="<%=request.getContextPath()%>/member/memberJoinAction.jsp" method="post">
 		<fieldset>
 			<legend>01 로그인 정보</legend>
 			<table border="1">
@@ -34,7 +34,7 @@
 				</tr>
 				<tr>
 					<td>비밀번호확인</td>
-					<td><input type="password" id="pwConfirm"></td>
+					<td><input type="password" id="ckpw"></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -125,7 +125,7 @@
 			</table>
 		</fieldset>
 		<div>
-			<button type="button">회원가입</button>
+			<button type="submit">회원가입</button>
 		</div>
 	</form>
 	<br>

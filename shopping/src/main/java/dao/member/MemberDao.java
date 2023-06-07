@@ -98,7 +98,7 @@ public class MemberDao {
 		int pwCheckRow = 0;
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
-		PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM pw_history WHERE id = ? AND last_pw = PASSWORD(?)");
+		PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM pw_history WHERE id = ? AND pw = ?");
 		stmt.setString(1, list.getId());
 		stmt.setString(2, list.getLastPw());
 		ResultSet rs = stmt.executeQuery();
@@ -109,7 +109,7 @@ public class MemberDao {
 	}
 		
 	// 회원 비밀번호 변경
-	public int modifyIdList(IdList idList) throws Exception {
+	public int updatePw(IdList idList) throws Exception {
 		//아이디 쿼리 실행값 변수
 		int idListRow = 0;
 		// 비밀번호 이력 갯수
@@ -118,13 +118,13 @@ public class MemberDao {
 		Connection conn =  dbUtil.getConnection();
 			
 		// 비밀번호 id_list 테이블에 입력
-		PreparedStatement stmt = conn.prepareStatement("UPDATE id_list SET pw = PASSWORD(?), updatedate = now() WHERE id = ?");
+		PreparedStatement stmt = conn.prepareStatement("UPDATE id_list SET last_pw = ?, createdate = now() WHERE id = ?");
 		stmt.setString(1, idList.getLastPw());
 		stmt.setString(2, idList.getId());
 		idListRow = stmt.executeUpdate();
 		
 		// 비밀번호 이력 데이터값 추가
-		PreparedStatement pwHistoryStmt = conn.prepareStatement("INSERT INTO pw_history(id, pw, createdate) values(?,PASSWORD(?),now())");
+		PreparedStatement pwHistoryStmt = conn.prepareStatement("INSERT INTO pw_history(id, pw, createdate) values(?,?,now())");
 		pwHistoryStmt.setString(1, idList.getId());
 		pwHistoryStmt.setString(2, idList.getLastPw());
 		
@@ -163,52 +163,53 @@ public class MemberDao {
 		if(rs.next()) {
 			row = rs.getInt(1);
 		}	
+		
 		return row;
 	}
 		
 	// 로그인
-	public int login(IdList id) throws Exception {
-		int row = 0;
-		String active = "";
-		DBUtil dbUtil = new DBUtil(); 
-		Connection conn =  dbUtil.getConnection();
-		PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = '1'");
-		stmt.setString(1, id.getId());
-		stmt.setString(2, id.getLastPw());
-		ResultSet loginRs = stmt.executeQuery();
-		if(loginRs.next()) {
-			row=loginRs.getInt(1);
-		}
-		if(row > 0) {
-			PreparedStatement csLoginStmt = conn.prepareStatement("UPDATE customer SET cstm_last_login = now() WHERE id = ?");
-			csLoginStmt.setString(1, id.getId());
-			int upRow = csLoginStmt.executeUpdate();
-			if(upRow > 0) {
-				System.out.println("고객 마지막로그인 업데이트");
-			}else if(upRow == 0) {
-				System.out.println("관리자입니다");
-			}
-			return row;
-		} 
-		if(row == 0) {
-			PreparedStatement falStmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = '2'");
-			falStmt.setString(1, id.getId());
-			falStmt.setString(2, id.getLastPw());
-			ResultSet rs = falStmt.executeQuery();
-			if(rs.next()) {
-				row = 3;
-			}
-				return row;
-		}
-		return row;
-	}
+	   public int login(IdList id) throws Exception {
+	      int row = 0;
+	      DBUtil dbUtil = new DBUtil(); 
+	      Connection conn =  dbUtil.getConnection();
+	      PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = 1");
+	      stmt.setString(1, id.getId());
+	      stmt.setString(2, id.getLastPw());
+	      ResultSet loginRs = stmt.executeQuery();
+	      if(loginRs.next()) {
+	         row=loginRs.getInt(1);
+	      }
+	      if(row > 0) {
+	         PreparedStatement csLoginStmt = conn.prepareStatement("UPDATE customer SET cstm_last_login = now() WHERE id = ?");
+	         csLoginStmt.setString(1, id.getId());
+	         int upRow = csLoginStmt.executeUpdate();
+	         if(upRow > 0) {
+	            System.out.println("고객 마지막로그인 업데이트");
+	         }else if(upRow == 0) {
+	            System.out.println("관리자입니다");
+	         }
+	         return row;
+	      } 
+	      if(row == 0) {
+	         PreparedStatement falStmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = 2");
+	         falStmt.setString(1, id.getId());
+	         falStmt.setString(2, id.getLastPw());
+	         ResultSet rs = falStmt.executeQuery();
+	         if(rs.next()) {
+	            row = 3;
+	         }
+	            return row;
+	      }
+	      return row;
+	   }
+	
 	
 	// 고객 아이디 확인
 	public int loginCstmId(IdList idList) throws Exception {
 		int cnt = 0;
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
-		PreparedStatement stmt = conn.prepareStatement("SELECT count(*) FROM customer WHERE id = ?");
+		PreparedStatement stmt = conn.prepareStatement("SELECT count(*) FROM id_list WHERE id = ?");
 		stmt.setString(1, idList.getId());
 		ResultSet rs = stmt.executeQuery();
 		if(rs.next()) {
@@ -295,7 +296,7 @@ public class MemberDao {
 		int row = 0;
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
-		PreparedStatement stmt = conn.prepareStatement("UPDATE id_list SET active = 'n' updatedate = now() WHERE id = ?");
+		PreparedStatement stmt = conn.prepareStatement("UPDATE id_list SET active = 3 updatedate = now() WHERE id = ?");
 		stmt.setString(1, id);
 		row = stmt.executeUpdate();
 		return row;

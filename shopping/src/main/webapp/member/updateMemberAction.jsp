@@ -15,10 +15,10 @@
 	}
 	//요청값 디버깅
 	System.out.println(request.getParameter("id")+"<-- updateCustomerAction.jsp id");
-	System.out.println(request.getParameter("pw")+"<-- updateCustomerAction.jsp id");
-	System.out.println(request.getParameter("cstmAddress")+"<-- updateCustomerAction.jsp id");
-	System.out.println(request.getParameter("cstmEmail")+"<-- updateCustomerAction.jsp id");
-	System.out.println(request.getParameter("cstmPhone")+"<-- updateCustomerAction.jsp id");
+	System.out.println(request.getParameter("pw")+"<-- updateCustomerAction.jsp pw");
+	System.out.println(request.getParameter("cstmAddress")+"<-- updateCustomerAction.jsp cstmAddress");
+	System.out.println(request.getParameter("cstmEmail")+"<-- updateCustomerAction.jsp Email");
+	System.out.println(request.getParameter("cstmPhone")+"<-- updateCustomerAction.jsp phone");
 	
 	String msg = null;
 	if(request.getParameter("pw") == null || request.getParameter("pw").equals("")){

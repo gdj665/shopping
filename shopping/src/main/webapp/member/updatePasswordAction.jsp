@@ -76,7 +76,7 @@
 	
 	
 	MemberDao chPw = new MemberDao();
-	int chRow = chPw.updateIdList(idList);
+	int chRow = chPw.updatePw(idList);
 	if(chRow > 0){
 		msg = URLEncoder.encode("비밀번호가 변경이 완료되었습니다","utf-8");
 		response.sendRedirect(request.getContextPath()+"/member/myPage.jsp?msg="+msg);
