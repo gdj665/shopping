@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "dao.order.*" %>
+<%@ page import = "vo.id.*" %>
 <%@ page import = "util.*" %>
 <%@ page import = "vo.order.*" %>
 <%@ page import = "java.util.*" %>
@@ -8,24 +9,34 @@
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
 	
+	
 	// 값 받아오기
 	String id = "admin";
-
-	// OrderDao사용 선언
+	
+	
+	//OrderDao 선언
 	OrderDao orderdao = new OrderDao();
+
+	// 6) 주문내역 간략하게 받기
+	ArrayList<HashMap<String,Object>> list2 = new ArrayList<>();
+	list2 = orderdao.finishorder(id);
 	
-	// 1) OrderDao 장바구니 리스트 출력 메서드
-	ArrayList<HashMap<String,Object>> list = orderdao.cartList(id);
+	// 7) 받을 주소출력
+	ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+	list = orderdao.addressName(id);
 	
-	// 2) OrderDao 장바구니 각 항목의 총 합계의 최종합계를 구하는 메서드
-	int row = orderdao.totalPrice(id);
+	// 9) 주문자 정보 받아오기
+	ArrayList<Customer> list3 = new ArrayList<>();
+	list3 = orderdao.orderinfo(id);
 	
-	int cnt = 0;
+	// 10) 주문정보가져오기
+	ArrayList<HashMap<String,Object>> list4 = new ArrayList<>();
+	list4 = orderdao.selordertable(id);
+	
 %>
 <!DOCTYPE html>
 <html>
-<meta charset="UTF-8">
-<title></title>
+
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Fashi Template">
@@ -38,9 +49,9 @@
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/bootstrap.min.css" type="text/css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/font-awesome.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/themify-icons.css" type="text/css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/themify-icons.css" type="ext/css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/elegant-icons.css" type="text/css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/owl.carousel.min.css" type="text/css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/nice-select.css" type="text/css">
@@ -48,13 +59,6 @@
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/slicknav.min.css" type="text/css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/style.css" type="text/css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-	
-	<style>
-		a {
-			text-decoration: none;
-			color: #000000;
-		}
-	</style>
 </head>
 
 <body>
@@ -193,7 +197,7 @@
                 </div>
                 <nav class="nav-menu mobile-menu">
                     <ul>
-                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="./home.html">Home</a></li>
                         <li><a href="./shop.html">Shop</a></li>
                         <li><a href="#">Collection</a>
                             <ul class="dropdown">
@@ -228,9 +232,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text product-more">
-                        <a href="./home.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
                         <a href="./shop.html">Shop</a>
-                        <span>Shopping Cart</span>
+                        <span>Check Out</span>
                     </div>
                 </div>
             </div>
@@ -239,104 +243,103 @@
     <!-- Breadcrumb Section Begin -->
 
     <!-- Shopping Cart Section Begin -->
-    <section class="shopping-cart spad">
+    <section class="checkout-section spad">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="cart-table">
-                    	<form action="<%=request.getContextPath() %>/order/updateCartAction.jsp">
-                        <table>
-                            <thead>
-	                            <tr>
-									<th>선택</th>
-									<th>이미지</th>
-									<th class="p-name">상품명</th>
-									<th>가격</th>
-									<th>수량</th>
-									<th>합계</th>
-									<th><i class="ti-close"></i></th>
-								</tr>
-                            </thead>
-                            <tbody>
-                            	<!-- 장바구니 리스트 출력문 -->
-								<%
-									// 장바구니 리스트 출력
-									for(HashMap<String,Object> m : list){
-										int productNo = (int)m.get("productNo");
-										int cartCnt = (int)m.get("cartCnt");
-										String checked = (String)m.get("checked");
-										
-										
-										// 3) 각 제품의 재고량을 구하는 메서드
-										int tcnt = orderdao.totalstock(productNo);
-								%>
-                                <tr>
-                                	<!-- 카트 테이블 기본키 넘기기 -->
-                                	<!-- 장바구니 체크박스 -->
-                                	<td>
-										<input type="hidden" name="cartNo" value="<%=(int)m.get("cartNo")%>">
-										<input name="checked<%=cnt%>" value="Y" class="form-check-input" type="checkbox" <%= (checked != null && checked.equals("Y")) ? "checked" : "" %>/>
-									</td>
-									<!-- 장바구니 사진삽입 -->
-                                    <td class="cart-pic first-row">
-                                    	<img src="<%=(String)m.get("productSaveFilename")%>">
-                                    	<%=(String)m.get("productSaveFilename")%>
-                                    </td>
-                                    <!-- 제품이름 -->
-                                    <td class="cart-title first-row">
-                                        <%=(String)m.get("productName") %>
-                                    </td>
-                                    <!-- 할인률 적용 후 가격 -->
-                                    <td class="p-price first-row">
-                                 	   <%=m.get("discountPrice")%>
-                                    </td>
-                                    <!-- 해당 제품의 재고량 안에서 수량 선택 가능 -->
-                                    <td class="qua-col first-row">
-                                        <select name="cartCnt" class="form-select">
-											<%
-												for(int i = 1; i<=tcnt; i++){
-											%>
-												<!-- 제품 갯수를 변경하면 그 값을 넘김 -->
-												<option <%= (i == cartCnt) ? "selected" : "" %> value=<%=i %>><%= i %></option>
-											<%
-												}
-											%>
-										</select>
-									</td>
-									<!-- 제품과 갯수를 고른 뒤 총 합을 출력 (장바구니 전체 출력 X) -->
-                                    <td class="total-price first-row"><%=m.get("totalPrice") %></td>
-                                    <td class="close-td first-row">
-	                                    <a href="<%=request.getContextPath()%>/order/deleteCartAction.jsp?cartNo=<%=(int)m.get("cartNo")%>">
-											<i class="ti-close"></i>
-	                                    </a>
-                                    </td>
-                                </tr>
-                                <%
-									cnt++;
-									}
-								%>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="cart-buttons">
-                                <a href="#" class="primary-btn continue-shop">Continue shopping</a>
-                                <button type="submit" class="primary-btn up-cart">장바구니 정보 변경</button>
-                            </div>
-                            </form>
+            <form action="#" class="checkout-form">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="checkout-content">
+                            <a href="#" class="content-btn">Click Here To Login</a>
                         </div>
-                        <div class="col-lg-4 offset-lg-4">
-							<div class="proceed-checkout">
-								<ul>
-									<li class="cart-total">Total <span><%=row%>원</span></li>
-								</ul>
-									<a id="buyButton" href="#" class="proceed-btn" onclick="checkCart()">구매하기</a>
-							</div><!-- proceed-checkout -->
+                        <h4>Biiling Details</h4>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="fir">First Name<span>*</span></label>
+                                <input type="text" id="fir">
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="last">Last Name<span>*</span></label>
+                                <input type="text" id="last">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="cun-name">Company Name</label>
+                                <input type="text" id="cun-name">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="cun">Country<span>*</span></label>
+                                <input type="text" id="cun">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="street">Street Address<span>*</span></label>
+                                <input type="text" id="street" class="street-first">
+                                <input type="text">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="zip">Postcode / ZIP (optional)</label>
+                                <input type="text" id="zip">
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="town">Town / City<span>*</span></label>
+                                <input type="text" id="town">
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="email">Email Address<span>*</span></label>
+                                <input type="text" id="email">
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="phone">Phone<span>*</span></label>
+                                <input type="text" id="phone">
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="create-item">
+                                    <label for="acc-create">
+                                        Create an account?
+                                        <input type="checkbox" id="acc-create">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="checkout-content">
+                            <input type="text" placeholder="Enter Your Coupon Code">
+                        </div>
+                        <div class="place-order">
+                            <h4>Your Order</h4>
+                            <div class="order-total">
+                                <ul class="order-table">
+                                    <li>Product <span>Total</span></li>
+                                    <li class="fw-normal">Combination x 1 <span>$60.00</span></li>
+                                    <li class="fw-normal">Combination x 1 <span>$60.00</span></li>
+                                    <li class="fw-normal">Combination x 1 <span>$120.00</span></li>
+                                    <li class="fw-normal">Subtotal <span>$240.00</span></li>
+                                    <li class="total-price">Total <span>$240.00</span></li>
+                                </ul>
+                                <div class="payment-check">
+                                    <div class="pc-item">
+                                        <label for="pc-check">
+                                            Cheque Payment
+                                            <input type="checkbox" id="pc-check">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="pc-item">
+                                        <label for="pc-paypal">
+                                            Paypal
+                                            <input type="checkbox" id="pc-paypal">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="order-btn">
+                                    <button type="submit" class="site-btn place-btn">Place Order</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </section>
     <!-- Shopping Cart Section End -->
@@ -437,12 +440,8 @@
                     <div class="col-lg-12">
                         <div class="copyright-text">
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-							Copyright &copy;
-							<script>document.write(new Date().getFullYear());
-							</script> 
-							All rights reserved | This template is made with 
-							<i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         </div>
                         <div class="payment-pic">
                             <img src="img/payment-method.png" alt="">
@@ -455,7 +454,7 @@
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-	<script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
 	<script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>
 	<script src="<%=request.getContextPath() %>/template/js/jquery-ui.min.js"></script>
 	<script src="<%=request.getContextPath() %>/template/js/jquery.countdown.min.js"></script>
@@ -465,21 +464,6 @@
 	<script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
 	<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
 	<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
-	<script>
-		// 구매하기 버튼을 눌럿는대 장바구니에서 체크된 항목이 없으면 장바구니에 선택된 제품이 없다고 메세지 출력
-		function checkCart() {
-			// totalAmount에 장바구니 총 합산 금액 삽입
-			var totalAmount = <%=row%>;
-			// 토탈금액이 0원일 경우
-			if (totalAmount === 0) {
-				// 제품이 한개도 없다면 alert메세지로 하단의 문구 출력
-				alert("장바구니에서 선택된 제품이 없습니다.");
-			} else {
-				// 제품이 있다면 cartAction.jsp 실행
-				location.href = "<%=request.getContextPath()%>/order/cartAction.jsp?id=<%=id%>";
-			}
-		}
-	</script>
 </body>
 
 </html>
