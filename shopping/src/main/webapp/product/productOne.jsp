@@ -8,6 +8,22 @@
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
 	}
+
+	// 로그인 확인하고 로그인 안했고 장바구니에 물건 넣으면 비로그인 기준으로 하기위해 만듬
+	String loginId = (String)session.getAttribute("loginId");
+	String notLoginId = (String)session.getAttribute("notLoginId");
+	if (loginId == null
+			|| notLoginId == null){
+		session.setAttribute("notLoginId", "notLoginId");
+	}
+	
+	// 로그인 안했으면 id = "notLoginId"
+	String id = null;
+	if (loginId == null){
+		id = notLoginId;
+	} else {
+		id = loginId;
+	}
 	
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	MainDao md = new MainDao();
@@ -20,8 +36,6 @@
 	// 수록곡 리스트
 	ArrayList<Track> trackList = new ArrayList<>();
 	trackList = md.selectTrack(productNo);
-	
-	// 초로 분계산
 	
 %>
 <!DOCTYPE html>
@@ -46,9 +60,19 @@
 	</a>
 	<table>
 		<tr>
-			<td>
+			<td rowspan="2">
 				<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
 			</td>
+			<td colspan="2">
+				<form action="<%=request.getContextPath()%>/product/addCartAction.jsp" method="post" id="addCart">
+					<input type="hidden" name="id" value="<%=id%>">
+					<input type="hidden" name="productNo" value="<%=productNo%>">
+					구매수량: <input type="number" name="cartCnt">
+					<button type="submit" form="addCart">장바구니 추가</button>
+				</form>
+			</td>
+		</tr>
+		<tr>
 			<td>
 				<%=p.getProductName()%>
 			</td>

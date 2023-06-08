@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.apache.catalina.connector.Response;
 
 import util.DBUtil;
+import vo.order.Cart;
 import vo.product.Product;
 import vo.product.ProductImg;
 import vo.product.Track;
@@ -437,14 +438,22 @@ public class MainDao {
 		return checkList.size();
 	}
 	// track 데이터 삭제
-		public int deleteTrack(int productNo, int trackNo) throws Exception{
-			DBUtil DBUtil = new DBUtil();
-			Connection conn = DBUtil.getConnection();
-			String deleteSql = "DELETE FROM product_track WHERE product_no = ? AND track_no = ?";
-			PreparedStatement stmt = conn.prepareStatement(deleteSql);
-			stmt.setInt(1, productNo);
-			stmt.setInt(2, trackNo);
-			int row = stmt.executeUpdate();
-			return row;
-		}
+	public int deleteTrack(int productNo, int trackNo) throws Exception{
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String deleteSql = "DELETE FROM product_track WHERE product_no = ? AND track_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(deleteSql);
+		stmt.setInt(1, productNo);
+		stmt.setInt(2, trackNo);
+		int row = stmt.executeUpdate();
+		return row;
+	}
+	
+	// cart에 데이터 넣는 함수 (나중에 orderDao로 이동)
+	public int addCart(Cart cart) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = 
+		return 0;
+	}
 }
