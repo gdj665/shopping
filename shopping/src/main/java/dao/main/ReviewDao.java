@@ -11,6 +11,29 @@ import vo.product.ReviewImg;
 
 public class ReviewDao {
 	
+	// 리뷰 작성 유효성 검사
+	public boolean checkId(String id, int productNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT COUNT(*) cnt\r\n"
+				+ "FROM orders o INNER JOIN orders_history oh\r\n"
+				+ "	ON o.order_no = oh.order_no\r\n"
+				+ "WHERE o.id = ? AND oh.product_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, id);
+		stmt.setInt(2, productNo);
+		// System.out.println(stmt);
+		ResultSet rs = stmt.executeQuery();
+		int cnt = 0;
+		if(rs.next()) {
+			cnt = rs.getInt("cnt");
+		}
+		if (cnt == 0) {
+			return false;
+		}
+		return true;
+	}
+	
 	// 리뷰 title list 출력
 	public ArrayList<Review> selectReviewTitleList(int productNo) throws Exception{
 		DBUtil DBUtil = new DBUtil();
@@ -37,13 +60,11 @@ public class ReviewDao {
 	public Review selectReview(int reviewNo) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
-		String sql = "SELECT r.id id, p.product_name productName, PI.product_save_filename productSaveFilename, r.review_title reviewTitle, r.review_content reviewContent, r.createdate createdate\r\n"
+		String sql = "SELECT r.id id, p.product_no productNo, p.product_name productName, PI.product_save_filename productSaveFilename, r.review_title reviewTitle, r.review_content reviewContent, r.createdate createdate\r\n"
 				+ "FROM review r INNER JOIN product p\r\n"
 				+ "	ON r.product_no = p.product_no\r\n"
 				+ "	INNER JOIN product_img pi\r\n"
 				+ "	ON r.product_no = PI.product_no\r\n"
-				+ "	INNER JOIN revew_img ri\r\n"
-				+ "	ON r.review_no = ri.review_no\r\n"
 				+ "WHERE review_no = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, reviewNo);
@@ -51,10 +72,12 @@ public class ReviewDao {
 		Review review = new Review();
 		if (rs.next()) {
 			review.setId(rs.getString("id"));
+			review.setProductNo(rs.getInt("productNo"));
 			review.setProductName(rs.getString("productName"));
 			review.setProductSaveFilename(rs.getString("productSaveFilename"));
 			review.setReviewTitle(rs.getString("reviewTitle"));
 			review.setReviewContent(rs.getString("reviewContent"));
+			review.setCreatedate(rs.getString("createdate"));
 		}
 		return review;
 	}
@@ -71,7 +94,21 @@ public class ReviewDao {
 		stmt.setString(3, review.getReviewTitle());
 		stmt.setString(4, review.getReviewContent());
 		int row = stmt.executeUpdate();
-		return row;
+		int reviewNo = 0;
+		if (row > 0) {
+			String selectSql = "SELECT review_no reviewNo\r\n"
+					+ "FROM review\r\n"
+					+ "WHERE id = ?\r\n"
+					+ "ORDER BY createdate DESC\r\n"
+					+ "LIMIT 1";
+			PreparedStatement selectStmt = conn.prepareStatement(selectSql);
+			selectStmt.setString(1, review.getId());
+			ResultSet selectRs = selectStmt.executeQuery();
+			if (selectRs.next()) {
+				reviewNo = selectRs.getInt("reviewNo");
+			}
+		}
+		return reviewNo;
 	}
 	
 	// 리뷰 수정

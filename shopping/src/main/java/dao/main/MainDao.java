@@ -448,12 +448,4 @@ public class MainDao {
 		int row = stmt.executeUpdate();
 		return row;
 	}
-	
-	// cart에 데이터 넣는 함수 (나중에 orderDao로 이동)
-	public int addCart(Cart cart) throws Exception {
-		DBUtil DBUtil = new DBUtil();
-		Connection conn = DBUtil.getConnection();
-		String sql = 
-		return 0;
-	}
 }

@@ -25,7 +25,15 @@
 </head>
 <body>
 	<h1>리뷰</h1>
+	
 	<table>
+		<tr>
+			<td>
+				<a href="<%=request.getContextPath()%>/review/insertReview.jsp?productNo=<%=productNo%>">
+					리뷰 작성
+				</a>
+			</td>
+		</tr>
 	<%
 		for(Review r : reviewTitleList){
 	%>
