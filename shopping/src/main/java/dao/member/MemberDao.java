@@ -25,7 +25,7 @@ public class MemberDao {
 		if(row1 == 0) {
 		
 		//id테이블 데이터값 입력쿼리
-		PreparedStatement idStmt = conn.prepareStatement("INSERT INTO id_list(id, last_pw, active, createdate, updatedate) values(?, PASSWORD(?), 'y', now(), now())");
+		PreparedStatement idStmt = conn.prepareStatement("INSERT INTO id_list(id, last_pw, active, createdate, updatedate) values(?, PASSWORD(?), 1, now(), now())");
 		idStmt.setString(1, id);
 		idStmt.setString(2, pw);
 		int row2 = idStmt.executeUpdate();
@@ -362,9 +362,10 @@ public class MemberDao {
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
 	
-		PreparedStatement stmt = conn.prepareStatement("SELECT o.order_no orderNo, p.product_No productNo, o.order_status orderStatus, o.order_cnt orderCnt, o.order_price orderPrice, o.createdate createdate "
-				+ "FROM customer c INNER JOIN orders o ON c.id = o.id INNER JOIN product p ON p.product_no = o.product_no "
-				+ "WHERE c.id = ? ORDER BY o.updatedate LIMIT ?,?");
+		PreparedStatement stmt = conn.prepareStatement("SELECT o.order_no orderNo, p.product_No productNo, o.order_cnt orderCnt, o.createdate createdate \r\n"
+				+ "FROM customer c INNER JOIN orders_history o ON c.id = o.orders_history_no\r\n"
+				+ "INNER JOIN product p ON p.product_no = o.product_no \r\n"
+				+ "WHERE c.id = ? ORDER BY o.createdate LIMIT ?,?");
 		
 		stmt.setString(1, id);
 		stmt.setInt(2, beginRow);
@@ -389,7 +390,8 @@ public class MemberDao {
 	public int orderCnt() throws Exception {
 		int row = 0;
 		
-		DBUtil dbUtil = new DBUtil();
+		DBUtil dbUtil =
+new DBUtil();
 		
 		Connection conn = dbUtil.getConnection();
 		

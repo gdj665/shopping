@@ -23,7 +23,7 @@
 			<tr>
 					<td>아이디</td>
 					<td>
-						<input type="text" id="id" name="id">
+						<input type="text" id="id" name="id" required="required">
 					</td>
 				</tr>
 			<tr>
@@ -35,13 +35,13 @@
 				<tr>
 					<td>이메일</td>
 					<td>
-						<input type="email" id="email" name="cstmEmail">
+						<input type="email" id="email" name="cstmEmail" required="required">
 					</td>
 				</tr>
 				<tr>
 					<td>전화번호</td>
 					<td>
-						<input type="tel"  name="cstmPhone">
+						<input type="tel"  name="cstmPhone" required="required">
 					</td>
 				</tr>
 				<tr>

@@ -28,8 +28,6 @@
 	if(request.getParameter("id") ==null || request.getParameter("id").equals("")){
 		response.sendRedirect(request.getContextPath()+"/member/memberJoin.jsp");
 		return;
-		
-		
 	}
 	
 	String msg = null;
