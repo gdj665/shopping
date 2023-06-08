@@ -9,8 +9,8 @@
 	request.setCharacterEncoding("utf-8");
 	
 	//유효성 검사
-	if((request.getParameterValues("orderNo")==null)
-		||(request.getParameterValues("addressNo")==null)){
+	if((request.getParameter("orderNo")==null)
+		||(request.getParameter("address")==null)){
 		
 		// null값이 있을 경우 홈으로 이동
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
@@ -21,8 +21,10 @@
 	// 값 받아오기
 	String id = "admin";
 	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
-	int addressNo = Integer.parseInt(request.getParameter("addressNo"));
-	System.out.println("addressNo-->"+addressNo);
+	//int addressNo = Integer.parseInt(request.getParameter("addressNo"));
+	String address = request.getParameter("address");
+	System.out.println("address-->"+address);
+	//System.out.println("addressNo-->"+addressNo);
 	
 	// OrderDao 사용 선언
 	OrderDao orderdao = new OrderDao();
@@ -42,7 +44,7 @@
 	System.out.println("row-->"+row);
 	
 	// 16) order 주소 업데이트
-	int row4 = orderdao.addressOrder(addressNo,orderNo);
+	int row4 = orderdao.addressOrder(address,orderNo);
 	System.out.println("row4-->"+row4);
 	
 	// 14) check="Y"인 cart테이블 정보와 order_status=0인 orders 테이블 정보를 지우기(orders_cart테이블도 같이 지워짐)
@@ -58,11 +60,11 @@
 	System.out.println("row5-->"+row5);
 	
 	// 21) 제품 구매할때 최근 사용 주소 변경
-	int row6 = orderdao.updateAddressDate(addressNo);
-	System.out.println("row6-->"+row6);
+	//int row6 = orderdao.updateAddressDate(address);
+	//System.out.println("row6-->"+row6);
 	
 	// 성공 여부에 따른 페이지 출력
-	if(row>0 && row2>0 && row3>0 && row4>0 && row5>0 && row6>0){
+	if(row>0 && row2>0 && row3>0  && row5>0){
 		System.out.println("주문 결제완료");
 		response.sendRedirect(request.getContextPath()+"/order/successOrder.jsp");
 		return;

@@ -466,19 +466,19 @@
 	<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
 	<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
 	<script>
-		// 구매하기 버튼을 눌럿는대 장바구니에서 체크된 항목이 없으면 장바구니에 선택된 제품이 없다고 메세지 출력
-		function checkCart() {
-			// totalAmount에 장바구니 총 합산 금액 삽입
-			var totalAmount = <%=row%>;
-			// 토탈금액이 0원일 경우
-			if (totalAmount === 0) {
-				// 제품이 한개도 없다면 alert메세지로 하단의 문구 출력
-				alert("장바구니에서 선택된 제품이 없습니다.");
-			} else {
-				// 제품이 있다면 cartAction.jsp 실행
-				location.href = "<%=request.getContextPath()%>/order/cartAction.jsp?id=<%=id%>";
-			}
+	// 구매하기 버튼을 눌럿는대 장바구니에서 체크된 항목이 없으면 장바구니에 선택된 제품이 없다고 메세지 출력
+	let checkCart = function() {
+		// totalAmount에 장바구니 총 합산 금액 삽입
+		let totalAmount = <%=row%>;
+		// 토탈금액이 0원일 경우
+		if (totalAmount === 0) {
+		// 제품이 한개도 없다면 alert메세지로 하단의 문구 출력
+			alert("장바구니에서 선택된 제품이 없습니다.");
+		} else {
+		// 제품이 있다면 cartAction.jsp 실행
+			location.href = "<%=request.getContextPath()%>/order/cartAction.jsp?id=<%=id%>";
 		}
+	};
 	</script>
 </body>
 

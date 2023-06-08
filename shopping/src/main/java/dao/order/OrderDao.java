@@ -405,14 +405,14 @@ public class OrderDao {
 	}
 	
 	// 16) 주소고르고 주소값을 넘기면 해당 주소로 업데이트
-	public int addressOrder(int addressNo,int orderNo) throws Exception {
+	public int addressOrder(String address,int orderNo) throws Exception {
 		int row = 0;
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
-		String sql = "UPDATE orders SET address_no = ? WHERE order_no = ?";
+		String sql = "UPDATE orders SET address = ? WHERE order_no = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, addressNo);
+		stmt.setString(1, address);
 		stmt.setInt(2, orderNo);
 		row = stmt.executeUpdate();
 		return row;
@@ -494,20 +494,74 @@ public class OrderDao {
 		row = insertAddressStmt.executeUpdate();
 		return row;
 	}
-	
+	/*
 	// 21) 주문 결제시 사용한 주소 최근사용으로 당기기
-	public int updateAddressDate(int addressNo) throws Exception {
+	public int updateAddressDate(String address) throws Exception {
 		int row = 0;
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
-		String sql = "UPDATE address SET recently_use_date = now() WHERE address_no = ?";
+		String sql = "UPDATE address SET recently_use_date = now() WHERE address = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, addressNo);
+		stmt.setString(1, address);
 		row = stmt.executeUpdate();
 		return row;
 	}
+	*/
+	// 22) 선택된 주소를 order.jsp에 출력
+	public ArrayList<HashMap<String,Object>> addressOne(int addressNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "SELECT address_no,address FROM address WHERE address_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, addressNo);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		while(rs.next()){
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("addressNo",rs.getInt("address_no"));
+			m.put("address",rs.getString("address"));
+			list.add(m);
+		}
+		return list;
+	}
 	
+	// 23) addressNo에 맞는 행 출력
+	public ArrayList<HashMap<String,Object>> addressRecentlyOne(int addressNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "SELECT address,address_no FROM address WHERE address_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, addressNo);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		if(rs.next()){
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("address",rs.getString("address"));
+			m.put("addressNo", rs.getInt("address_no"));
+			list.add(m);
+		}
+		return list;
+	}
+	// 24) 해당 고객의 가입 주소 출력ㄱ
+	public ArrayList<HashMap<String,Object>> addressRegister(String id) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "SELECT cstm_address FROM customer WHERE id = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, id);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		if(rs.next()){
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("cstmAddress",rs.getString("cstm_address"));
+			list.add(m);
+		}
+		return list;
+	}
 	//테스트 용
 	public static void main(String[] args) throws Exception {
 		
