@@ -223,6 +223,7 @@ public class MemberDao {
 	public int loginEmpId(IdList idList) throws Exception {
 		int empCnt = 0;
 		DBUtil dbUtil = new DBUtil(); 
+		
 		Connection conn =  dbUtil.getConnection();
 		String sql = "SELECT count(*) FROM employees WHERE id = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -235,6 +236,7 @@ public class MemberDao {
 	}
 	
 	// 관리자 레벨 확인
+	
 	public String loginEmpLevel(IdList idList) throws Exception{
 		String level = "";
 		int row = 0;
@@ -276,6 +278,7 @@ public class MemberDao {
 		
 		stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();
+		
 		if(rs.next()) {
 			HashMap<String, Object> m = new HashMap<String, Object>();
 			m.put("cstmName", rs.getString("cstmName"));
@@ -303,105 +306,5 @@ public class MemberDao {
 	}
 	
 	
-	// 고객 포인트 내역조회
-	public ArrayList<HashMap<String, Object>> cstmPointList(int beginRow, int rowPerPage, String id) throws Exception{
-		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-		DBUtil dbUtil = new DBUtil(); 
-		Connection conn =  dbUtil.getConnection();
-		
-		PreparedStatement stmt =conn.prepareStatement( "SELECT p.order_no orderNo, p.point point, p.createdate createdate "
-				+ "FROM customer c INNER JOIN orders o ON  c.id = o.id INNER JOIN point_history p ON o.order_no = p.order_no "
-				+ "WHERE c.id = ? ORDER BY p.createdate DESC LIMIT ?,? ");
-	
-		stmt.setString(1, id);
-		stmt.setInt(2, beginRow);
-		stmt.setInt(3, rowPerPage);
-		ResultSet rs = stmt.executeQuery();
-		while(rs.next()) {
-			HashMap<String, Object> m = new HashMap<String, Object>();
-			m.put("orderNo",rs.getInt("orderNo"));
-			m.put("point", rs.getInt("point"));
-			m.put("createdate", rs.getString("createdate"));
-			list.add(m);
-		}
-		return list;
-	}
-	
-	//고객당 포인트리스트 행 총 갯수 조회
-	public int selectPointRow(String id) throws Exception {
-		int row = 0;
-		DBUtil dbUtil = new DBUtil(); 
-		Connection conn =  dbUtil.getConnection();
-		String sql = "SELECT count(*) FROM customer c INNER JOIN orders o ON  c.id = o.id "
-				+ "INNER JOIN point_history p ON o.order_no = p.order_no WHERE c.id = ? ORDER BY p.createdate DESC";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, id);
-		ResultSet rs = stmt.executeQuery();
-		if(rs.next()) {
-			row = rs.getInt("count(*)");
-		}
-			return row;
-		}
-	//모든 고객의 리스트 행의 수 조회
-	public int pointRow() throws Exception {
-		int row = 0;
-		DBUtil dbUtil = new DBUtil(); 
-		Connection conn =  dbUtil.getConnection();
-		String sql = "SELECT count(*) FROM customer";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		ResultSet rs = stmt.executeQuery();
-		if(rs.next()) {
-			row = rs.getInt(1);
-		}
-			return row;
-		}
-	
-	// 주문내역
-	public ArrayList<HashMap<String, Object>> orderList(String id, int beginRow, int rowPerPage) throws Exception{
-		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-		DBUtil dbUtil = new DBUtil(); 
-		Connection conn =  dbUtil.getConnection();
-	
-		PreparedStatement stmt = conn.prepareStatement("SELECT o.order_no orderNo, p.product_No productNo, o.order_cnt orderCnt, o.createdate createdate \r\n"
-				+ "FROM customer c INNER JOIN orders_history o ON c.id = o.orders_history_no\r\n"
-				+ "INNER JOIN product p ON p.product_no = o.product_no \r\n"
-				+ "WHERE c.id = ? ORDER BY o.createdate LIMIT ?,?");
-		
-		stmt.setString(1, id);
-		stmt.setInt(2, beginRow);
-		stmt.setInt(3, rowPerPage);
-		ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
-			HashMap<String, Object> m = new HashMap<String, Object>();
-			m.put("orderNo", rs.getString("orderNo"));
-			m.put("productName", rs.getString("productName"));
-			m.put("orderStatus", rs.getString("orderStatus"));
-			m.put("orderCnt", rs.getInt("orderCnt"));
-			m.put("orderPrice", rs.getInt("orderPrice"));
-			m.put("createdate", rs.getString("createdate"));
-			list.add(m);
-		}
-		return list;
-	}
-	
-	
-	// 총 행의 수 구하기
-	
-	public int orderCnt() throws Exception {
-		int row = 0;
-		
-		DBUtil dbUtil =
-new DBUtil();
-		
-		Connection conn = dbUtil.getConnection();
-		
-		PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM orders");
-		ResultSet rs = stmt.executeQuery();
-		if(rs.next()) {
-			row = rs.getInt(1);
-		}
-		
-		return row;
-	}
 	
 }

@@ -27,11 +27,11 @@
 	System.out.println(id+"<-- id");	
 	
 	
-	MemberDao memDao = new MemberDao();
-	ArrayList<HashMap<String, Object>> list = memDao.cstmPointList(beginRow, rowPerPage, id);
+	PointDao pointDao = new PointDao();
+	ArrayList<HashMap<String, Object>> list = pointDao.cstmPointList(beginRow, rowPerPage, id);
 	
 	// 총 행의 수를 얻기위한 메소드 사용
-	MemberDao totalPoint = new MemberDao();
+	PointDao totalPoint = new PointDao();
 	int totalRow = totalPoint.pointRow();
 	System.out.println(totalRow+"<-- totalRow");
 	

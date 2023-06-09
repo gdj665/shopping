@@ -28,11 +28,11 @@
 	//세션아이디 디버깅
 	System.out.println(id+"<--orderMyPage id");	
 	
-	MemberDao memDao = new MemberDao();
-	ArrayList<HashMap<String, Object>> list = memDao.orderList(id, beginRow, rowPerPage);
+	OrderListDao orderDao = new OrderListDao();
+	ArrayList<HashMap<String, Object>> list = orderDao.orderList(id, beginRow, rowPerPage);
 	
 	
-	int totalRow = memDao.orderCnt();
+	int totalRow = orderDao.orderCnt();
 	System.out.println(totalRow+"<-- orderMyPage totalRow");
 	
 	// 마지막 페이지 구하는 변수
