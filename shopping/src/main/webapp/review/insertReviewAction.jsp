@@ -13,7 +13,6 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.util.*" %>
 <%
-
 	String dir = request.getServletContext().getRealPath("/img/reviewImg");
 	int maxFileSize = 1024 * 1024 * 10; // 10Mbyte
 	// request 객체를 MultipartRequest의 API를 사용할 수 있도록 랩핑

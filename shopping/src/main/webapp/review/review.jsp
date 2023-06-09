@@ -16,7 +16,6 @@
 	ArrayList<Review> reviewImgList = new ArrayList<>();
 	reviewImgList = rd.selectReviewImg(reviewNo);
 	
-	
 %>
 <!DOCTYPE html>
 <html>
@@ -29,7 +28,7 @@
 	<a href="<%=request.getContextPath()%>/review/updateReview.jsp?reviewNo=<%=reviewNo%>">
 		수정
 	</a>
-	<a href="<%=request.getContextPath()%>/review/deleteReviewAction.jsp?reviewNo=<%=reviewNo%>">
+	<a href="<%=request.getContextPath()%>/review/deleteReviewAction.jsp?reviewNo=<%=reviewNo%>&productNo=<%=review.getProductNo()%>">
 		삭제
 	</a>
 	<table>

@@ -6,6 +6,7 @@ public class Orders {
 	private int orderStatus;
 	private int orderPrice;
 	private int orderPointUse;
+	private Object ordersHistoryList;
 	private String productSaveFilename;
 	private String createdate;
 	private String updatedate;
@@ -45,6 +46,12 @@ public class Orders {
 	}
 	public void setOrderPointUse(int orderPointUse) {
 		this.orderPointUse = orderPointUse;
+	}
+	public Object getOrdersHistoryList() {
+		return ordersHistoryList;
+	}
+	public void setOrdersHistoryList(Object ordersHistoryList) {
+		this.ordersHistoryList = ordersHistoryList;
 	}
 	public String getCreatedate() {
 		return createdate;

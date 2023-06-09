@@ -4,6 +4,8 @@ public class OrdersHistory {
 	private int orderNo;
 	private String id;
 	private int productNo;
+	private String productName;
+	private int productPrice;
 	private int orderCnt;
 	private int orderHistoryStatus;
 	private String createdate;
@@ -26,6 +28,18 @@ public class OrdersHistory {
 	}
 	public void setProductNo(int productNo) {
 		this.productNo = productNo;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public int getProductPrice() {
+		return productPrice;
+	}
+	public void setProductPrice(int productPrice) {
+		this.productPrice = productPrice;
 	}
 	public int getOrderCnt() {
 		return orderCnt;

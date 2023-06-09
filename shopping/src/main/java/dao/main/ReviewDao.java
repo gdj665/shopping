@@ -33,6 +33,29 @@ public class ReviewDao {
 		}
 		return true;
 	}
+
+	// 리뷰 수정 유효성 검사
+	// overloading
+	public ArrayList<String> checkId(int reviewNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT id\r\n"
+				+ "FROM review\r\n"
+				+ "WHERE review_no = ?\r\n"
+				+ "UNION\r\n"
+				+ "SELECT id\r\n"
+				+ "FROM employees";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, reviewNo);
+		// System.out.println(stmt);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<String> idList = new ArrayList<>();
+		while(rs.next()) {
+			String id = rs.getString("id");
+			idList.add(id);
+		}
+		return idList;
+	}
 	
 	// 리뷰 title list 출력
 	public ArrayList<Review> selectReviewTitleList(int productNo) throws Exception{
@@ -127,6 +150,18 @@ public class ReviewDao {
 		return row;
 	}
 	
+	// reviewImg 데이터 수정
+	public int deleteReview(int reviewNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "DELETE FROM review\r\n"
+				+ "WHERE review_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, reviewNo);
+		int row = stmt.executeUpdate();
+		return row;
+	}
+	
 	// reviewImg 데이터 삽입
 	public int insertreviewImg(int reviewNo, ReviewImg reviewImg) throws Exception {
 		DBUtil DBUtil = new DBUtil();
@@ -162,19 +197,33 @@ public class ReviewDao {
 	}
 	
 	// reviewImg 데이터 수정
-	public int updateReviewImg(int reviewNo, ReviewImg reviewImg) throws Exception {
+	public int updateReviewImg(int reviewNo, ReviewImg reviewImg, String preSaveFilename) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		String sql = "UPDATE review_img SET review_ori_filename = ?,\r\n"
 				+ "							review_save_filename = ?,\r\n"
 				+ "							review_filetype = ?,\r\n"
 				+ "							updatedate = NOW()\r\n"
-				+ "WHERE review_no = ?";
+				+ "WHERE review_no = ? AND review_save_filename = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, reviewImg.getReviewOriFilename());
 		stmt.setString(2, reviewImg.getReviewSaveFilename());
 		stmt.setString(3, reviewImg.getReviewFiletype());
 		stmt.setInt(4, reviewNo);
+		stmt.setString(5, preSaveFilename);
+		int row = stmt.executeUpdate();
+		return row;
+	}
+
+	// reviewImg 데이터 수정
+	public int deleteReviewImg(int reviewNo, String reviewSaveFilename) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "DELETE FROM review_img\r\n"
+				+ "WHERE review_no = ? AND review_save_filename = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, reviewNo);
+		stmt.setString(2, reviewSaveFilename);
 		int row = stmt.executeUpdate();
 		return row;
 	}

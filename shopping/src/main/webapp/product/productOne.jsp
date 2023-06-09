@@ -111,15 +111,8 @@
 		}
 	%>
 	</table>
-	<%
-		if(rd.selectReviewTitleList(productNo).size() != 0){
-			
-	%>
 			<div>
 				<jsp:include page="/inc/reviewList.jsp"></jsp:include>
 			</div>
-	<%	
-		};
-	%>
 </body>
 </html>

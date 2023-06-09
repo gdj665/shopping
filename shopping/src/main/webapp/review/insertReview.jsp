@@ -13,6 +13,7 @@
 	boolean checkId = rd.checkId(id, productNo);
 	// System.out.println(checkId);
 	if(!checkId){
+		System.out.println("접근권한이 없습니다.");
 		response.sendRedirect(request.getContextPath() + "/product/productOne.jsp?productNo=" + productNo);
 		return;
 	}
