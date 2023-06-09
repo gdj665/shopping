@@ -21,6 +21,7 @@ public class AdminDao {
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		ArrayList<Orders> ordersList = new ArrayList<>();
+		ArrayList<OrdersHistory> ordersHistoryList = new ArrayList<>();
 		while(rs.next()) {
 			Orders o = new Orders();
 			o.setId(rs.getString("id"));
@@ -29,11 +30,12 @@ public class AdminDao {
 			o.setOrderPrice(rs.getInt("orderPrice"));
 			o.setOrderPointUse(rs.getInt("orderPointUse"));
 			o.setCreatedate(rs.getString("createdate"));
-			ArrayList<OrdersHistory> ordersHistoryList = new ArrayList<>();
 			ordersHistoryList = ordersHistoryList(o.getOrderNo());
 			o.setOrdersHistoryList(ordersHistoryList);
-			
+			ordersList.add(o);
+			System.out.println("checkList");
 		}
+		System.out.println(ordersList.size() + " <- ordersList.size");
 		return ordersList;
 	}
 	
@@ -57,7 +59,9 @@ public class AdminDao {
 			oh.setProductPrice(rs.getInt("productPrice"));
 			oh.setOrderCnt(rs.getInt("orderCnt"));
 			ordersHistoryList.add(oh);
+			System.out.println("checkHL");
 		}
+		System.out.println(ordersHistoryList.size() + " <- ordersHistoryList.size");
 		return ordersHistoryList;
 	}
 }

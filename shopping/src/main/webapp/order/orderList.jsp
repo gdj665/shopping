@@ -7,6 +7,7 @@
 	AdminDao ad = new AdminDao();
 	ArrayList<Orders> ordersList = new ArrayList<>();
 	ordersList = ad.ordersList();
+	System.out.println(ordersList.size() + " <- ordersList.size");
 	ArrayList<OrdersHistory> ordersHistoryList = new ArrayList<>();
 	
 %>
@@ -33,9 +34,10 @@
 		</tr>
 	<%
 		for (Orders o : ordersList){
-			System.out.println("check");
+			System.out.println("checkListPage");
 			ordersHistoryList = (ArrayList<OrdersHistory>)o.getOrdersHistoryList();
 			int tdSize = ordersHistoryList.size();
+			System.out.println(tdSize + " <- tdSize");
 	%>
 			<tr>
 				<td rowspan="<%=tdSize%>">
@@ -56,11 +58,9 @@
 				<td rowspan="<%=tdSize%>">
 					<%=o.getCreatedate()%>
 				</td>
-			</tr>
 	<%
 				for(OrdersHistory oh : ordersHistoryList){
 	%>
-				<tr>
 					<td>
 						<%=oh.getProductNo()%>
 					</td>
@@ -74,9 +74,11 @@
 						<%=oh.getOrderCnt()%>
 					</td>
 				</tr>
+				<tr>
 	<%
 				}
 	%>
+			</tr>
 	<%
 		}
 	%>
