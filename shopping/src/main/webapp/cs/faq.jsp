@@ -1,6 +1,28 @@
-<!DOCTYPE html>
-<html lang="zxx">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import = "dao.cs.*" %>
+<%@ page import = "vo.id.*" %>
+<%@ page import = "vo.cs.*" %>
+<%@ page import = "util.*" %>
+<%@ page import = "vo.order.*" %>
+<%@ page import = "java.util.*" %>
+<%@ page import = "java.net.*" %>
+<%
+	//한글 깨짐 방지
+	request.setCharacterEncoding("utf-8");
+	
+	// 값 받아오기
+	String id = "admin";
+	
+	//OrderDao 선언
+	CsDao csdao = new CsDao();
 
+	// 5) 제품당 문의 리스트 불러오기
+	ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+	list = csdao.oneCsList(id);
+
+%>
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Fashi Template">
@@ -13,15 +35,16 @@
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="css/themify-icons.css" type="text/css">
-    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/font-awesome.min.css" type="text/css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/themify-icons.css" type="text/css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/elegant-icons.css" type="text/css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/owl.carousel.min.css" type="text/css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/nice-select.css" type="text/css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/jquery-ui.min.css" type="text/css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/slicknav.min.css" type="text/css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/style.css" type="text/css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -48,10 +71,14 @@
                     <a href="#" class="login-panel"><i class="fa fa-user"></i>Login</a>
                     <div class="lan-selector">
                         <select class="language_drop" name="countries" id="countries" style="width:300px;">
-                            <option value='yt' data-image="img/flag-1.jpg" data-imagecss="flag yt"
+                            <option value='yt' data-image="img/flag.jpg" data-imagecss="flag yt"
                                 data-title="English">English</option>
-                            <option value='yu' data-image="img/flag-2.jpg" data-imagecss="flag yu"
-                                data-title="Bangladesh">German </option>
+                            <option value='yu' data-image="img/flag.jpg" data-imagecss="flag yu"
+                                data-title="Bangladesh">Bangla</option>
+                            <option value='yt' data-image="img/flag.jpg" data-imagecss="flag yt"
+                                data-title="English">English</option>
+                            <option value='yu' data-image="img/flag.jpg" data-imagecss="flag yu"
+                                data-title="Bangladesh">Bangla</option>
                         </select>
                     </div>
                     <div class="top-social">
@@ -147,8 +174,8 @@
                         <i class="ti-menu"></i>
                         <span>All departments</span>
                         <ul class="depart-hover">
-                            <li class="active"><a href="#">Women’s Clothing</a></li>
-                            <li><a href="#">Men’s Clothing</a></li>
+                            <li class="active"><a href="#">Womenâs Clothing</a></li>
+                            <li><a href="#">Menâs Clothing</a></li>
                             <li><a href="#">Underwear</a></li>
                             <li><a href="#">Kid's Clothing</a></li>
                             <li><a href="#">Brand Fashion</a></li>
@@ -194,10 +221,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="breadcrumb-text product-more">
-                        <a href="./home.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./shop.html">Shop</a>
-                        <span>Shopping Cart</span>
+                    <div class="breadcrumb-text">
+                        <a href="#"><i class="fa fa-home"></i> Home</a>
+                        <span>FAQs</span>
                     </div>
                 </div>
             </div>
@@ -205,104 +231,44 @@
     </div>
     <!-- Breadcrumb Section Begin -->
 
-    <!-- Shopping Cart Section Begin -->
-    <section class="shopping-cart spad">
+    <!-- Faq Section Begin -->
+    <div class="faq-section spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="cart-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Image</th>
-                                    <th class="p-name">Product Name</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                    <th><i class="ti-close"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="cart-pic first-row"><img src="img/cart-page/product-1.jpg" alt=""></td>
-                                    <td class="cart-title first-row">
-                                        <h5>Pure Pineapple</h5>
-                                    </td>
-                                    <td class="p-price first-row">$60.00</td>
-                                    <td class="qua-col first-row">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="total-price first-row">$60.00</td>
-                                    <td class="close-td first-row"><i class="ti-close"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="cart-pic"><img src="img/cart-page/product-2.jpg" alt=""></td>
-                                    <td class="cart-title">
-                                        <h5>American lobster</h5>
-                                    </td>
-                                    <td class="p-price">$60.00</td>
-                                    <td class="qua-col">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="total-price">$60.00</td>
-                                    <td class="close-td"><i class="ti-close"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="cart-pic"><img src="img/cart-page/product-3.jpg" alt=""></td>
-                                    <td class="cart-title">
-                                        <h5>Guangzhou sweater</h5>
-                                    </td>
-                                    <td class="p-price">$60.00</td>
-                                    <td class="qua-col">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="total-price">$60.00</td>
-                                    <td class="close-td"><i class="ti-close"></i></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="cart-buttons">
-                                <a href="#" class="primary-btn continue-shop">Continue shopping</a>
-                                <a href="#" class="primary-btn up-cart">Update cart</a>
+                    <div class="faq-accordin">
+                        <div class="accordion" id="accordionExample">
+                        	<% 
+								for(HashMap<String,Object> m : list){
+									int oqNo = (int)m.get("oqNo");
+							%>
+                        	<!-- 기타 문의 페이지 출력 -->
+                            <div class="card">
+                            	<!-- 버튼과 제목 출력 -->
+                                <div class="card-heading">
+                                    <a class="active" data-toggle="collapse" data-target="#collapse<%=(int)m.get("oqNo") %>">
+                                    	<%=(String)m.get("oqTitle") %>
+                                    </a>
+                                </div>
+                                
+                                <!-- 버튼 눌렀을 때 나오는 내용 -->
+                                <div id="collapse<%=(int)m.get("oqNo") %>" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <%=(String)m.get("oqContent") %>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="discount-coupon">
-                                <h6>Discount Codes</h6>
-                                <form action="#" class="coupon-form">
-                                    <input type="text" placeholder="Enter your codes">
-                                    <button type="submit" class="site-btn coupon-btn">Apply</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 offset-lg-4">
-                            <div class="proceed-checkout">
-                                <ul>
-                                    <li class="subtotal">Subtotal <span>$240.00</span></li>
-                                    <li class="cart-total">Total <span>$240.00</span></li>
-                                </ul>
-                                <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
-                            </div>
+                            <%
+								}
+                            %>
+                            <a href="<%=request.getContextPath() %>/cs/insertEtcCsList.jsp">추가하기</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Shopping Cart Section End -->
+    </div>
+    <!-- Faq Section End -->
 
     <!-- Partner Logo Section Begin -->
     <div class="partner-logo">
@@ -414,16 +380,16 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.zoom.min.js"></script>
-    <script src="js/jquery.dd.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+	<script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
+	<script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>
+	<script src="<%=request.getContextPath() %>/template/js/jquery-ui.min.js"></script>
+	<script src="<%=request.getContextPath() %>/template/js/jquery.countdown.min.js"></script>
+	<script src="<%=request.getContextPath() %>/template/js/jquery.nice-select.min.js"></script>
+	<script src="<%=request.getContextPath() %>/template/js/jquery.zoom.min.js"></script>
+	<script src="<%=request.getContextPath() %>/template/js/jquery.dd.min.js"></script>
+	<script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
+	<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
+	<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
 </body>
 
 </html>

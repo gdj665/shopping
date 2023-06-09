@@ -31,32 +31,46 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>포인트 사용</title>
+<!-- Latest compiled and minified CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-	<form id="updateOrderPoint" action="<%=request.getContextPath() %>/order/orderPointAction.jsp">
-		<table>
-			<%
-				for(Customer c : list3){
-			
-					for(HashMap<String,Object> m : list4){
-			%>
-			<tr>
-				<th>사용할 포인트</th>
+	<br>
+	<h3 style="text-align: center;">포인트 사용</h3>
+	<hr>
+	<div class="container">
+		<form id="updateOrderPoint" action="<%=request.getContextPath() %>/order/orderPointAction.jsp">
+			<table>
+				<%
+					for(Customer c : list3){
 				
-				<td>
-					<input type="hidden" name="orderNo" value="<%=(int)m.get("orderNo")%>">
-					<input type="number" name="usepoint" value="<%=(int)m.get("orderPointUse")%>" min="0" max="<%=c.getCstmPoint()%>" class="inputfield" onchange="limitInput(this)" value=0>
-				</td>
-			</tr>
-			<a href="#" onclick="useAllPoints()">모든 포인트 사용하기</a>
-			<%
+						for(HashMap<String,Object> m : list4){
+				%>
+				<tr>
+					<th>사용할 포인트 설정 : </th>
+					<td>
+						<input type="hidden" name="orderNo" value="<%=(int)m.get("orderNo")%>">
+						<input class="form-control" type="number" name="usepoint" value="<%=(int)m.get("orderPointUse")%>" min="0" max="<%=c.getCstmPoint()%>" class="inputfield" onchange="limitInput(this)" value=0>
+					</td>
+				</tr>
+				<%
+						}
 					}
-				}
-			%>
-		</table>
-		<button type="submit" onclick="submitForm()">사용하기</button>
-	</form>
+				%>
+			</table>
+			<br>
+			<div class="d-grid">
+				<button class="btn btn-outline-secondary btn-block" type="submit" onclick="submitForm()">사용하기</button><br>
+			</div>
+		</form>
+		<div class="d-grid">
+			<a href="#" class="btn btn-outline-secondary btn-block" onclick="useAllPoints()">모든 포인트 사용하기</a>
+		</div>
+	</div>
 	
 <!-- 스크립트 -->
 <script>

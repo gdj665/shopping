@@ -169,7 +169,7 @@ public class OrderDao {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
-		String sql = "SELECT address_no,address,recently_use_date FROM address WHERE id = ? ORDER BY recently_use_date DESC limit 5";
+		String sql = "SELECT address_no,address,recently_use_date FROM address WHERE id = ? ORDER BY recently_use_date DESC limit 3";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();

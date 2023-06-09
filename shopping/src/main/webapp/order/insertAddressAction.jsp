@@ -9,8 +9,8 @@
 	request.setCharacterEncoding("utf-8");
 	
 	// 유효성 검사
-	if(request.getParameter("address")==null
-		||request.getParameter("address").equals("")){
+	if(request.getParameter("address1")==null
+		||request.getParameter("address2")==null){
 		
 		// null값이 있을 경우 홈으로 이동
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
@@ -19,7 +19,7 @@
 	
 	
 	// 값 받아오기
-	String address = request.getParameter("address");
+	String address = request.getParameter("address1")+" "+request.getParameter("address2");
 	String id = "admin";
 	
 
@@ -34,7 +34,7 @@
 	// row값 분기 설정
 	if(row==1){
 		System.out.println("insertAddressAction row값 정상");
-		response.sendRedirect(request.getContextPath()+"/order/order.jsp?id="+id);
+		response.sendRedirect(request.getContextPath()+"/order/selectAddress.jsp?id="+id);
 		return;
 	}else{
 		System.out.println("insertAddressAction row값 오류");

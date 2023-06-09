@@ -295,29 +295,34 @@
                             %>
                             
                             <!-- 주소정보 // 7번메서드 사용 -->
-                            <div class="col-lg-12">
-	                           	<label for="street">주소</label>
-	                        </div>
-							<div class="col-lg-6">
-								<a href="<%=request.getContextPath()%>/order/insertAddress.jsp">최근 사용주소 보기</a>
-							</div>	
+						    <div class="col-lg-2" style="display: flex; align-items: center;">
+						        <label for="street">주소</label>
+						    </div>
+						    <div class="col-lg-6" style="display: flex; align-items: center;">
+						        <a href="#" class="btn btn-outline-dark btn-sm" onclick="openNewWindow()">최근 사용주소 보기</a>
+						    </div>
+						    <br><br>
 							<%
 								int addressNo = 0;
                            		if(request.getParameter("addressNo")==null){
 									for(HashMap<String,Object> m2 : list6){
-								%>
-								<div class="col-lg-12">
-									<input name="address" type="text" value="<%=m2.get("cstmAddress") %>"><br>
-								</div>
-								<%
+							%>
+										<!-- 기본 회원가입 주소 -->
+										<div class="col-lg-12">
+											<input name="address" type="text" value="<%=m2.get("cstmAddress") %>"><br>
+										</div>
+							<%
 									}
 								} else if(request.getParameter("addressNo")!=null) {
 									addressNo = Integer.parseInt(request.getParameter("addressNo"));
 									list5 = orderdao.addressRecentlyOne(addressNo);
 									for(HashMap<String,Object> m : list5){
-								%>
-									<input name="address" type="text" value="<%=m.get("address") %>"><br>
-								<%	
+							%>
+										<!-- addressNo를 받고 주소 출력 -->
+										<div class="col-lg-12">
+											<input name="address" type="text" value="<%=m.get("address") %>"><br>
+										</div>
+							<%	
 									}
 								}
 							%>
@@ -337,10 +342,10 @@
 		                                    <%=(String)m.get("productName") %>
 		                                    <span><%=(int)m.get("cartCnt") %></span>
 		                                </li>
-		                                <li class="fw-normal"></li>
                                     <%
 										}
 									%>
+										<li class="fw-normal"></li>
 									<%
 										for(HashMap<String,Object> m : list4){
 									%>
@@ -485,12 +490,13 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
 <script src="<%=request.getContextPath() %>/template/js/main.js"></script>
 <script>
+	// 주소 창 열기
 	function openNewWindow() {
 		var id = '<%= id %>';
 		var url = '<%=request.getContextPath()%>/order/selectAddress.jsp?id=' + id;
-		window.open(url, '주소 찾기', 'width=800,height=600');
+		window.open(url, '주소 찾기', 'width=500,height=500');
 	}
-	
+	// 포인트 사용 창 열기
 	function openNewWindow2() {
 		<%
 			for(HashMap<String,Object> m : list4){
@@ -499,7 +505,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		<%
 			}
 		%>	
-		window.open(url, '포인트사용량 추가', 'width=800,height=600');
+		window.open(url, '포인트사용량 추가', 'width=500,height=500');
 	}
 	
 </script>
