@@ -88,7 +88,7 @@ public class CsDao {
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
-		String sql = "SELECT oq_no,oq_content,id,oq_title,createdate,updatedate FROM one_question WHERE id = ?";
+		String sql = "SELECT oq_no,left(oq_content,20) oq_content ,id,oq_title,createdate,updatedate FROM one_question WHERE id = ? ORDER BY updatedate DESC";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1,id);
 		ResultSet rs = stmt.executeQuery();
