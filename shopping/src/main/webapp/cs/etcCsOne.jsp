@@ -20,6 +20,7 @@
 	
 	// 값 받아오기
 	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
+	String id = "admin";
 	
 	//OrderDao 선언
 	CsDao csdao = new CsDao();
@@ -248,65 +249,79 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                	<h2>1대1 상세보기</h2>
-                	<br>
-                	<table class="table">
-						<%
-							for(HashMap<String,Object> m : list){
-						%>
-							<tr>
-								<th colspan="2">
-									<h4 style="width:500px;">제목: <%=(String)m.get("oqTitle") %></h4>
-									<a style="float:right;" href="<%=request.getContextPath() %>/cs/updateEtcCsOne.jsp?oqNo=<%=oqNo %>">수정하기</a>
-									<a style="float:right;" href="<%=request.getContextPath() %>/cs/deleteEtcCsOneAction.jsp?oqNo=<%=oqNo %>">삭제하기</a>
-								</th>
-							</tr>
-							<tr>
-								<th colsapn="2" style="height:500px;">
-									<%=(String)m.get("oqContent") %>
-								</th>
-							</tr>
-						<%
-							}
-						%>
-							<form action="<%=request.getContextPath() %>/cs/insertEtcCsAnswerAction.jsp">
+                	<div class="row">
+                		<div class="col-lg-1">
+                		</div>
+                		<div class="col-lg-1" style="border-left: 1px solid #D5D5D5;">
+                		</div>
+                		<div class="col-lg-8">
+		                	<h2>1대1 상세보기</h2>
+		                	<div>
+		                		<a class="btn btn-outline-secondary btn-sm" style="float:right; margin-right:10px;" href="<%=request.getContextPath() %>/cs/deleteEtcCsOneAction.jsp?oqNo=<%=oqNo %>">삭제하기</a>
+			                	<a class="btn btn-outline-secondary btn-sm" style="float:right; margin-right:10px;" href="#" onclick="openNewWindow()">수정하기</a>
+		                	</div>
+		                	<br><br>
+		                	<form action="<%=request.getContextPath() %>/cs/insertEtcCsAnswerAction.jsp">
+			                	<table class="table">
+									<%
+										for(HashMap<String,Object> m : list){
+									%>
+										<tr>
+											<th colspan="2" style="width:500px; font-size:18pt;">
+												제목: <%=(String)m.get("oqTitle") %>
+											</th>
+										</tr>
+										<tr>
+											<th colsapn="2" style="height:500px;">
+												<%=(String)m.get("oqContent") %>
+											</th>
+										</tr>
+									<%
+										}
+									%>
+										<tr>
+											<td style="width:780px;">
+												<label for="comment">댓글 작성&nbsp;&nbsp;&nbsp;<sapn style="font-weight:bold;"><%=id %></sapn></label>
+												<textarea class="form-control" rows="5" id="comment" name="oaContent"></textarea>
+											</td>
+											<td>
+												<button class="btn btn-secondary" style="margin-top: 130px;" type="submit">작성</button>
+												<input type="hidden" name="oqNo" value="<%=oqNo %>">
+											</td>
+										</tr>
+								</table>
+							</form>
+							<h4>💬댓글</h4>
+							<hr>
+							<%
+								for(HashMap<String,Object> m : list2){
+							%>
+							<table class="table">
 								<tr>
-									<td style="width:1200px;">
-										<label for="comment">Comments:</label>
-										<textarea class="form-control" rows="5" id="comment" name="oaContent"></textarea>
-									</td>
-									<td>
-										<button class="btn btn-secondary" style="margin-top: 130px;" type="submit">전송</button>
-										<input type="hidden" name="oqNo" value="<%=oqNo %>">
+									<th style="font-size:10pt; background-color: #F6F6F6;">
+										<%=(String)m.get("id") %>
+										<div style="float:right; color:#BDBDBD;">
+											<%=(String)m.get("updatedate") %>
+											<a style="text-decoration: none; color:#000000;" href="<%=request.getContextPath()%>/cs/deleteEtcCsCommentAction.jsp?oaNo=<%=(int)m.get("oaNo") %>&oqNo=<%=oqNo%>">삭제</a>
+										</div>
+									</th>
+								</tr>
+								<tr>
+									<td style="font-size:12pt;">
+										<%=(String)m.get("oaContent") %>
 									</td>
 								</tr>
-							</form>
-					</table>
-					<table class="table">
-						<%
-							for(HashMap<String,Object> m : list2){
-						%>
-							<tr>
-								<th>
-									<%=(String)m.get("id") %>
-								</th>
-							</tr>
-							<tr>
-								<th>
-									<%=(String)m.get("oaContent") %>
-								</th>
-							</tr>
-							<tr>
-								<th>
-									<a href="<%=request.getContextPath()%>/cs/deleteEtcCsCommentAction.jsp?oaNo=<%=(int)m.get("oaNo") %>&oqNo=<%=oqNo%>">삭제</a>
-								</th>
-							</tr>
-						<%
-							}
-						%>
-					</table>
-					
-                </div>
+							</table><br>
+							<%
+								}
+							%>
+						</div><!-- col-lg-8 -->
+						<div class="col-lg-1" style="border-right:1px solid #D5D5D5;">
+						</div>
+						<div class="col-lg-1">
+						</div>
+					</div><!-- row -->
+                </div><!-- col lg 12 -->
             </div>
         </div>
     </div>
@@ -432,6 +447,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
 	<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
 	<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
+	<script>
+		function openNewWindow() {
+			var url = "<%=request.getContextPath() %>/cs/updateEtcCsOne.jsp?oqNo=<%=oqNo %>";
+			window.open(url, '문의 내용 수정', 'width=500,height=500');
+		}
+	</script>
 </body>
 
 </html>

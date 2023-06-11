@@ -262,7 +262,7 @@
 							}
 						%>
 					</table>
-					<a class="btn btn-outline-dark" style="float:right;" href="<%=request.getContextPath() %>/cs/insertEtcCsList.jsp">문의하기</a>
+					<a class="btn btn-outline-dark" style="float:right;" href="#" onclick="openNewWindow()">문의하기</a>
                 </div>
             </div>
         </div>
@@ -389,6 +389,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
 	<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
 	<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
+	<script>
+		function openNewWindow() {
+			var url = "<%=request.getContextPath() %>/cs/insertEtcCsList.jsp";
+			window.open(url, '신규 문의 등록', 'width=500,height=500');
+		}
+	</script>
 </body>
 
 </html>

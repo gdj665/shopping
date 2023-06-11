@@ -265,8 +265,12 @@
 								<th colspan="2">상품문의</th>
 							</tr>
 							<tr>
-								<td style="width:700px;"><input class="form-control" type = "text" name="qContent"></td>
-								<td><button style="margin-right:30px; float:right;" class="btn btn-outline-dark" type="submit">작성</button></td>
+								<td style="width:700px;">
+									<textarea rows="3" class="form-control" name="qContent" placeholder="문의 내용을 입력해주시기 바랍니다"></textarea>
+								</td>
+								<td>
+									<button style="margin-top:50px; margin-right:30px; float:right;" class="btn btn-outline-dark" type="submit">작성</button>
+								</td>
 							</tr>
 						</table>
 						<br>
@@ -332,8 +336,12 @@
 											<th colspan="2"><label style="margin-left:10px; margin-top:10px;">&nbsp;&nbsp;↳&nbsp;답변작성필요</label></th>
 										</tr>
 										<tr>
-											<td style="width:700px;"><input style="margin-left:10px; margin-bottom:20px;" class="form-control" type = "text" name="aContent"></td>
-											<td><button style="margin-right:30px; margin-bottom:20px; float:right;" class="btn btn-outline-dark" type="submit">작성</button></td>
+											<td style="width:700px;">
+												<textarea rows="3" style="margin-left:10px; margin-bottom:20px;" class="form-control" name="aContent" placeholder="답변을 입력해주시기 바랍니다"></textarea>
+											</td>
+											<td>
+												<button style="margin-right:30px; margin-top:30px; float:right;" class="btn btn-outline-dark" type="submit">작성</button>
+											</td>
 										</tr>
 									</table>
 									<!-- 값 넘기기 -->
