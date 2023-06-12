@@ -54,6 +54,21 @@ public class MainDao {
 	}
 	
 	// 앨범 출력
+	public ArrayList<Product> selectProduct() throws Exception{
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT product_no productNo"
+				+ 		" FROM product";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<Product> productList = new ArrayList<>();
+		while (rs.next()) {
+			Product p = new Product();
+			p.setProductNo(rs.getInt("productNo"));
+			productList.add(p);
+		}
+		return productList;
+	}
 	// 받아온 mainName과 subName, beginRow, rowPerPage를 이용해서 페이지를 출력한다.
 	// subName이 전체일때 mainName에 해당하는 값을 주기위해 분기를 줬음 
 	public ArrayList<Product> selectProduct(String mainName, String subName, int beginRow, int rowPerPage) throws Exception {
