@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "vo.id.*" %>
+<%@ page import = "vo.order.*" %>
 <%@ page import = "util.*" %>
 <%@ page import = "dao.member.*" %>
+<%@ page import = "dao.order.*" %>
 <%@ page import = "java.util.*" %>
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.net.*" %>
@@ -70,6 +72,8 @@
 		if(cstmCnt > 0){
 			session.setAttribute("loginId", id);
 			System.out.print("고객로그인 : " + session.getAttribute("loginId"));
+			OrderDao orderDao = new OrderDao();
+			orderDao.noLoginAddCart(id, request);
 			response.sendRedirect(request.getContextPath()+"/home.jsp");
 			return;
 		}

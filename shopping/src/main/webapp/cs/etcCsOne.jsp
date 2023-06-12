@@ -20,7 +20,7 @@
 	
 	// 값 받아오기
 	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 	
 	//OrderDao 선언
 	CsDao csdao = new CsDao();

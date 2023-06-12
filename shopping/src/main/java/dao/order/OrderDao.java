@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import util.*;
 import vo.id.Customer;
@@ -562,6 +564,33 @@ public class OrderDao {
 		}
 		return list;
 	}
+	
+	// 25) 비회원 상태에서 로그인 시 장바구니데이터 생성
+	public void noLoginAddCart(String id,HttpServletRequest request) throws Exception {
+	    DBUtil DBUtil = new DBUtil();
+	    Connection conn = DBUtil.getConnection();
+	    HttpSession session = request.getSession();
+	    if (session.getAttribute("loginId") != null) {
+	        ArrayList<Cart> cartList = (ArrayList<Cart>) session.getAttribute("cartList");
+	        if (cartList != null && !cartList.isEmpty()) {
+	            String sql = "INSERT INTO cart (id, product_no, cart_cnt, createdate, updatedate) VALUES (?, ?, ?, NOW(), NOW())";
+	            PreparedStatement stmt = conn.prepareStatement(sql);
+	            
+	            for (Cart cart : cartList) {
+	                stmt.setString(1, id);
+	                stmt.setInt(2, cart.getProductNo());
+	                stmt.setInt(3, cart.getCartCnt());
+	                stmt.executeUpdate();
+	            }
+	            
+	            // 로그인 후 카트 테이블에 추가한 데이터는 더 이상 필요하지 않으므로 삭제
+	            cartList.clear();
+	            session.setAttribute("cartList", cartList);
+	        }
+	    }
+	}
+	
+	
 	//테스트 용
 	public static void main(String[] args) throws Exception {
 		

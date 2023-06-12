@@ -43,6 +43,7 @@
 		// 원래 창으로 돌아가고 새로고침
 		window.opener.location.reload();
 		window.close();
+		
 	}
 </script>
 </body>

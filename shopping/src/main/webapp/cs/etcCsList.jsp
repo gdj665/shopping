@@ -11,7 +11,7 @@
 	request.setCharacterEncoding("utf-8");
 	
 	// 값 받아오기
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 	
 	//OrderDao 선언
 	CsDao csdao = new CsDao();
