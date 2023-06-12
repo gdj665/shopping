@@ -25,7 +25,7 @@ public class MemberDao {
 		if(row1 == 0) {
 		
 		//id테이블 데이터값 입력쿼리
-		PreparedStatement idStmt = conn.prepareStatement("INSERT INTO id_list(id, last_pw, active, createdate, updatedate) values(?, PASSWORD(?), 1, now(), now())");
+		PreparedStatement idStmt = conn.prepareStatement("INSERT INTO id_list(id, last_pw, active, createdate) values(?, PASSWORD(?), 1, now())");
 		idStmt.setString(1, id);
 		idStmt.setString(2, pw);
 		int row2 = idStmt.executeUpdate();
@@ -57,8 +57,8 @@ public class MemberDao {
 		
 		// 고객 테이블 데이터 값 입력 쿼리
 		
-		PreparedStatement customerStmt = conn.prepareStatement("INSERT INTO customer(id, cstm_name, cstm_address, cstm_email, cstm_birth, cstm_gender, cstm_phone"
-				+ "cstm_rank, cstm_point, cstm_agree, cstm_last_login, createdate, updatedate) "
+		PreparedStatement customerStmt = conn.prepareStatement("INSERT INTO customer(id, cstm_name, cstm_address, cstm_email, cstm_birth, cstm_gender, cstm_phone,"
+				+ "cstm_rank, cstm_point, cstm_agree, cstm_last_login, createdate, updatedate)"
 				+ "values(?,?,?,?,?,?,?,'BRONZE',0,?,now(),now(),now())");
 		
 		customerStmt.setString(1, custm.getId());
@@ -272,8 +272,8 @@ public class MemberDao {
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
 		
-		PreparedStatement stmt = conn.prepareStatement("SELECT cstm_name cstmName, cstm_address cstmAddress, cstm_email cstmEmail, "
-				+ "cstm_birth cstmBirth, cstm_rank cstmRank, cstm_point cstmPoint, createdate "
+		PreparedStatement stmt = conn.prepareStatement("SELECT id cstmId, cstm_name cstmName, cstm_address cstmAddress, cstm_email cstmEmail, "
+				+ "cstm_birth cstmBirth, cstm_phone cstmPhone, cstm_rank cstmRank, cstm_point cstmPoint, createdate "
 				+ "FROM customer WHERE id = ?");
 		
 		stmt.setString(1, id);
@@ -281,10 +281,12 @@ public class MemberDao {
 		
 		if(rs.next()) {
 			HashMap<String, Object> m = new HashMap<String, Object>();
+			m.put("cstmId", rs.getString("cstmId"));
 			m.put("cstmName", rs.getString("cstmName"));
 			m.put("cstmAddress", rs.getString("cstmAddress"));
 			m.put("cstmEmail", rs.getString("cstmEmail"));
 			m.put("cstmBirth", rs.getString("cstmBirth"));
+			m.put("cstmPhone", rs.getString("cstmPhone"));
 			m.put("cstmRank", rs.getString("cstmRank"));
 			m.put("cstmPoint", rs.getInt("cstmPoint"));
 			m.put("createdate", rs.getString("createdate"));

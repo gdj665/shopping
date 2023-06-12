@@ -31,6 +31,10 @@
 	%>
 		<table>
 			<tr>
+				<td>아이디</td>
+				<td><%=(String)(m.get("cstmId"))%></td>
+			</tr>
+			<tr>
 				<td>이름</td>
 				<td><%=(String)(m.get("cstmName"))%></td>
 			</tr>
@@ -45,6 +49,10 @@
 			<tr>
 				<td>생일</td>
 				<td><%=(String)(m.get("cstmBirth"))%></td>
+			</tr>
+			<tr>
+				<td>전화번호</td>
+				<td><%=(String)(m.get("cstmPhone"))%></td>
 			</tr>
 			<tr>
 				<td>등급</td>

@@ -26,15 +26,15 @@
 			<table border="1">
 				<tr>
 					<td>사용자 ID</td>
-					<td><input type="text" id="id" name="id" value=""></td>
+					<td><input type="text" id="id" name="id" required="required"></td>
 				</tr>
 				<tr>
 					<td>비밀번호</td>
-					<td><input type="password" id="pw" name="pw"></td>
+					<td><input type="password" id="pw" name="pw" required="required"></td>
 				</tr>
 				<tr>
 					<td>비밀번호확인</td>
-					<td><input type="password" id="ckpw"></td>
+					<td><input type="password" id="ckpw" name="ckpw" required="required"></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -43,34 +43,38 @@
 			<table border="1">
 				<tr>
 					<td>이름</td>
-					<td><input type="text" id="name" name="name"></td>
-				</tr>
-				<tr>
-					<td>생년월일</td>
-					<td>
-						<input type="date" id="birth" name="date">
-						<input type="radio" class="lunarSolar" name="lunarSolar">양력
-						<input type="radio" class="lunarSolar" name="lunarSolar">음력
-					</td>
-				</tr>
-				
-				<tr>
-					<td>휴대전화</td>
-					<td>
-						<input type="text">-
-						<input type="text">-
-						<input type="text">
-					</td>
-				</tr>
-				<tr>
-					<td>E-mail 주소</td>
-					<td><input type="email"></td>
+					<td><input type="text" id="name" name="cstmName" required="required"></td>
 				</tr>
 				<tr>
 					<td>주소</td>
 					<td>
-						<input type="text">-
-						<input type="text">
+						<textarea name ="cstmAddress" cols ="33" rows="5" required="required" ></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>E-mail 주소</td>
+					<td><input type="email" id="email" name="cstmEmail" required="required"></td>
+				</tr>
+				<tr>
+					<td>생년월일</td>
+					<td>
+						<input type="date" id="birth" name="cstmBirth" required="required">
+						<input type="radio" class="lunarSolar" name="lunarSolar">양력
+						<input type="radio" class="lunarSolar" name="lunarSolar">음력
+					</td>
+				</tr>
+				<tr>
+					<td>성별</td>
+					<td>
+						<input type="radio" name="cstmGender" value="M"> 남자
+					
+						<input type="radio" name="cstmGender" value="F"> 여자
+					</td>
+				</tr>
+				<tr>
+					<td>휴대전화</td>
+					<td>
+						<input type="tel"  name="cstmPhone" required="required">
 					</td>
 				</tr>
 				
@@ -82,9 +86,8 @@
 				<tr>
 					<td>마케팅 메일 수신</td>
 					<td>
-						<input type="radio" name="send" value=
-						"y" class="send">수신동의
-						<input type="radio" name="send" value="n" class="send">수신하지않음
+						<input type="radio" name="cstmAgree" value="y" >수신동의
+						<input type="radio" name="cstmAgree" value="n" >수신하지않음
 					</td>
 				</tr>
 				<tr>
