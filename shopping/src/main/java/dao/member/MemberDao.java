@@ -209,7 +209,7 @@ public class MemberDao {
 		int cnt = 0;
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
-		PreparedStatement stmt = conn.prepareStatement("SELECT count(*) FROM id_list WHERE id = ?");
+		PreparedStatement stmt = conn.prepareStatement("SELECT count(*) FROM customer WHERE id = ?");
 		stmt.setString(1, idList.getId());
 		ResultSet rs = stmt.executeQuery();
 		if(rs.next()) {
