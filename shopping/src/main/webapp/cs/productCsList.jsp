@@ -14,6 +14,16 @@
 	// 값 받아오기
 	int productNo = 1;
 	
+	/*
+	if(request.getParameter("productNo")==null){
+		
+		// null값이 있을 경우 홈으로 이동
+		System.out.println("productcsList null 있음");
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
+	*/
+	
 	//OrderDao 선언
 	CsDao csdao = new CsDao();
 
@@ -258,25 +268,30 @@
             	</div>
                 <div class="col-lg-8">
                     <!-- 제품문의 입력 테이블 (고객 사용 가능) -->
-					<form action="<%=request.getContextPath() %>/cs/insertProductCsAction.jsp">
-						<input type="hidden" name="productNo" value="<%=productNo %>">
-						<table style="width:100%;">
-							<tr>
-								<th colspan="2">상품문의</th>
-							</tr>
-							<tr>
-								<td style="width:700px;">
-									<textarea rows="3" class="form-control" name="qContent" placeholder="문의 내용을 입력해주시기 바랍니다"></textarea>
-								</td>
-								<td>
-									<button style="margin-top:50px; margin-right:30px; float:right;" class="btn btn-outline-dark" type="submit">작성</button>
-								</td>
-							</tr>
-						</table>
-						<br>
-						<hr>
-					</form>
-					
+                    <%
+                    	if(session.getAttribute("loginId")!=null){
+                    %>
+						<form action="<%=request.getContextPath() %>/cs/insertProductCsAction.jsp">
+							<input type="hidden" name="productNo" value="<%=productNo %>">
+							<table style="width:100%;">
+								<tr>
+									<th colspan="2">상품문의</th>
+								</tr>
+								<tr>
+									<td style="width:700px;">
+										<textarea rows="3" class="form-control" name="qContent" placeholder="문의 내용을 입력해주시기 바랍니다"></textarea>
+									</td>
+									<td>
+										<button style="margin-top:50px; margin-right:30px; float:right;" class="btn btn-outline-dark" type="submit">작성</button>
+									</td>
+								</tr>
+							</table>
+							<br>
+							<hr>
+						</form>
+					<%
+                    	}
+					%>
 					<%
 						// 질문 리스트 출력
 						for(Qa q : list){
@@ -292,7 +307,14 @@
 									<td>ID : <%=q.getId() %></td>
 									<td style="float:right;" class="vertical-center">
 										<%=q.getCreatedate()%>
-										<a href="<%=request.getContextPath()%>/cs/deleteProductQuestionAction.jsp?qNo=<%=q.getqNo()%>&productNo=<%=productNo%>">&nbsp;X&nbsp;</a>
+										<!-- 쓴사람과 동일 할때만 삭제 -->
+										<%
+											if(q.getId().equals(session.getAttribute("loginId"))){
+										%>
+											<a href="<%=request.getContextPath()%>/cs/deleteProductQuestionAction.jsp?qNo=<%=q.getqNo()%>&productNo=<%=productNo%>">&nbsp;X&nbsp;</a>
+										<%
+											}
+										%> 
 									</td>
 								</tr>
 								<tr>
@@ -314,7 +336,13 @@
 									<td style="font-weight: bold;">[관리자]</td>
 									<td style="float:right;" class="vertical-center">
 										<%=(String)m.get("createdate")%>
-										<a href="<%=request.getContextPath()%>/cs/deleteProductAnswerAction.jsp?productNo=<%=productNo%>&aNo=<%=(int)m.get("aNo")%>">&nbsp;X&nbsp;</a>
+										<%
+											if(session.getAttribute("loginEmpId1")!=null || session.getAttribute("loginEmpId2")!=null){
+										%>
+											<a href="<%=request.getContextPath()%>/cs/deleteProductAnswerAction.jsp?productNo=<%=productNo%>&aNo=<%=(int)m.get("aNo")%>">&nbsp;X&nbsp;</a>
+										<%
+											}
+										%>
 									</td>
 								</tr>
 								<tr>
@@ -329,6 +357,7 @@
 					%>
 					<%		// 질문에 대한 답변이 없을 경우에만 테이블 출력
 							if(answer != true){
+								if(session.getAttribute("loginEmpId1")!=null || session.getAttribute("loginEmpId2")!=null){
 					%>
 								<form action="<%=request.getContextPath()%>/cs/productCsListAction.jsp">
 									<table style="width:100%; background-color: #F6F6F6;">
@@ -349,6 +378,7 @@
 									<input type="hidden" name="productNo" value="<%=productNo %>">
 								</form>
 					<%	
+								}
 							}// 답변이 없을경우에는 입력창 출력하는 if문
 						}// 질문 리스트 출력 for문
 					%>

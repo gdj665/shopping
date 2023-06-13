@@ -13,6 +13,7 @@
 		||(request.getParameterValues("orderNo")==null)){
 		
 		// null값이 있을 경우 홈으로 이동
+		System.out.println("orderPointAction null 있음");
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}

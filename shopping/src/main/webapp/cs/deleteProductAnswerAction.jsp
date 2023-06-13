@@ -10,17 +10,28 @@
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
 	
-	//유효성 검사
+	//유효성 검사 1
 	if(request.getParameterValues("productNo")==null
 		||request.getParameterValues("aNo")==null){
 		
 		// null값이 있을 경우 홈으로 이동
+		System.out.println("deleteProductAnswerAction null 있음");
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
 	
+	//유효성 검사 2
+	if(session.getAttribute("loginEmpId1")==null
+		&&session.getAttribute("loginEmpId2")==null){
+		
+		// null값이 있을 경우 홈으로 이동
+		System.out.println("deleteProductAnswerAction ID값 null 있음");
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
 	// 값받기
-	String id = "admin";
+	String emId1 = (String)session.getAttribute("loginEmpId1");
+	String emId2 = (String)session.getAttribute("loginEmpId2");
 	int aNo = Integer.parseInt(request.getParameter("aNo"));
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 

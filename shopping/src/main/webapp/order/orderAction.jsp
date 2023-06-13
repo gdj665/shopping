@@ -10,21 +10,25 @@
 	
 	//유효성 검사
 	if((request.getParameter("orderNo")==null)
-		||(request.getParameter("address")==null)){
+		||(request.getParameter("address")==null)
+		||(session.getAttribute("loginId") == null)){
 		
 		// null값이 있을 경우 홈으로 이동
+		System.out.println("orderAction null있음");
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
 	
 	
 	// 값 받아오기
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
-	//int addressNo = Integer.parseInt(request.getParameter("addressNo"));
 	String address = request.getParameter("address");
+	
+	// 디버깅
+	System.out.println("id-->"+id);
+	System.out.println("orderNo-->"+orderNo);
 	System.out.println("address-->"+address);
-	//System.out.println("addressNo-->"+addressNo);
 	
 	// OrderDao 사용 선언
 	OrderDao orderdao = new OrderDao();

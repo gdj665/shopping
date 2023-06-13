@@ -10,15 +10,17 @@
 	
 	// 유효성 검사
 	if(request.getParameter("cartNo")==null
-		||request.getParameter("cartNo").equals("")){
+		||request.getParameter("cartNo").equals("")
+		||(session.getAttribute("loginId") == null)){
 		
 		// null값이 있을 경우 홈으로 이동
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
+	
 	// 값 받아오기
 	int cartNo = Integer.parseInt(request.getParameter("cartNo"));
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 	
 
 	// OrderDao 사용 선언

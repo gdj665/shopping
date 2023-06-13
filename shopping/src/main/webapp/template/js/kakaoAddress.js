@@ -1,70 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import = "dao.order.*" %>
-<%@ page import = "vo.id.*" %>
-<%@ page import = "util.*" %>
-<%@ page import = "vo.order.*" %>
-<%@ page import = "java.util.*" %>
-<%@ page import = "java.net.*" %>
-<%
-	//한글 깨짐 방지
-	request.setCharacterEncoding("utf-8");
-	
-	//유효성 검사
-	if(session.getAttribute("loginId") == null){
-		
-		// null값이 있을 경우 홈으로 이동
-		System.out.println("insertAddress null있음");
-		response.sendRedirect(request.getContextPath()+"/home.jsp");
-		return;
-	}
-	
-	// 값 받아오기
-	String id = (String)session.getAttribute("loginId");
-%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>신규 주소 추가</title>
-<!-- Latest compiled and minified CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+/**
+ * 
+ */
 
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<body>
-	<br>
-	<h3 style="text-align: center;">배송지 추가</h3>
-	<hr>
-	<div class="container">
-		<form id="addressForm" action="<%=request.getContextPath()%>/order/insertAddressAction.jsp">
-			<input class="form-control" type="text" id="sample6_postcode" placeholder="우편번호"><br>
-			<input class="form-control" type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-			<input class="form-control" name="address1" type="text" id="sample6_address" placeholder="주소"><br>
-			<input class="form-control" name="address2" type="text" id="sample6_detailAddress" placeholder="상세주소">
-			<input class="form-control" type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
-			
-			<div class="d-grid">
-				<button class="btn btn-outline-secondary btn-block" type="submit">추가하기</button>
-			</div>
-		</form>
-	</div>
-<!-- -->
-<script>
-	function submitForm() {
-		// Form 데이터를 가져와서 새 창에 전송
-		let form = document.getElementById('addressForm');
-		form.target = 'newWindow'; // 새 창의 이름
-		form.action = '<%= request.getContextPath() %>/order/insertAddressAction.jsp'; // 액션 URL
-		form.submit();
-		
-		// 원래 창으로 돌아가고 새로고침
-		window.opener.location.reload();
-	}
-</script>
-<!-- 카카오톡 주소찾기 api -->
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
+
     function sample6_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -112,6 +50,3 @@
             }
         }).open();
     }
-</script>
-</body>
-</html>

@@ -15,6 +15,18 @@
 		||request.getParameterValues("qContent")==null){
 		
 		// null값이 있을 경우 홈으로 이동
+		System.out.println("insertProductCsAction null 있음");
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
+	
+	//유효성 검사 2
+	if(session.getAttribute("loginId")==null
+		&&session.getAttribute("loginEmpId1")==null
+		&&session.getAttribute("loginEmpId2")==null){
+		
+		// null값이 있을 경우 홈으로 이동
+		System.out.println("insertProductCsAction ID값 null 있음");
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
@@ -22,8 +34,13 @@
 	// 값받기
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	String qContent = request.getParameter("qContent");
-	String id = "admin";
-
+	String id = (String)session.getAttribute("loginId");
+	
+	if((String)session.getAttribute("loginEmpId1")!=null){
+		id = (String)session.getAttribute("loginEmpId1");
+	} else if ((String)session.getAttribute("loginEmpId2")!=null){
+		id = (String)session.getAttribute("loginEmpId2");
+	}
 	//CsDao.java 선언
 	CsDao csdao = new CsDao();
 	

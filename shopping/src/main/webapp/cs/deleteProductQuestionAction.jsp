@@ -12,9 +12,11 @@
 	
 	//유효성 검사
 	if(request.getParameterValues("productNo")==null
-		||request.getParameterValues("qNo")==null){
+		||request.getParameterValues("qNo")==null
+		||session.getAttribute("loginId")==null){
 		
 		// null값이 있을 경우 홈으로 이동
+		System.out.println("deleteProductQuestionAction null 있음");
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
@@ -22,7 +24,7 @@
 	// 값받기
 	int qNo = Integer.parseInt(request.getParameter("qNo"));
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 
 	//CsDao.java 선언
 	CsDao csdao = new CsDao();

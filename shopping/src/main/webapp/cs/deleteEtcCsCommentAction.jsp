@@ -12,9 +12,11 @@
 	
 	//유효성 검사
 	if(request.getParameterValues("oqNo")==null
-		||request.getParameterValues("oaNo")==null){
+		||request.getParameterValues("oaNo")==null
+		||request.getAttribute("loginId")==null){
 		
 		// null값이 있을 경우 홈으로 이동
+		System.out.println("deleteEtcCsCommentAction null값 있음");
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
@@ -22,7 +24,7 @@
 	// 값받기
 	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
 	int oaNo = Integer.parseInt(request.getParameter("oaNo"));
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 
 	//CsDao.java 선언
 	CsDao csdao = new CsDao();

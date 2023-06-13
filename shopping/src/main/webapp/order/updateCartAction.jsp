@@ -14,16 +14,18 @@
 	
 	// 유효성 검사
 	if((request.getParameterValues("cartCnt")==null)
-		||(request.getParameterValues("cartNo")==null)){
+		||(request.getParameterValues("cartNo")==null)
+		||(session.getAttribute("loginId")==null)){
 		
 		// null값이 있을 경우 홈으로 이동
+		System.out.println("updateCartAction null있음");
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
 	
 	
 	// 값 받아오기
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 	String[] cartCntValues = request.getParameterValues("cartCnt");
 	String[] cartNoValues = request.getParameterValues("cartNo");
 	// row값 분기 변수 선언

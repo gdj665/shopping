@@ -10,9 +10,11 @@
 	
 	// 유효성 검사
 	if(request.getParameter("address1")==null
-		||request.getParameter("address2")==null){
+		||request.getParameter("address2")==null
+		||session.getAttribute("loginId")==null){
 		
 		// null값이 있을 경우 홈으로 이동
+		System.out.println("insertAddressAction null있음");
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
@@ -20,7 +22,7 @@
 	
 	// 값 받아오기
 	String address = request.getParameter("address1")+" "+request.getParameter("address2");
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 	
 
 	// OrderDao 사용 선언

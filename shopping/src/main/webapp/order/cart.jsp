@@ -8,8 +8,17 @@
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
 	
+	//유효성 검사
+	if(session.getAttribute("loginId") == null){
+		
+		// null값이 있을 경우 홈으로 이동
+		System.out.println("cart null있음");
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
+
 	// 값 받아오기
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 
 	// OrderDao사용 선언
 	OrderDao orderdao = new OrderDao();
@@ -20,6 +29,7 @@
 	// 2) OrderDao 장바구니 각 항목의 총 합계의 최종합계를 구하는 메서드
 	int row = orderdao.totalPrice(id);
 	
+	// 제품 카트 checked 분기설정
 	int cnt = 0;
 %>
 <!DOCTYPE html>
@@ -454,20 +464,21 @@
     </footer>
     <!-- Footer Section End -->
 
-    <!-- Js Plugins -->
-	<script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery-ui.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery.countdown.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery.nice-select.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery.zoom.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery.dd.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
-	<script>
+<!-- Js Plugins -->
+<script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery-ui.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.countdown.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.nice-select.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.zoom.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.dd.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
+<script>
 	// 구매하기 버튼을 눌럿는대 장바구니에서 체크된 항목이 없으면 장바구니에 선택된 제품이 없다고 메세지 출력
-	let checkCart = function() {
+	// 장바구니에 제품이 있을 경우 구매 페이지로 이동
+	$('#buyButton').click(function(){
 		// totalAmount에 장바구니 총 합산 금액 삽입
 		let totalAmount = <%=row%>;
 		// 토탈금액이 0원일 경우
@@ -478,8 +489,8 @@
 		// 제품이 있다면 cartAction.jsp 실행
 			location.href = "<%=request.getContextPath()%>/order/cartAction.jsp?id=<%=id%>";
 		}
-	};
-	</script>
+	});
+</script>
 </body>
 
 </html>
