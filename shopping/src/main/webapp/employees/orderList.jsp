@@ -1,7 +1,7 @@
 <%@page import="vo.order.OrdersHistory"%>
 <%@page import="vo.order.Orders"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="dao.main.AdminDao"%>
+<%@page import="dao.main.EmployeesDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	//controller
@@ -19,18 +19,18 @@
 		searchEndDate = request.getParameter("searchEndDate");
 	}
 	//model
-	AdminDao ad = new AdminDao();
+	EmployeesDao ed = new EmployeesDao();
 	ArrayList<Orders> ordersList = new ArrayList<>();
 	
 	if (searchOrderStatus != 0
 			&& searchBeginDate != null){
-		ordersList = ad.ordersList(searchOrderStatus, searchBeginDate, searchEndDate);
+		ordersList = ed.ordersList(searchOrderStatus, searchBeginDate, searchEndDate);
 	} else if (searchOrderStatus != 0){
-		ordersList = ad.ordersList(searchOrderStatus);
+		ordersList = ed.ordersList(searchOrderStatus);
 	} else if (searchBeginDate != null){
-		ordersList = ad.ordersList(searchBeginDate, searchEndDate);
+		ordersList = ed.ordersList(searchBeginDate, searchEndDate);
 	} else {
-		ordersList = ad.ordersList();
+		ordersList = ed.ordersList();
 	}
 	ArrayList<OrdersHistory> ordersHistoryList = new ArrayList<>();
 %>
@@ -43,7 +43,7 @@
 <body>
 	<h1>주문 내역(관리자)</h1>
 	<h4>검색</h4>
-	<form action="<%=request.getContextPath()%>/admin/orderList.jsp" method="get" id="sort">
+	<form action="<%=request.getContextPath()%>/employees/orderList.jsp" method="get" id="sort">
 		<select name="searchOrderStatus">
 			<option value="0">전체</option>
 			<option value="1">주문완료</option>
@@ -56,7 +56,7 @@
 		<button type="submit" form="sort">검색</button>
 	</form>
 	<h4>주문상태 변경</h4>
-	<form action="<%=request.getContextPath()%>/admin/orderListAction.jsp" method="post" id="update">
+	<form action="<%=request.getContextPath()%>/employees/orderListAction.jsp" method="post" id="update">
 	<select name="orderStatus">
 		<option value="1">주문완료</option>
 		<option value="2">배송중</option>

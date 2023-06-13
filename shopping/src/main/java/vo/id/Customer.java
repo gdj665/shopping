@@ -2,6 +2,7 @@ package vo.id;
 
 public class Customer {
 	private String id;
+	private int active;
 	private String cstmName;
 	private String cstmAddress;
 	private String cstmEmail;
@@ -19,6 +20,12 @@ public class Customer {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public int getActive() {
+		return active;
+	}
+	public void setActive(int active) {
+		this.active = active;
 	}
 	public String getCstmName() {
 		return cstmName;

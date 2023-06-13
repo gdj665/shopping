@@ -13,7 +13,7 @@ import vo.product.ProductImg;
 import vo.product.Track;
 
 public class MainDao {
-	
+		
 	// 카테고리 체크
 	// 카테고리 별로 product를 출력하기 위해서 카테고리를 특정화 해야한다.
 	// mainName 과 subName을 조건으로 주고 결과값을 int 값으로 categoryNo를 받아온다.

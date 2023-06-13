@@ -6,11 +6,36 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import util.DBUtil;
+import vo.id.Customer;
+import vo.id.Employees;
 import vo.order.Orders;
 import vo.order.OrdersHistory;
 import vo.product.Discount;
 
-public class AdminDao {
+public class EmployeesDao {
+
+	// admin 유효성 검사
+	public boolean checkAdmin(String id) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT id\r\n"
+				+ "FROM employees";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<String> adminIdList = new ArrayList<>();
+		while(rs.next()) {
+			String adminid = rs.getString("id");
+			adminIdList.add(adminid);
+		}
+		boolean checkAdmin = false;
+		for (String s : adminIdList) {
+			if (s.equals(id)) {
+				checkAdmin = true;
+				break;
+			}
+		}
+		return checkAdmin;
+	}
 	
 	// 구매 내역 출력
 	public ArrayList<Orders> ordersList() throws Exception{
@@ -203,6 +228,32 @@ public class AdminDao {
 		return checkUpdate;
 	}
 	
+	// 할인 출력
+	public Discount selectDiscountOne(int discountNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT d.discount_no discountNo, d.product_no productNo, p.product_name productName, d.discount_begin discountBegin, d.discount_end discountEnd, d.discount_rate discountRate, d.createdate, d.updatedate\r\n"
+				+ "FROM discount d INNER JOIN product p\r\n"
+				+ "	ON d.product_no = p.product_no\r\n"
+				+ "WHERE d.discount_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, discountNo);
+		ResultSet rs = stmt.executeQuery();
+		Discount d = new Discount();
+		if(rs.next()) {
+			d.setDiscountNo(rs.getInt("discountNo"));
+			d.setProductNo(rs.getInt("productNo"));
+			d.setProductName(rs.getString("productName"));
+			d.setDiscountBegin(rs.getString("discountBegin"));
+			d.setDiscountEnd(rs.getString("discountEnd"));
+			d.setDiscountRate(rs.getDouble("discountRate"));
+			d.setCreatedate(rs.getString("createdate"));
+			d.setUpdatedate(rs.getString("updatedate"));
+		}
+		
+		return d;
+	}
+
 	// 할인 리스트 출력
 	public ArrayList<Discount> selectDiscount() throws Exception {
 		DBUtil DBUtil = new DBUtil();
@@ -313,19 +364,25 @@ public class AdminDao {
 				String sql = "SELECT d.discount_no discountNo, d.product_no productNo, p.product_name productName, d.discount_begin discountBegin, d.discount_end discountEnd, d.discount_rate discountRate, d.createdate, d.updatedate\r\n"
 						+ "FROM discount d INNER JOIN product p\r\n"
 						+ "	ON d.product_no = p.product_no\r\n"
-						+ "WHERE d.discount_begin >= ? AND d.discount_end <= SYSDATE()"
+						+ "WHERE(discount_begin BETWEEN ? AND SYSDATE()) OR (discount_end BETWEEN ? AND SYSDATE()) OR (discount_begin <= ? AND discount_end >= SYSDATE())"
 						+ "ORDER BY createdate desc";
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, beginDate);
+				stmt.setString(2, beginDate);
+				stmt.setString(3, beginDate);
 			} else {
 				String sql = "SELECT d.discount_no discountNo, d.product_no productNo, p.product_name productName, d.discount_begin discountBegin, d.discount_end discountEnd, d.discount_rate discountRate, d.createdate, d.updatedate\r\n"
 						+ "FROM discount d INNER JOIN product p\r\n"
 						+ "	ON d.product_no = p.product_no\r\n"
-						+ "WHERE d.discount_begin >= ? AND d.discount_end <= ?"
+						+ "WHERE (discount_begin BETWEEN ? AND ?) OR (discount_end BETWEEN ? AND ?) OR (discount_begin <= ? AND discount_end >= ?)"
 						+ "ORDER BY createdate desc";
 				stmt = conn.prepareStatement(sql);
 				stmt.setString(1, beginDate);
 				stmt.setString(2, endDate);
+				stmt.setString(3, beginDate);
+				stmt.setString(4, endDate);
+				stmt.setString(5, beginDate);
+				stmt.setString(6, endDate);
 			}
 		}
 		if ("discountBegin".equals(searchDate)) {
@@ -415,6 +472,31 @@ public class AdminDao {
 		return discountList;
 	}
 	
+	// 할인 체크
+	public boolean checkDiscount(Discount discount) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT count(*) cnt\r\n"
+				+ "FROM discount\r\n"
+				+ "WHERE product_no = ? AND ((discount_begin BETWEEN ? AND ?) OR (discount_end BETWEEN ? AND ?) OR (discount_begin <= ? AND discount_end >= ?))";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, discount.getProductNo());
+		stmt.setString(2, discount.getDiscountBegin());
+		stmt.setString(3, discount.getDiscountEnd());
+		stmt.setString(4, discount.getDiscountBegin());
+		stmt.setString(5, discount.getDiscountEnd());
+		stmt.setString(6, discount.getDiscountBegin());
+		stmt.setString(7, discount.getDiscountEnd());
+		ResultSet rs = stmt.executeQuery();
+		boolean checkDiscount = false;
+		if(rs.next()) {
+			if(rs.getInt("cnt") == 0) {
+				checkDiscount = true;
+			}
+		}
+		return checkDiscount;
+	}
+	
 	// 할인 추가
 	public int insertDiscount(Discount discount) throws Exception {
 		DBUtil DBUtil = new DBUtil();
@@ -429,4 +511,75 @@ public class AdminDao {
 		int row = stmt.executeUpdate();
 		return row;
 	}
+	
+	// 할인 수정
+	public int updateDiscount(int discountNo, Discount discount) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "UPDATE discount SET discount_begin = ?, discount_end = ?, discount_rate = ?, updatedate = NOW()\r\n"
+				+ "WHERE discount_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, discount.getDiscountBegin());
+		stmt.setString(2, discount.getDiscountEnd());
+		stmt.setDouble(3, discount.getDiscountRate());
+		stmt.setInt(4, discountNo);
+		int row = stmt.executeUpdate();
+		return row;
+	}
+	
+	// 할인 삭제
+	public int deleteDiscount(int discountNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "DELETE FROM discount\r\n"
+				+ "WHERE discount_no = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, discountNo);
+		int row = stmt.executeUpdate();
+		return row;
+	}
+	
+	// 회원 출력
+	public ArrayList<Customer> selectCustomer() throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT c.id id, il.active active, c.cstm_rank cstmRank, c.cstm_point cstmPoint, c.cstm_last_login cstmLastLogin, c.cstm_agree cstmAgree\r\n"
+				+ "FROM customer c INNER JOIN id_list il\r\n"
+				+ "	ON c.id = il.id";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<Customer> customerList = new ArrayList<>();
+		while(rs.next()) {
+			Customer c = new Customer();
+			c.setId(rs.getString("id"));
+			c.setActive(rs.getInt("active"));
+			c.setCstmRank(rs.getString("cstmRank"));
+			c.setCstmPoint(rs.getInt("cstmPoint"));
+			c.setCstmLastLogin(rs.getString("cstmLastLogin"));
+			c.setCstmAgree(rs.getString("cstmAgree"));
+			customerList.add(c);
+		}
+		return customerList;
+	} 
+	
+	// admin 출력
+	public ArrayList<Employees> selectEmployees() throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT id, emp_name empName, emp_level empLevel, createdate, updatedate\r\n"
+				+ "FROM employees";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<Employees> employeesList = new ArrayList<>();
+		while(rs.next()) {
+			Employees e = new Employees();
+			e.setId(rs.getString("id"));
+			e.setEmpName(rs.getString("empName"));
+			e.setEmpLevel(rs.getInt("empLevel"));
+			e.setCreatedate(rs.getString("createdate"));
+			e.setUpdatedate(rs.getString("updatedate"));
+			employeesList.add(e);
+		}
+		return employeesList;
+	} 
 }

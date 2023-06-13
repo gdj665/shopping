@@ -1,5 +1,5 @@
 <%@page import="vo.product.Discount"%>
-<%@page import="dao.main.AdminDao"%>
+<%@page import="dao.main.EmployeesDao"%>
 <%@page import="vo.product.Product"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="dao.main.MainDao"%>
@@ -26,18 +26,25 @@
 		}
 	}
 	if (checkProductNo != true){
-		response.sendRedirect(request.getContextPath() + "/admin/insertDiscount.jsp");
+		response.sendRedirect(request.getContextPath() + "/employees/insertDiscount.jsp");
 		System.out.println("유효하지않음 품목");
 		return;
 	}
-	
 	Discount discount = new Discount();
 	discount.setProductNo(productNo);
 	discount.setDiscountBegin(discountBegin);
 	discount.setDiscountEnd(discountEnd);
 	discount.setDiscountRate(discountRate);
-	AdminDao ad = new AdminDao();
-	int checkInsert = ad.insertDiscount(discount);
+	EmployeesDao ed = new EmployeesDao();
+	
+	// discount 유효성 체크
+	if (!ed.checkDiscount(discount)){
+		response.sendRedirect(request.getContextPath() + "/employees/insertDiscount.jsp");
+		System.out.println("중복된 할인");
+		return;
+	}
+	
+	int checkInsert = ed.insertDiscount(discount);
 	System.out.println(checkInsert + " <- checkInsert");
-	response.sendRedirect(request.getContextPath() + "/admin/discountList.jsp");
+	response.sendRedirect(request.getContextPath() + "/employees/discountList.jsp");
 %>

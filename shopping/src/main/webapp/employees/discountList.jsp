@@ -1,6 +1,6 @@
 <%@page import="vo.product.Discount"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="dao.main.AdminDao"%>
+<%@page import="dao.main.EmployeesDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	String[] splitSearchProduct = null;
@@ -19,14 +19,16 @@
 		}
 	}
 	
+	// 퍼센트로 입력했기때문에 데이터베이스 내용이랑 비교를 위해 소수점으로 만들어 줘야함
 	double searchRate = 0;
 	System.out.println(request.getParameter("searchRate") + " <-request.getParameter(\"searchRate\")");
 	if (request.getParameter("searchRate") != null
 			&& !"".equals(request.getParameter("searchRate"))){
 		searchRate = (double)Integer.parseInt(request.getParameter("searchRate")) / 100;
 	}
-	System.out.println(searchRate + " <-searchRate");
+	//System.out.println(searchRate + " <-searchRate");
 	
+	// date 값 분기
 	String searchDate = request.getParameter("searchDate");
 	String searchBeginDate = null; 
 	if (!"".equals(request.getParameter("searchBeginDate"))){
@@ -38,25 +40,28 @@
 		searchEndDate = request.getParameter("searchEndDate");
 	}
 	// System.out.println(searchProductNo + " <- searchProductNo");
-	AdminDao ad = new AdminDao();
+	
+	// model
+	EmployeesDao ed = new EmployeesDao();
 	ArrayList<Discount> discountList = new ArrayList<>();
 	
+	// 입력값을 받은경우의 수에 따라 분기
 	if (searchProductNo != 0){
 		System.out.println("check1");
-		discountList = ad.selectDiscount(searchProductNo);
+		discountList = ed.selectDiscount(searchProductNo);
 	} else if(splitSearchProduct != null
 			&& !"".equals(splitSearchProduct[0])){
 		System.out.println("check2");
-		discountList = ad.selectDiscount(splitSearchProduct);
+		discountList = ed.selectDiscount(splitSearchProduct);
 	} else if(searchBeginDate != null){
 		System.out.println("check3");
-		discountList = ad.selectDiscount(searchDate, searchBeginDate, searchEndDate);
+		discountList = ed.selectDiscount(searchDate, searchBeginDate, searchEndDate);
 	} else if(searchRate != 0){
 		System.out.println("check4");
-		discountList = ad.selectDiscount(searchRate);
+		discountList = ed.selectDiscount(searchRate);
 	} else {
 		System.out.println("check5");
-		discountList = ad.selectDiscount();
+		discountList = ed.selectDiscount();
 	}
 %>
 <!DOCTYPE html>
@@ -67,11 +72,11 @@
 </head>
 <body>
 	<h1>할인품목 관리</h1>
-	<a href="<%=request.getContextPath()%>/admin/insertDiscount.jsp">
+	<a href="<%=request.getContextPath()%>/employees/insertDiscount.jsp">
 		할인 추가
 	</a>
 	<h4>할인 검색</h4>
-	<form action="<%=request.getContextPath()%>/admin/discountList.jsp" method="get">
+	<form action="<%=request.getContextPath()%>/employees/discountList.jsp" method="get">
 		상품명, 번호<input type="text" name="searchProduct">
 		할인율 <input type="number" name="searchRate">
 		<select name="searchDate">
@@ -121,12 +126,12 @@
 					<%=d.getUpdatedate()%>
 				</td>
 				<td>
-					<a href="<%=request.getContextPath()%>/admin/updateDiscount.jsp?discountNo=<%=d.getDiscountNo()%>">
+					<a href="<%=request.getContextPath()%>/employees/updateDiscount.jsp?discountNo=<%=d.getDiscountNo()%>">
 						수정
 					</a>
 				</td>
 				<td>
-					<a href="<%=request.getContextPath()%>/admin/deleteDiscountAction.jsp?discountNo=<%=d.getDiscountNo()%>">
+					<a href="<%=request.getContextPath()%>/employees/deleteDiscountAction.jsp?discountNo=<%=d.getDiscountNo()%>">
 						삭제
 					</a>
 				</td>
