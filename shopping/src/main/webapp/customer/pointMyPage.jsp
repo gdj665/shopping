@@ -81,17 +81,17 @@
 		<%
 			if(startPage > 5){
 		%>
-			<a href="<%=request.getContextPath()%>/member/pointList.jsp?currentPage=<%=startPage-1%>">이전</a>
+			<a href="<%=request.getContextPath()%>/customer/pointList.jsp?currentPage=<%=startPage-1%>">이전</a>
 		<%
 			}
 			for(int i = startPage; i<=endPage; i++){
 		%>
-			<a href="<%=request.getContextPath()%>/member/pointList.jsp?currentPage=<%=i%>"><%=i%></a>
+			<a href="<%=request.getContextPath()%>/customer/pointList.jsp?currentPage=<%=i%>"><%=i%></a>
 		<%
 			}
 			if(endPage<lastPage){
 		%>
-			<a href="<%=request.getContextPath()%>/member/pointList.jsp?currentPage=<%=endPage+1%>">다음</a>
+			<a href="<%=request.getContextPath()%>/customer/pointList.jsp?currentPage=<%=endPage+1%>">다음</a>
 		<%
 			}
 		%>

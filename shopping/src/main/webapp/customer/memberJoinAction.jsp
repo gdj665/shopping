@@ -27,7 +27,7 @@
 	System.out.println(request.getParameter("cstmAgree")+"<-- memberJoinAction.jsp cstmAgree");
 	
 	if(request.getParameter("id") ==null || request.getParameter("id").equals("")){
-		response.sendRedirect(request.getContextPath()+"/member/memberJoin.jsp");
+		response.sendRedirect(request.getContextPath()+"/customer/memberJoin.jsp");
 		return;
 	}
 	
@@ -50,7 +50,7 @@
 		msg = "전화번호를 입력하세요";
 	
 	} if(msg != null){
-		response.sendRedirect(request.getContextPath()+"/member/memberJoin.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/memberJoin.jsp?msg="+msg);
 		return;
 	}
 
@@ -77,7 +77,7 @@
 	// Method 받아오는 값에 따라 상황별 분기
 	if(row == 3){
 		msg = URLEncoder.encode("사용중인 아이디 입니다","utf-8");
-		response.sendRedirect(request.getContextPath()+"/member/memberJoin.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/memberJoin.jsp?msg="+msg);
 			return;
 	}
 	
@@ -96,7 +96,7 @@
 	int inCustom = insertCustomer.insertCustomer(customer);
 	if(inCustom > 0){
 		msg = URLEncoder.encode("회원가입 완료되었습니다.","utf-8");
-		response.sendRedirect(request.getContextPath()+"/member/login.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/login.jsp?msg="+msg);
 		return;
 	}
 %>

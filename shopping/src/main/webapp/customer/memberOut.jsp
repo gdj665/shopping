@@ -17,7 +17,7 @@
 <body>
 	<h1>회원 탈퇴</h1>
 	
-	<form action="<%=request.getContextPath()%>/member/memberOutAction.jsp" method="post">
+	<form action="<%=request.getContextPath()%>/customer/memberOutAction.jsp" method="post">
 		<table>
 			<tr>
 				<td>아이디</td>

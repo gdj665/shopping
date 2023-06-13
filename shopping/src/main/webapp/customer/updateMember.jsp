@@ -18,18 +18,24 @@
 <body>
 <h1>회원 정보 수정</h1>
 	
-	<form action="<%=request.getContextPath()%>/member/updateMemberAction.jsp" method="post">
+	<form action="<%=request.getContextPath()%>/customer/updateMemberAction.jsp" method="post">
 		<table>	
 			<tr>
-					<td>아이디</td>
-					<td>
-						<input type="text" id="id" name="id" required="required">
-					</td>
+				<td>아이디</td>
+				<td>
+					<input type="text" id="id" name="id" readonly="readonly" value="<%=id%>">
+				</td>
+				</tr>
+			<tr>
+				<td>이름</td>
+				<td>
+					<input type="text" id="name" name="cstmName" required="required">
+				</td>
 				</tr>
 			<tr>
 				<td>주소</td>
 					<td>
-						<textarea name ="cstmAddress" cols ="33" rows="5" ></textarea>
+						<textarea name ="cstmAddress" cols ="33" rows="5" required="required"></textarea>
 					</td>
 				</tr>	
 				<tr>

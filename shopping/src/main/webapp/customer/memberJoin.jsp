@@ -20,7 +20,7 @@
 </head>
 <body>
 	<h1> 회원가입 </h1>
-	<form action="<%=request.getContextPath()%>/member/memberJoinAction.jsp" method="post">
+	<form action="<%=request.getContextPath()%>/customer/memberJoinAction.jsp" method="post">
 		<fieldset>
 			<legend>01 로그인 정보</legend>
 			<table border="1">

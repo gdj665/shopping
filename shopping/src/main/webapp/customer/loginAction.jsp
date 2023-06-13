@@ -24,7 +24,7 @@
 	if(request.getParameter("id") == null 
 	|| request.getParameter("lastPw") == null){
 		msg = URLEncoder.encode("아이디 또는 비밀번호가 맞지 않습니다","utf-8");
-		response.sendRedirect(request.getContextPath()+"/mamber/login.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/login.jsp?msg="+msg);
 		return;
 	}
 	//요청값 변수에 저장
@@ -44,12 +44,12 @@
 	
 	if(row == 3){
 		msg = URLEncoder.encode("탈퇴한 아이디 입니다","utf-8");
-		response.sendRedirect(request.getContextPath()+"/member/login.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/login.jsp?msg="+msg);
 		return;
 	}
 	if(row == 0){
 			msg = URLEncoder.encode("없는 아이디 입니다","utf-8");
-			response.sendRedirect(request.getContextPath()+"/member/login.jsp?msg="+msg);
+			response.sendRedirect(request.getContextPath()+"/customer/login.jsp?msg="+msg);
 			return;
 	}
 	if(row == 1){
@@ -65,7 +65,7 @@
 		//고객도 아니고 사원도 아니라면 로그인 하면 안되므로 정보가 없는 아이디라고 메세지와 함께 되돌려보낸다
 		if(cstmCnt == 0 && empCnt == 0){
 			msg = URLEncoder.encode("정보가 없는 아이디 입니다","utf-8");
-			response.sendRedirect(request.getContextPath()+"/member/login.jsp?msg="+msg);
+			response.sendRedirect(request.getContextPath()+"/customer/login.jsp?msg="+msg);
 			return;
 		}
 		

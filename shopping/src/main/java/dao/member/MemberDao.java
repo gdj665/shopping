@@ -81,11 +81,12 @@ public class MemberDao {
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
 		// 고객 테이블 데이터값 수정 쿼리
-		PreparedStatement stmt = conn.prepareStatement("UPDATE customer SET cstm_name, cstm_address = ?, cstm_email = ? updatedate = now() WHERE id = ? ");
+		PreparedStatement stmt = conn.prepareStatement("UPDATE customer SET cstm_name = ?, cstm_address = ?, cstm_email = ?, cstm_phone = ?, updatedate = now() WHERE id = ? ");
 		stmt.setString(1, custm.getCstmName());
 		stmt.setString(2, custm.getCstmAddress());
 		stmt.setString(3, custm.getCstmEmail());
-		stmt.setString(4, custm.getId());
+		stmt.setString(4, custm.getCstmPhone());
+		stmt.setString(5, custm.getId());
 		
 		row = stmt.executeUpdate();
 		
@@ -267,8 +268,7 @@ public class MemberDao {
 	
 	
 	// 고객 마이페이지
-	public ArrayList<HashMap<String, Object>> selectCstmList(String id) throws Exception{
-		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+	public HashMap<String, Object> selectCstmList(String id) throws Exception{
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
 		
@@ -279,8 +279,8 @@ public class MemberDao {
 		stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();
 		
+		HashMap<String, Object> m = new HashMap<String, Object>();
 		if(rs.next()) {
-			HashMap<String, Object> m = new HashMap<String, Object>();
 			m.put("cstmId", rs.getString("cstmId"));
 			m.put("cstmName", rs.getString("cstmName"));
 			m.put("cstmAddress", rs.getString("cstmAddress"));
@@ -290,10 +290,9 @@ public class MemberDao {
 			m.put("cstmRank", rs.getString("cstmRank"));
 			m.put("cstmPoint", rs.getInt("cstmPoint"));
 			m.put("createdate", rs.getString("createdate"));
-			list.add(m);
 			
 		}
-		return list;
+		return m;
 	}
 	
 	// 회원 탈퇴

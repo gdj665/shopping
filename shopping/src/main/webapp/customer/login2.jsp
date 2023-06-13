@@ -14,7 +14,6 @@
 </head>
 <body>
 	<h1>로그인</h1>
-	<h1>
 		 <%
         	if(request.getParameter("msg") != null){
          %>
@@ -22,7 +21,6 @@
          <% 
         	}
       	 %>		
-	</h1>
 	<form action="<%=request.getContextPath()%>/member/loginAction.jsp" method="get">
 		<table>
 			<tr>

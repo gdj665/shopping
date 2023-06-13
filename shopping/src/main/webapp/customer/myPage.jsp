@@ -12,8 +12,9 @@
 	System.out.println(id+"<-- myPage id");	
 	
 	MemberDao li = new MemberDao();
-	ArrayList<HashMap<String, Object>> list = li.selectCstmList(id);
+	HashMap<String, Object> list = li.selectCstmList(id);
 	System.out.println(list+"<-- myPage list");
+	HashMap<String, Object> m = new HashMap<>();
 	
 %>
 <!DOCTYPE html>
@@ -27,7 +28,6 @@
 		 
 	<%
 		if(id != null){
-			for(HashMap<String, Object> m : list){
 	%>
 		<table>
 			<tr>
@@ -68,7 +68,6 @@
 			</tr>
 		</table>
 	<% 			
-			}
 		}
 	%>
 </body>

@@ -29,14 +29,14 @@
 		|| request.getParameter("pw").equals("")
 		|| request.getParameter("checkPw").equals("")){
 			msg = URLEncoder.encode("모두입력해주시길 바랍니다.","utf-8");
-			response.sendRedirect(request.getContextPath()+"/member/updatePassword.jsp?msg="+msg);
+			response.sendRedirect(request.getContextPath()+"/customer/updatePassword.jsp?msg="+msg);
 			return;
 	}
 	
 	// 비밀번호가 같은지 체크
 	if(!request.getParameter("pw").equals(request.getParameter("checkPw"))){
 		msg = URLEncoder.encode("비밀번호가 서로 다릅니다.","utf-8");
-		response.sendRedirect(request.getContextPath()+"/member/updatePassword.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/updatePassword.jsp?msg="+msg);
 		return;
 	}
 	
@@ -55,7 +55,7 @@
 	// 실행값에 따라 분기 0이상이면 비밀번호 맞고 0이면 비밀번호가 틀립니다.
 	if(checkRow > 0){
 		msg = URLEncoder.encode("비밀번호가 다릅니다","utf-8");
-		response.sendRedirect(request.getContextPath()+"/member/updatePassword.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/updatePassword.jsp?msg="+msg);
 		return;
 	}
 	
@@ -70,7 +70,7 @@
 	
 	if(ckRow > 0){
 		msg = URLEncoder.encode("이전에 사용한 비밀번호입니다","utf-8");
-		response.sendRedirect(request.getContextPath()+"/member/updatePassword.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/updatePassword.jsp?msg="+msg);
 		return;
 	}
 	
@@ -79,7 +79,7 @@
 	int chRow = chPw.updatePw(idList);
 	if(chRow > 0){
 		msg = URLEncoder.encode("비밀번호가 변경이 완료되었습니다","utf-8");
-		response.sendRedirect(request.getContextPath()+"/member/myPage.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/myPage.jsp?msg="+msg);
 		return;
 	} 
 %>

@@ -98,17 +98,17 @@
 			}
 			if(startPage > 5){
 		%>
-			<a href="<%=request.getContextPath()%>/member/ordierMyPage.jsp?currentPage=<%=startPage-1%>">이전</a>
+			<a href="<%=request.getContextPath()%>/customer/ordierMyPage.jsp?currentPage=<%=startPage-1%>">이전</a>
 		<%
 			}
 			for(int i = startPage; i<=endPage; i++){
 		%>
-			<a href="<%=request.getContextPath()%>/member/ordierMyPage.jsp?currentPage=<%=i%>"><%=i%></a>
+			<a href="<%=request.getContextPath()%>/customer/ordierMyPage.jsp?currentPage=<%=i%>"><%=i%></a>
 		<%
 			}
 			if(endPage<lastPage){
 		%>
-			<a href="<%=request.getContextPath()%>/member/ordierMyPage.jsp?currentPage=<%=endPage+1%>">다음</a>
+			<a href="<%=request.getContextPath()%>/customer/ordierMyPage.jsp?currentPage=<%=endPage+1%>">다음</a>
 		<%
 			
 			}

@@ -19,7 +19,7 @@
 	} else if (request.getParameter("lastPw") == null || request.getParameter("lastPw").equals("")){
 		
 		msg = URLEncoder.encode("아이디 또는 비밀번호가 다릅니다","utf-8");
-		response.sendRedirect(request.getContextPath()+"/member/deleteMember.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/deleteMember.jsp?msg="+msg);
 		return;
 	}
 	
