@@ -19,13 +19,14 @@
 	} else if (request.getParameter("lastPw") == null || request.getParameter("lastPw").equals("")){
 		
 		msg = URLEncoder.encode("아이디 또는 비밀번호가 다릅니다","utf-8");
-		response.sendRedirect(request.getContextPath()+"/customer/deleteMember.jsp?msg="+msg);
+		response.sendRedirect(request.getContextPath()+"/customer/memberOut.jsp?msg="+msg);
 		return;
 	}
 	
 	//요청값 변수에 저장
 	String id = request.getParameter("id");
 	String pw = request.getParameter("lastPw");
+	
 	//변수클래스에 저장
 	IdList onePw = new IdList();
 	onePw.setId(id);

@@ -17,6 +17,9 @@
 <head>
 <meta charset="UTF-8">
 <title>memberJoin</title>
+<script>
+
+</script>
 </head>
 <body>
 	<h1> 회원가입 </h1>
@@ -48,7 +51,8 @@
 				<tr>
 					<td>주소</td>
 					<td>
-						<textarea name ="cstmAddress" cols ="33" rows="5" required="required" ></textarea>
+					<input class="form-control" type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+					<input class="form-control" name="address2" type="text" id="sample6_detailAddress" placeholder="상세주소">
 					</td>
 				</tr>
 				<tr>

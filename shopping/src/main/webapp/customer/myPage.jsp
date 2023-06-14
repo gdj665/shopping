@@ -11,10 +11,11 @@
 
 	System.out.println(id+"<-- myPage id");	
 	
-	MemberDao li = new MemberDao();
-	HashMap<String, Object> list = li.selectCstmList(id);
-	System.out.println(list+"<-- myPage list");
+	MemberDao mamDao = new MemberDao();
 	HashMap<String, Object> m = new HashMap<>();
+	m = mamDao.selectCstmList(id);
+	
+	System.out.println(m + "<-- myPage list");
 	
 %>
 <!DOCTYPE html>

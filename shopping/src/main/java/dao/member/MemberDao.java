@@ -184,7 +184,7 @@ public class MemberDao {
 	         PreparedStatement csLoginStmt = conn.prepareStatement("UPDATE customer SET cstm_last_login = now() WHERE id = ?");
 	         csLoginStmt.setString(1, id.getId());
 	         int upRow = csLoginStmt.executeUpdate();
-	         if(upRow > 0) {
+	         if(upRow > 0 ) {
 	            System.out.println("고객 마지막로그인 업데이트");
 	         }else if(upRow == 0) {
 	            System.out.println("관리자입니다");
@@ -204,7 +204,42 @@ public class MemberDao {
 	      return row;
 	   }
 	
-	
+	// 로그인 test
+	   public int exlogin(IdList id) throws Exception {
+		      int row = 0;
+		      DBUtil dbUtil = new DBUtil(); 
+		      Connection conn =  dbUtil.getConnection();
+		      PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = 1");
+		      stmt.setString(1, id.getId());
+		      stmt.setString(2, id.getLastPw());
+		      ResultSet loginRs = stmt.executeQuery();
+		      if(loginRs.next()) {
+		         row=loginRs.getInt(1);
+		      }
+		      if(row > 0) {
+		         PreparedStatement csLoginStmt = conn.prepareStatement("UPDATE customer SET cstm_last_login = now() WHERE id = ?");
+		         csLoginStmt.setString(1, id.getId());
+		         int upRow = csLoginStmt.executeUpdate();
+		         if(upRow > 0 ) {
+		            System.out.println("고객 마지막로그인 업데이트");
+		         }else if(upRow == 0) {
+		            System.out.println("관리자입니다");
+		         }
+		         return row;
+		      } 
+		      if(row == 0) {
+		         PreparedStatement falStmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = 2");
+		         falStmt.setString(1, id.getId());
+		         falStmt.setString(2, id.getLastPw());
+		         ResultSet rs = falStmt.executeQuery();
+		         if(rs.next()) {
+		            row = 3;
+		         }
+		            return row;
+		      }
+		      return row;
+		   }
+	   
 	// 고객 아이디 확인
 	public int loginCstmId(IdList idList) throws Exception {
 		int cnt = 0;
@@ -300,7 +335,7 @@ public class MemberDao {
 		int row = 0;
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
-		PreparedStatement stmt = conn.prepareStatement("UPDATE id_list SET active = 3 updatedate = now() WHERE id = ?");
+		PreparedStatement stmt = conn.prepareStatement("UPDATE id_list SET active = 3 WHERE id = ?");
 		stmt.setString(1, id);
 		row = stmt.executeUpdate();
 		return row;

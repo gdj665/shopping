@@ -22,13 +22,13 @@
 			<tr>
 				<td>아이디</td>
 				<td>
-					<input type="hidden" name="id">
+					<input type="text" id="id" name="id" readonly="readonly" value="<%=id%>">
 				</td>
 			</tr>
 			<tr>
 				<td>비밀번호</td>
 				<td>
-					<input type="password" name="pw" >
+					<input type="password" id="lastPw" name="lastPw" >
 				</td>
 			</tr>
 			
