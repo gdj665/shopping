@@ -11,12 +11,22 @@
 	//유효성 검사
 	if(session.getAttribute("loginId") == null){
 		
-		// null값이 있을 경우 홈으로 이동
+		// null값이 있을 경우 로그인 페이지로 이동
 		System.out.println("cart null있음");
-		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		
+		String msg = "로그인이 필요합니다.";
+		String redirectUrl = request.getContextPath() + "/customer/login.jsp";
+		
+		// alert 메세지 출력
+		String script = 
+				"<script>"+
+					"alert('" + msg + "');"+
+					"window.location.href='" + redirectUrl + "';"+
+				"</script>";
+		response.getWriter().println(script);
 		return;
 	}
-
+	
 	// 값 받아오기
 	String id = (String)session.getAttribute("loginId");
 
@@ -302,16 +312,9 @@
                                     </td>
                                     <!-- 해당 제품의 재고량 안에서 수량 선택 가능 -->
                                     <td class="qua-col first-row">
-                                        <select name="cartCnt" class="form-select">
-											<%
-												for(int i = 1; i<=tcnt; i++){
-											%>
-												<!-- 제품 갯수를 변경하면 그 값을 넘김 -->
-												<option <%= (i == cartCnt) ? "selected" : "" %> value=<%=i %>><%= i %></option>
-											<%
-												}
-											%>
-										</select>
+	                                    <div class="pro-qty">
+											<input name="cartCnt" id="cartQty" value="<%=cartCnt %>" type="text">
+										</div>
 									</td>
 									<!-- 제품과 갯수를 고른 뒤 총 합을 출력 (장바구니 전체 출력 X) -->
                                     <td class="total-price first-row"><%=m.get("totalPrice") %></td>
@@ -490,6 +493,31 @@
 			location.href = "<%=request.getContextPath()%>/order/cartAction.jsp?id=<%=id%>";
 		}
 	});
+	$('#cartQty').change(function(){
+		
+	});
+</script>
+<script>
+	// 제품 수량을 재고량 보다 많이 입력했을 때 재고량 만큼만 입력되게함
+	<%
+		for(HashMap<String,Object> m : list){
+			int productNo = (int)m.get("productNo");
+			int tcnt = orderdao.totalstock(productNo);
+			
+	%>
+			$(document).ready(function() {
+				$('#cartQty').on('input', function() {
+					var maxValue = <%=tcnt%>;
+					var currentValue = parseInt($(this).val());
+					
+					if (currentValue > maxValue) {
+						$(this).val(maxValue);
+					}
+				});
+			});
+	<%
+		}
+	%>
 </script>
 </body>
 

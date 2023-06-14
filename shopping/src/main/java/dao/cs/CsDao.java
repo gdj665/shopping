@@ -65,6 +65,11 @@ public class CsDao {
 		stmt.setString(2,aContent);
 		stmt.setString(3,id);
 		row = stmt.executeUpdate();
+		
+		String sql2 = "UPDATE question SET checked = 'Y' WHERE q_no = ?";
+		PreparedStatement stmt2 = conn.prepareStatement(sql2);
+		stmt2.setInt(1,qNo);
+		row = stmt2.executeUpdate();
 		return row;
 	}
 	
@@ -88,7 +93,7 @@ public class CsDao {
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
-		String sql = "SELECT oq_no,left(oq_content,20) oq_content ,id,oq_title,createdate,updatedate FROM one_question WHERE id = ? ORDER BY updatedate DESC";
+		String sql = "SELECT oq_no,left(oq_content,20) oq_content ,id,oq_title,checked,createdate,updatedate FROM one_question WHERE id = ? ORDER BY updatedate DESC";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1,id);
 		ResultSet rs = stmt.executeQuery();
@@ -101,6 +106,7 @@ public class CsDao {
 			a.put("oqTitle", rs.getString("oq_title"));
 			a.put("createdate", rs.getString("createdate"));
 			a.put("updatedate", rs.getString("updatedate"));
+			a.put("checked", rs.getString("checked"));
 			list.add(a);
 		}
 		return list;
@@ -146,15 +152,42 @@ public class CsDao {
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
-		String sql = "INSERT INTO one_answer(oq_no,oa_content,id,createdate,updatedate) values(?,?,?,NOW(),NOW())";
+		String sql = "INSERT INTO one_answer(oq_no,oa_content,id,checked,createdate,updatedate) values(?,?,?,0,NOW(),NOW())";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1,oqNo);
 		stmt.setString(2,oaContent);
 		stmt.setString(3,id);
 		row = stmt.executeUpdate();
+		
+		String sql2 = "UPDATE one_question SET checked = 'N' WHERE oq_no = ?";
+		PreparedStatement stmt2 = conn.prepareStatement(sql2);
+		stmt2.setInt(1,oqNo);
+		row = stmt2.executeUpdate();
+		
 		return row;
 	}
 	
+	// 8-1) 관리자 답변 입력 메서드
+		public int insertEmpAnswer(int oqNo, String oaContent, String id) throws Exception {
+			int row = 0;
+			DBUtil dbUtil = new DBUtil();
+			Connection conn = dbUtil.getConnection();
+			
+			String sql = "INSERT INTO one_answer(oq_no,oa_content,id,checked,createdate,updatedate) values(?,?,?,1,NOW(),NOW())";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,oqNo);
+			stmt.setString(2,oaContent);
+			stmt.setString(3,id);
+			row = stmt.executeUpdate();
+			
+			String sql2 = "UPDATE one_question SET checked = 'Y' WHERE oq_no = ?";
+			PreparedStatement stmt2 = conn.prepareStatement(sql2);
+			stmt2.setInt(1,oqNo);
+			row = stmt2.executeUpdate();
+			
+			return row;
+		}
+		
 	// 9) 문의글 삭제 메서드
 	public int deleteEtcCsOne(int oqNo) throws Exception {
 		int row = 0;
@@ -173,7 +206,7 @@ public class CsDao {
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
-		String sql = "SELECT id,oa_no,oa_content,createdate,updatedate FROM one_answer WHERE oq_no = ?";
+		String sql = "SELECT id,oa_no,oa_content,createdate,updatedate,checked FROM one_answer WHERE oq_no = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1,oqNo);
 		ResultSet rs = stmt.executeQuery();
@@ -185,6 +218,7 @@ public class CsDao {
 			a.put("oaContent", rs.getString("oa_content"));
 			a.put("createdate", rs.getString("createdate"));
 			a.put("updatedate", rs.getString("updatedate"));
+			a.put("checked", rs.getInt("checked"));
 			list.add(a);
 		}
 		return list;

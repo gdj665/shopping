@@ -70,7 +70,7 @@ public class OrderDao {
 				+ "	LEFT OUTER JOIN product p ON c.product_no = p.product_no \r\n"
 				+ "	LEFT OUTER JOIN discount d ON p.product_no = d.product_no \r\n"
 				+ "	LEFT OUTER JOIN customer m ON c.id = m.id \r\n"
-				+ "WHERE m.id = 'admin' AND c.checked='Y'";
+				+ "WHERE m.id = ? AND c.checked='Y'";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1,id);
 		ResultSet rs = stmt.executeQuery();
@@ -571,12 +571,12 @@ public class OrderDao {
 	    Connection conn = DBUtil.getConnection();
 	    HttpSession session = request.getSession();
 	    if (session.getAttribute("loginId") != null) {
-	        ArrayList<Cart> cartList = (ArrayList<Cart>) session.getAttribute("cartList");
-	        if (cartList != null && !cartList.isEmpty()) {
+	    	HashMap<String, Cart> cartMap = (HashMap<String, Cart>) session.getAttribute("cartMap");
+	        if (cartMap != null && !cartMap.isEmpty()) {
 	            String sql = "INSERT INTO cart (id, product_no, cart_cnt, createdate, updatedate) VALUES (?, ?, ?, NOW(), NOW())";
 	            PreparedStatement stmt = conn.prepareStatement(sql);
 	            
-	            for (Cart cart : cartList) {
+	            for (Cart cart : cartMap.values()) {
 	                stmt.setString(1, id);
 	                stmt.setInt(2, cart.getProductNo());
 	                stmt.setInt(3, cart.getCartCnt());
@@ -584,13 +584,26 @@ public class OrderDao {
 	            }
 	            
 	            // 로그인 후 카트 테이블에 추가한 데이터는 더 이상 필요하지 않으므로 삭제
-	            cartList.clear();
-	            session.setAttribute("cartList", cartList);
+	            cartMap.clear();
+	            session.setAttribute("cartList", cartMap);
 	        }
 	    }
 	}
 	
-	
+	// 26) 로그인 되어 있는 상태에서 장바구니에 데이터 삽입
+	public int insertCartAction(String id,int productNo, int cartCnt) throws Exception {
+		int row = 0;
+		DBUtil DBUtil = new DBUtil();
+	    Connection conn = DBUtil.getConnection();
+	    
+	    String sql = "INSERT INTO cart(id,product_no,cart_cnt,createdate,updatedate) VALUES (?,?,?,now(),now())";
+	    PreparedStatement stmt = conn.prepareStatement(sql);
+	    stmt.setString(1, id);
+        stmt.setInt(2, productNo);
+        stmt.setInt(3, cartCnt);
+        row = stmt.executeUpdate();
+		return row;
+	}
 	//테스트 용
 	public static void main(String[] args) throws Exception {
 		

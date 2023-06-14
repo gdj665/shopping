@@ -10,16 +10,25 @@
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
 
-
 	//유효성 검사
-	if(session.getAttribute("loginId")==null){
+	if(session.getAttribute("loginId") == null){
 		
-		// null값이 있을 경우 홈으로 이동
+		// null값이 있을 경우 로그인 페이지로 이동
 		System.out.println("etcCsList ID값 null 있음");
-		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		
+		String msg = "로그인이 필요합니다.";
+		String redirectUrl = request.getContextPath() + "/customer/login.jsp";
+		
+		// alert 메세지 출력
+		String script = 
+				"<script>"+
+					"alert('" + msg + "');"+
+					"window.location.href='" + redirectUrl + "';"+
+				"</script>";
+		response.getWriter().println(script);
 		return;
 	}
-
+	
 	// 값 받아오기
 	String id = (String)session.getAttribute("loginId");
 	
@@ -253,9 +262,10 @@
 							<tr>
 								<th style="width:100px;">번호</th>
 								<th style="width:200px;">제목</th>
-								<th style="width:600px;">내용</th>
+								<th style="width:500px;">내용</th>
 								<th style="width:200px;">등록일</th>
 								<th style="width:200px;">최종수정일</th>
+								<th style="width:100px;">답변확인</th>
 							</tr>	
 						</thead>
 						<% 
@@ -267,6 +277,19 @@
 							<td><%=(String)m.get("oqContent") %></td>
 							<td><%=(String)m.get("createdate") %></td>
 							<td><%=(String)m.get("updatedate") %></td>
+							<td>
+								<%
+									if(m.get("checked").equals("N")){
+								%>
+										답변대기중
+								<%
+									} else {
+								%>
+										답변완료
+								<%
+									}
+								%>
+							</td>
 						</tr>
 						<%
 							}

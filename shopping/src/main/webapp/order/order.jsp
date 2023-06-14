@@ -12,11 +12,22 @@
 	//유효성 검사
 	if(session.getAttribute("loginId") == null){
 		
-		// null값이 있을 경우 홈으로 이동
+		// null값이 있을 경우 로그인 페이지로 이동
 		System.out.println("order null있음");
-		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		
+		String msg = "로그인이 필요합니다.";
+		String redirectUrl = request.getContextPath() + "/customer/login.jsp";
+		
+		// alert 메세지 출력
+		String script = 
+				"<script>"+
+					"alert('" + msg + "');"+
+					"window.location.href='" + redirectUrl + "';"+
+				"</script>";
+		response.getWriter().println(script);
 		return;
 	}
+
 	
 	// 값 받아오기
 	String id = (String)session.getAttribute("loginId");
@@ -511,7 +522,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	$('#pointLink').click(function(){
 		<% for(HashMap<String,Object> m : list4){ %>
 			let url = '<%=request.getContextPath() %>/order/orderPoint.jsp?orderNo=<%=(int)m.get("orderNo")%>';
-			open(url, '', 'width=500,height=500');
+			open(url, '_blank', 'width=500,height=500');
 		<% } %>
 	});
 	$('#orderBtn').click(function(){

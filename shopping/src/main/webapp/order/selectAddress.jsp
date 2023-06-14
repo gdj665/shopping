@@ -42,6 +42,7 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 </head>
 <body>
 	<div>
@@ -62,6 +63,7 @@
 		<br>
 		<div class="d-grid">
 			<button class="btn btn-outline-secondary btn-block" type="submit" onclick="submitForm()">선택하기</button>
+			<button id="adressBtn" class="btn btn-outline-secondary btn-block" type="button">선택하기2</button>
 		</div>
 		<br>
 		</form>
@@ -82,5 +84,13 @@
 		window.opener.location.reload();
 		window.close();
 	};
+	$(document).ready(function(){
+		$('#adressBtn').click(function(){
+			$('#addressForm').submit();
+			window.opener.location.reload();
+			window.close();
+		});
+	});
+	
 </script>
 </html>

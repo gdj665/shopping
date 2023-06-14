@@ -9,7 +9,7 @@
 <%
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
-	
+
 	//유효성 검사
 	if(request.getParameterValues("oqNo")==null){
 		
@@ -17,10 +17,18 @@
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
-	
+
 	// 값 받아오기
 	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
-	String id = (String)session.getAttribute("loginId");
+	String id = null;
+	
+	if(session.getAttribute("loginId")!=null){
+		id = (String)session.getAttribute("loginId");
+	} else if(session.getAttribute("loginEmpId1")!=null){
+		id = (String)session.getAttribute("loginEmpId1");
+	} else if (session.getAttribute("loginEmpId2")!=null){
+		id = (String)session.getAttribute("loginEmpId2");
+	}
 	
 	//OrderDao 선언
 	CsDao csdao = new CsDao();
@@ -280,14 +288,33 @@
 										}
 									%>
 										<tr>
-											<td style="width:780px;">
-												<label for="comment">댓글 작성&nbsp;&nbsp;&nbsp;<sapn style="font-weight:bold;"><%=id %></sapn></label>
-												<textarea class="form-control" rows="5" id="comment" name="oaContent"></textarea>
-											</td>
-											<td>
-												<button class="btn btn-secondary" style="margin-top: 130px;" type="submit">작성</button>
-												<input type="hidden" name="oqNo" value="<%=oqNo %>">
-											</td>
+											<%
+												//일반 고객일 경우 댓글 작성
+												if(session.getAttribute("loginId")!=null){
+											%>
+												<td style="width:780px;">
+													<label for="comment">댓글 작성&nbsp;&nbsp;&nbsp;<sapn style="font-weight:bold;"><%=id %></sapn></label>
+													<textarea class="form-control" rows="5" id="comment" name="oaContent"></textarea>
+												</td>
+												<td>
+													<button class="btn btn-secondary" style="margin-top: 130px;" type="submit">작성</button>
+													<input type="hidden" name="oqNo" value="<%=oqNo %>">
+												</td>
+											<%
+												// 관리자 일경우 댓글작성
+												} else if (session.getAttribute("loginEmpId1")!=null || session.getAttribute("loginEmpId2")!=null){
+											%>
+												<td style="width:780px;">
+													<label for="comment">댓글 작성&nbsp;&nbsp;&nbsp;<sapn style="font-weight:bold;">관리자</sapn></label>
+													<textarea class="form-control" rows="5" id="comment" name="oaContent"></textarea>
+												</td>
+												<td>
+													<button class="btn btn-secondary" style="margin-top: 130px;" type="submit">작성</button>
+													<input type="hidden" name="oqNo" value="<%=oqNo %>">
+												</td>
+											<%
+												}
+											%>
 										</tr>
 								</table>
 							</form>
@@ -299,10 +326,26 @@
 							<table class="table">
 								<tr>
 									<th style="font-size:10pt; background-color: #F6F6F6;">
-										<%=(String)m.get("id") %>
+										<%
+											if((int)m.get("checked")==1){
+										%>
+											관리자
+										<%
+											} else {
+										%>
+											<%=(String)m.get("id") %>
+										<%
+											}
+										%>
 										<div style="float:right; color:#BDBDBD;">
 											<%=(String)m.get("updatedate") %>
+										<%
+											if(m.get("id").equals(id) || session.getAttribute("loginEmpId1")!=null || session.getAttribute("loginEmpId2")!=null){
+										%>
 											<a style="text-decoration: none; color:#000000;" href="<%=request.getContextPath()%>/cs/deleteEtcCsCommentAction.jsp?oaNo=<%=(int)m.get("oaNo") %>&oqNo=<%=oqNo%>">삭제</a>
+										<%
+											}
+										%>
 										</div>
 									</th>
 								</tr>
