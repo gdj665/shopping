@@ -562,7 +562,51 @@ public class EmployeesDao {
 		return customerList;
 	} 
 	
-	// admin 출력
+	// 회원 출력
+	public Customer selectCustomer(String id) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT c.id id, il.active active, c.cstm_name cstmName, c.cstm_address cstmAddress, c.cstm_email cstmEmail, \r\n"
+				+ "c.cstm_birth cstmBirth, c.cstm_phone cstmPhone, c.cstm_rank cstmRank, c.cstm_point cstmPoint, c.cstm_last_login cstmLastLogin,c.cstm_agree cstmAgree, c.createdate createdate, c.updatedate updatedate\r\n"
+				+ "FROM customer c INNER JOIN id_list il\r\n"
+				+ "ON c.id = il.id"
+				+ " WHERE c.id = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, id);
+		ResultSet rs = stmt.executeQuery();
+		Customer c = new Customer();
+		if(rs.next()) {
+			c.setId(rs.getString("id"));
+			c.setActive(rs.getInt("active"));
+			c.setCstmName(rs.getString("cstmName"));
+			c.setCstmAddress(rs.getString("cstmAddress"));
+			c.setCstmEmail(rs.getString("cstmEmail"));
+			c.setCstmBirth(rs.getString("cstmBirth"));
+			c.setCstmPhone(rs.getString("cstmPhone"));
+			c.setCstmRank(rs.getString("cstmRank"));
+			c.setCstmPoint(rs.getInt("cstmPoint"));
+			c.setCstmLastLogin(rs.getString("cstmLastLogin"));
+			c.setCstmAgree(rs.getString("cstmAgree"));
+			c.setCreatedate(rs.getString("createdate"));
+			c.setUpdatedate(rs.getString("updatedate"));
+		}
+		return c;
+	} 
+
+	// 회원 수정
+	public int updateCustomer(String id, int active) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "UPDATE id_list SET active = ?\r\n"
+				+ "WHERE id = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, active);
+		stmt.setString(2, id);
+		int row = stmt.executeUpdate();
+		return row;
+	} 
+	
+	// employees 출력
 	public ArrayList<Employees> selectEmployees() throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
@@ -581,5 +625,101 @@ public class EmployeesDao {
 			employeesList.add(e);
 		}
 		return employeesList;
+	} 
+	
+	// employees 출력
+	public Employees selectEmployees(String employeesId) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT id, emp_name empName, emp_level empLevel, createdate, updatedate\r\n"
+				+ "FROM employees\r\n"
+				+ "WHERE id = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, employeesId);
+		ResultSet rs = stmt.executeQuery();
+		Employees e = new Employees();
+		if(rs.next()) {
+			e.setId(rs.getString("id"));
+			e.setEmpName(rs.getString("empName"));
+			e.setEmpLevel(rs.getInt("empLevel"));
+			e.setCreatedate(rs.getString("createdate"));
+			e.setUpdatedate(rs.getString("updatedate"));
+		}
+		return e;
+	} 
+	
+	// employees 출력
+	public boolean checkPw(Employees employees) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT id, last_pw lastPw\r\n"
+				+ "FROM id_list\r\n"
+				+ "WHERE id = ? AND last_pw = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, employees.getId());
+		stmt.setString(2, employees.getEmpPw());
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			return true;
+		}
+		return false;
+	} 
+	
+	// employees 수정
+	public int updateEmployees(String preEmployeesId, Employees employees) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String checkIdSql = "SELECT COUNT(*) cnt\r\n"
+				+ "FROM id_list\r\n"
+				+ "WHERE id = ?";
+		PreparedStatement checkIdStmt = conn.prepareStatement(checkIdSql);
+		checkIdStmt.setString(1, employees.getId());
+		ResultSet checkIdRs = checkIdStmt.executeQuery();
+		// 중복 id있으면 0을 반환
+		if (checkIdRs.next()) {
+			if (checkIdRs.getInt("cnt") > 0) {
+				System.out.println("중복된 아이디");
+				return 0;
+			}
+		}
+		String updateIdSql = "UPDATE id_list SET id = ?, last_pw = ? WHERE id = ?";
+		PreparedStatement updateIdStmt = conn.prepareStatement(updateIdSql);
+		updateIdStmt.setString(1, employees.getId());
+		updateIdStmt.setString(2, employees.getEmpPw());
+		updateIdStmt.setString(3, preEmployeesId);
+		int row = updateIdStmt.executeUpdate();
+		if (row != 1) {
+			System.out.println("아이디, 비번 수정실패");
+			return 0;
+		}
+		String updateEmpSql = "UPDATE employees SET emp_name = ?, emp_level = ?, updatedate = NOW() WHERE id = ?";
+		PreparedStatement updateEmpStmt = conn.prepareStatement(updateEmpSql);
+		updateEmpStmt.setString(1, employees.getEmpName());
+		updateEmpStmt.setInt(2, employees.getEmpLevel());
+		updateEmpStmt.setString(3, employees.getId());
+		row = updateEmpStmt.executeUpdate();
+		return row;
+	} 
+	
+	// employees 수정
+	public int updateEmployees(Employees employees) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String updateIdSql = "UPDATE id_list SET last_pw = ? WHERE id = ?";
+		PreparedStatement updateIdStmt = conn.prepareStatement(updateIdSql);
+		updateIdStmt.setString(1, employees.getEmpPw());
+		updateIdStmt.setString(2, employees.getId());
+		int row = updateIdStmt.executeUpdate();
+		if (row != 1) {
+			System.out.println("비번 수정실패");
+			return 0;
+		}
+		String updateEmpSql = "UPDATE employees SET emp_name = ?, emp_level = ?, updatedate = NOW() WHERE id = ?";
+		PreparedStatement updateEmpStmt = conn.prepareStatement(updateEmpSql);
+		updateEmpStmt.setString(1, employees.getEmpName());
+		updateEmpStmt.setInt(2, employees.getEmpLevel());
+		updateEmpStmt.setString(3, employees.getId());
+		row = updateEmpStmt.executeUpdate();
+		return row;
 	} 
 }

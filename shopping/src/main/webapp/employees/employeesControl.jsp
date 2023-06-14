@@ -17,42 +17,33 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>회원 관리</h1>
+	<h1>직원 관리</h1>
 	<table>
 		<tr>
 			<th>아이디</th>
 			<th>이름</th>
 			<th>레벨</th>
-			<th>입사일</th>
-			<th>진급일</th>
-			<th>수정</th>
+			<th>상세보기</th>
 		</tr>
 	<%
 		for(Employees e : employeesList){
 	%>
-			<form action="<%=request.getContextPath()%>/employees/updateEmployeesAction.jsp" method="post">
 				<tr>
 					<td>
-						<input type="hidden" value="<%=e.getId()%>" name="employeesId">
 						<%=e.getId()%>
 					</td>
 					<td>
 						<%=e.getEmpName()%>
 					</td>
 					<td>
-						<input type="number" value="<%=e.getEmpLevel()%>" name="employeesLevel">
+						<%=e.getEmpLevel()%>
 					</td>
 					<td>
-						<%=e.getCreatedate()%>
-					</td>
-					<td>
-						<%=e.getUpdatedate()%>
-					</td>
-					<td>
-						<button type="submit">수정</button>
+						<a href="<%=request.getContextPath()%>/employees/employeesOneControl.jsp?employeesId=<%=e.getId()%>">
+							상세보기
+						</a>
 					</td>
 				</tr>
-			</form>
 	<%
 		}
 	%>

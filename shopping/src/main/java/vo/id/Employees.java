@@ -2,6 +2,7 @@ package vo.id;
 
 public class Employees {
 	private String id;
+	private String empPw;
 	private String empName;
 	private int empLevel;
 	private String createdate;
@@ -11,6 +12,12 @@ public class Employees {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getEmpPw() {
+		return empPw;
+	}
+	public void setEmpPw(String empPw) {
+		this.empPw = empPw;
 	}
 	public String getEmpName() {
 		return empName;

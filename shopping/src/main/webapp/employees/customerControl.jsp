@@ -51,7 +51,7 @@
 					<%=c.getCstmAgree()%>
 				</td>
 				<td>
-					<a href="<%=request.getContextPath()%>/employees/customerOneControl.jsp?customerId="<%=c.getId()%>>
+					<a href="<%=request.getContextPath()%>/employees/customerOneControl.jsp?customerId=<%=c.getId()%>">
 						상세보기
 					</a>
 				</td>
