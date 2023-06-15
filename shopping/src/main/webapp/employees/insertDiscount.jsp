@@ -7,7 +7,7 @@
 </head>
 <body>
 	<h1>할인 추가</h1>
-	<form action="<%=request.getContextPath()%>/admin/insertDiscountAction.jsp">
+	<form action="<%=request.getContextPath()%>/employees/insertDiscountAction.jsp">
 		<table>
 			<tr>
 				<th>상품번호</th>
