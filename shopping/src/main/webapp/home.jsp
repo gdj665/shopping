@@ -4,10 +4,11 @@
 <%@ page import="vo.product.*" %>
 <%
 	MainDao md = new MainDao();
-	ArrayList<Product> recentlryList = new ArrayList<>();
+	ArrayList<Product> recentlyList = new ArrayList<>();
 	ArrayList<Product> popularList = new ArrayList<>();
-	recentlryList = md.selectRecentlyProduct();
-	popularList = md.selectPopularProduct();
+	int viewNum = 6;
+	recentlyList = md.selectRecentlyProduct(viewNum);
+	popularList = md.selectPopularProduct(viewNum);
 	
 %>
 <!DOCTYPE html>
@@ -23,59 +24,65 @@
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
-	<h1>최신 앨범</h1>
-	<table>
-		<tr>
+	<hr>
+	<h3>최신 앨범</h3>
+	<hr>
+	<div class="product-list">
+		<div class="row">
 		<%
-			int cnt = 0;
-			for(Product p : recentlryList){
-				if(cnt %3 == 0){
+			for(Product p : recentlyList) {
+				Product productOne = new Product();
+				productOne = md.selectProductOne(p.getProductNo());
 		%>
-					</tr>
-					<tr>
+		    <div class="col-lg-4 col-sm-4">
+		        <div class="product-item">
+		            <div class="pi-pic">
+		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+						</a>
+		            </div>
+		            <div class="pi-text">
+		                <div class="catagory-name"><%=p.getCategorySubName()%></div>
+		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+		                    <h5><%=p.getProductName()%></h5>
+		                </a>
+		            </div>
+		        </div>
+		    </div>
 		<%
-				}
-		%>
-				<td>
-					<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
-				</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-						<%=p.getProductName()%>
-					</a>
-				</td>
-		<%
-			cnt++;
 			}
-		%>		
-		</tr>
-	</table>
-	<h1>인기 앨범</h1>
-	<table>
-		<tr>
-		<%
-			cnt = 0;
-			for(Product p : popularList){
-				if(cnt %3 == 0){
 		%>
-					</tr>
-					<tr>
+		</div>
+	</div>
+	<hr>
+	<h3>인기 앨범</h3>
+	<hr>
+	<div class="product-list">
+		<div class="row">
 		<%
-				}
+			for(Product p : popularList) {
+				Product productOne = new Product();
+				productOne = md.selectProductOne(p.getProductNo());
 		%>
-				<td>
-					<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
-				</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-						<%=p.getProductName()%>
-					</a>
-				</td>
+		    <div class="col-lg-4 col-sm-4">
+		        <div class="product-item">
+		            <div class="pi-pic">
+		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+						</a>
+		            </div>
+		            <div class="pi-text">
+		                <div class="catagory-name"><%=p.getCategorySubName()%></div>
+		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+		                    <h5><%=p.getProductName()%></h5>
+		                </a>
+		            </div>
+		        </div>
+		    </div>
 		<%
-			cnt++;
 			}
-		%>		
-		</tr>
-	</table>
+		%>
+		</div>
+	</div>
 </body>
 </html>

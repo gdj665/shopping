@@ -1,10 +1,13 @@
 <%@page import="dao.main.EmployeesDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	// subName을 위한 mainName pram받기
-	String mainName = "한국";
+	String mainName = null;
 	if (request.getParameter("mainName") != null){
 		mainName = request.getParameter("mainName");
+	}
+	String subName = "전체";
+	if (request.getParameter("subName") != null){
+		subName = request.getParameter("subName");
 	}
 	boolean checkLogin = false;
 	String loginId = null;
@@ -44,9 +47,9 @@
 	        <nav class="nav-menu mobile-menu">
 	            <ul>
 	                <li><a href="<%=request.getContextPath()%>/home.jsp">Home</a></li>
-	                <li><a href="<%=request.getContextPath()%>/newProduct.jsp">최신 앨범</a></li>
-	                <li><a href="<%=request.getContextPath()%>/chartProduct.jsp">앨범 차트</a></li>
-	                <li><a href="<%=request.getContextPath()%>/product/productList.jsp">국가별 앨범</a>
+	                <li><a href="<%=request.getContextPath()%>/product/newProduct.jsp">최신 앨범</a></li>
+	                <li><a href="<%=request.getContextPath()%>/product/chartProduct.jsp">앨범 차트</a></li>
+	                <li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=한국&subName=전체">국가별 앨범</a>
 	                    <ul class="dropdown">
 	                        <li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=한국&subName=전체">한국</a></li>
 	                        <li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=일본&subName=전체">일본</a></li>
@@ -91,6 +94,24 @@
 	        <div id="mobile-menu-wrap"></div>
 	    </div>
 	</div>
+	        <%
+	        	if (mainName != null){
+	        %>
+	        		<div class="nav-item">
+						<div class="container">
+						    <nav class="nav-menu">
+						        <ul>
+									<li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=<%=mainName%>&subName=전체">전체</a></li>
+									<li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=<%=mainName%>&subName=싱글">싱글</a></li>
+									<li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=<%=mainName%>&subName=ep">ep</a></li>
+									<li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=<%=mainName%>&subName=정규">정규</a></li>
+						        </ul>
+						    </nav>
+						</div>
+					</div>
+	        <%
+	        	}
+	        %>
 	<!-- Js Plugins -->
     <script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
     <script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>

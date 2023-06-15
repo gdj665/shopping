@@ -3,6 +3,7 @@ package vo.product;
 public class Product {
 	private int productNo;
 	private int categoryNo;
+	private String categorySubName;
 	private String productName;
 	private int productPrice;
 	private int productDiscountPrice;
@@ -28,6 +29,12 @@ public class Product {
 	}
 	public void setCategoryNo(int categoryNo) {
 		this.categoryNo = categoryNo;
+	}
+	public String getCategorySubName() {
+		return categorySubName;
+	}
+	public void setCategorySubName(String categorySubName) {
+		this.categorySubName = categorySubName;
 	}
 	public String getProductName() {
 		return productName;

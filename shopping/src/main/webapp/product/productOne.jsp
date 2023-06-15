@@ -111,8 +111,11 @@
 		}
 	%>
 	</table>
-			<div>
-				<jsp:include page="/inc/reviewList.jsp"></jsp:include>
-			</div>
+	<div>
+		<jsp:include page="/inc/reviewList.jsp"></jsp:include>
+	</div>
+	<div>
+		<jsp:include page="/cs/productCsList.jsp"></jsp:include>
+	</div>
 </body>
 </html>

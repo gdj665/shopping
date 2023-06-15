@@ -75,7 +75,7 @@ public class MainDao {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		String sql = "SELECT p.product_no productNo, p.product_name productName, p.product_status productStatus, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype,"
-				+ " p.product_singer productSinger"
+				+ " p.product_singer productSinger, c.category_sub_name categorySubName"
 				+ " FROM product p INNER JOIN product_img pi"
 				+ " ON p.product_no = pi.product_no "
 				+ " INNER JOIN category c"
@@ -84,7 +84,7 @@ public class MainDao {
 				+ " ORDER BY p.createdate DESC LIMIT ?, ?";
 		if ("전체".equals(subName)) {
 			sql = "SELECT p.product_no productNo, p.product_name productName, p.product_status productStatus, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype,"
-					+ " p.product_singer productSinger"
+					+ " p.product_singer productSinger, c.category_sub_name categorySubName"
 					+ " FROM product p INNER JOIN product_img pi"
 					+ " ON p.product_no = pi.product_no "
 					+ " INNER JOIN category c"
@@ -108,6 +108,7 @@ public class MainDao {
 		while(rs.next()) {
 			Product p = new Product();
 			p.setProductNo(rs.getInt("productNo"));
+			p.setCategorySubName(rs.getString("categorySubName"));
 			p.setProductName(rs.getString("productName"));
 			p.setProductStatus(rs.getString("productStatus"));
 			p.setProductSinger(rs.getString("productSinger"));
@@ -198,13 +199,17 @@ public class MainDao {
 	}
 	
 	// 최근 발매 앨범 정렬
-	public ArrayList<Product> selectRecentlyProduct() throws Exception {
+	public ArrayList<Product> selectRecentlyProduct(int viewNum) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
-		int viewNum = 6;
-		String sql = "SELECT p.product_no productNo, p.product_name productName, p.product_status productStatus, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype"
+		String sql = "SELECT p.product_no productNo, p.product_name productName, p.product_status productStatus, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype,"
+				+ " p.product_singer productSinger, c.category_sub_name categorySubName"
 				+ " FROM product p INNER JOIN product_img pi"
-				+ " ON p.product_no = pi.product_no ORDER BY p.createdate DESC LIMIT ?";
+				+ " ON p.product_no = pi.product_no "
+				+ " INNER JOIN category c"
+				+ " ON p.category_no = c.category_no\r\n"
+				+ "WHERE p.product_status = '1'\r\n"
+				+ " ORDER BY p.createdate DESC LIMIT ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, viewNum);
 		ResultSet rs = stmt.executeQuery();
@@ -212,8 +217,10 @@ public class MainDao {
 		while(rs.next()) {
 			Product p = new Product();
 			p.setProductNo(rs.getInt("productNo"));
+			p.setCategorySubName(rs.getString("categorySubName"));
 			p.setProductName(rs.getString("productName"));
 			p.setProductStatus(rs.getString("productStatus"));
+			p.setProductSinger(rs.getString("productSinger"));
 			p.setProductSaveFilename(rs.getString("productSaveFilename"));
 			p.setProductFiletype(rs.getString("productFiletype"));
 			productList.add(p);
@@ -222,15 +229,18 @@ public class MainDao {
 	}
 	
 	// 판매량 순으로 정렬
-	public ArrayList<Product> selectPopularProduct() throws Exception {
+	public ArrayList<Product> selectPopularProduct(int viewNum) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
-		int viewNum = 6;
-		String sql = "SELECT SUM(oh.order_cnt) SUM, p.product_no productNo, p.product_name productName, PI.product_save_filename productSaveFilename, p.product_status productStatus, pi.product_filetype productFiletype\r\n"
-				+ "FROM orders_history oh  INNER JOIN product_img PI\r\n"
+		String sql = "SELECT SUM(oh.order_cnt) SUM, p.product_no productNo, p.product_name productName, p.product_status productStatus, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype,\r\n"
+				+ " p.product_singer productSinger, c.category_sub_name categorySubName\r\n"
+				+ "FROM orders_history oh INNER JOIN product_img PI\r\n"
 				+ "			ON oh.product_no = PI.product_no\r\n"
-				+ "				INNER JOIN product p\r\n"
-				+ "				ON oh.product_no = p.product_no\r\n"
+				+ "			INNER JOIN product p\r\n"
+				+ "			ON oh.product_no = p.product_no\r\n"
+				+ "			INNER JOIN category c\r\n"
+				+ "			ON p.category_no = c.category_no\r\n"
+				+ "WHERE p.product_status = '1'\r\n"
 				+ "GROUP BY oh.product_no\r\n"
 				+ "ORDER BY SUM desc LIMIT ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
@@ -240,8 +250,10 @@ public class MainDao {
 		while(rs.next()) {
 			Product p = new Product();
 			p.setProductNo(rs.getInt("productNo"));
+			p.setCategorySubName(rs.getString("categorySubName"));
 			p.setProductName(rs.getString("productName"));
 			p.setProductStatus(rs.getString("productStatus"));
+			p.setProductSinger(rs.getString("productSinger"));
 			p.setProductSaveFilename(rs.getString("productSaveFilename"));
 			p.setProductFiletype(rs.getString("productFiletype"));
 			productList.add(p);

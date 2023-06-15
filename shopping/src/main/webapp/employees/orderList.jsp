@@ -83,7 +83,10 @@
 				//System.out.println("checkListPage");
 				ordersHistoryList = (ArrayList<OrdersHistory>)o.getOrdersHistoryList();
 				int tdSize = ordersHistoryList.size();
-				//System.out.println(tdSize + " <- tdSize");
+				System.out.println(tdSize + " <- tdSize");
+				if (tdSize == 0){
+					tdSize = 1;
+				}
 		%>
 				<tr>
 					<td rowspan="<%=tdSize%>">
@@ -108,23 +111,33 @@
 						<%=o.getCreatedate()%>
 					</td>
 		<%
-					for(OrdersHistory oh : ordersHistoryList){
+					if (ordersHistoryList.size() == 0){
 		%>
-						<td>
-							<%=oh.getProductNo()%>
-						</td>
-						<td>
-							<%=oh.getProductName()%>
-						</td>
-						<td>
-							<%=oh.getProductPrice()%>
-						</td>
-						<td>
-							<%=oh.getOrderCnt()%>
+						<td colspan="4">
+							없음
 						</td>
 					</tr>
 					<tr>
 		<%
+					} else {
+						for(OrdersHistory oh : ordersHistoryList){
+		%>
+							<td>
+								<%=oh.getProductNo()%>
+							</td>
+							<td>
+								<%=oh.getProductName()%>
+							</td>
+							<td>
+								<%=oh.getProductPrice()%>
+							</td>
+							<td>
+								<%=oh.getOrderCnt()%>
+							</td>
+						</tr>
+						<tr>
+		<%
+						}
 					}
 		%>
 				</tr>
