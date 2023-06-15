@@ -240,12 +240,12 @@ public class MemberDao {
 		      return row;
 		   }
 	   
-	// 고객 아이디 확인
+	// 아이디 확인
 	public int loginCstmId(IdList idList) throws Exception {
 		int cnt = 0;
 		DBUtil dbUtil = new DBUtil(); 
 		Connection conn =  dbUtil.getConnection();
-		PreparedStatement stmt = conn.prepareStatement("SELECT count(*) FROM customer WHERE id = ?");
+		PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ?");
 		stmt.setString(1, idList.getId());
 		ResultSet rs = stmt.executeQuery();
 		if(rs.next()) {

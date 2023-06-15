@@ -38,7 +38,7 @@
 		msg = "비밀번호가 다릅니다";
 	} else if(request.getParameter("cstmName") == null || request.getParameter("cstmName").equals("")){
 		msg = "이름을 입력하세요";
-	} else if(request.getParameter("cstmAddress") == null || request.getParameter("cstmAddress").equals("")){
+	} else if(request.getParameter("cstmAddress1") == null || request.getParameter("cstmAddress1").equals("")){
 		msg = "주소를 입력하세요";
 	} else if(request.getParameter("cstmEmail") == null || request.getParameter("cstmEmail").equals("")){
 		msg = "이메일을 입력하세요";
@@ -59,7 +59,7 @@
 	String id = request.getParameter("id");
 	String pw = request.getParameter("pw");
 	String cstmName = request.getParameter("cstmName");
-	String cstmAddress = request.getParameter("cstmAddress");
+	String cstmAddress = request.getParameter("cstmAddress1")+" "+request.getParameter("cstmAddress2");
 	String cstmEmail = request.getParameter("cstmEmail");
 	String cstmBirth = request.getParameter("cstmBirth");
 	String cstmPhone = request.getParameter("cstmPhone");
