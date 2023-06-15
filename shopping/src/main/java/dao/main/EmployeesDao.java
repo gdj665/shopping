@@ -14,28 +14,62 @@ import vo.product.Discount;
 
 public class EmployeesDao {
 
-	// admin 유효성 검사
-	public boolean checkAdmin(String id) throws Exception {
+	// employees 유효성 검사
+	public int checkEmployees(String id) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
-		String sql = "SELECT id\r\n"
-				+ "FROM employees";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		ResultSet rs = stmt.executeQuery();
-		ArrayList<String> adminIdList = new ArrayList<>();
-		while(rs.next()) {
-			String adminid = rs.getString("id");
-			adminIdList.add(adminid);
+		String checkSql = "SELECT count(*) cnt, emp_level empLevel\r\n"
+				+ "FROM employees\r\n"
+				+ "WHERE id = ?";
+		PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+		checkStmt.setString(1, id);
+		ResultSet checkRs = checkStmt.executeQuery();
+		int empLevel = 0;
+		if(checkRs.next()) {
+			if (checkRs.getInt("cnt") == 0) {
+				return 0;
+			}
+			empLevel = checkRs.getInt("empLevel");
 		}
-		boolean checkAdmin = false;
-		for (String s : adminIdList) {
-			if (s.equals(id)) {
-				checkAdmin = true;
-				break;
+		return empLevel;
+	}
+	
+	// id 유효성 검사
+	public boolean checkId(String id) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String checkIdSql = "SELECT COUNT(*) cnt\r\n"
+				+ "FROM id_list\r\n"
+				+ "WHERE id = ?";
+		PreparedStatement checkIdStmt = conn.prepareStatement(checkIdSql);
+		checkIdStmt.setString(1, id);
+		ResultSet checkIdRs = checkIdStmt.executeQuery();
+		// 중복 id있으면 false반환
+		if (checkIdRs.next()) {
+			if (checkIdRs.getInt("cnt") > 0) {
+				System.out.println("중복된 아이디");
+				return true;
 			}
 		}
-		return checkAdmin;
+		return false;
 	}
+
+	// 비밀번호 유효성 체크
+	public boolean checkPw(Employees employees) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT id, last_pw lastPw\r\n"
+				+ "FROM id_list\r\n"
+				+ "WHERE id = ? AND last_pw = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, employees.getId());
+		stmt.setString(2, employees.getEmpPw());
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			return true;
+		}
+		return false;
+	} 
 	
 	// 구매 내역 출력
 	public ArrayList<Orders> ordersList() throws Exception{
@@ -648,39 +682,13 @@ public class EmployeesDao {
 		return e;
 	} 
 	
-	// employees 출력
-	public boolean checkPw(Employees employees) throws Exception {
-		DBUtil DBUtil = new DBUtil();
-		Connection conn = DBUtil.getConnection();
-		String sql = "SELECT id, last_pw lastPw\r\n"
-				+ "FROM id_list\r\n"
-				+ "WHERE id = ? AND last_pw = ?";
-		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, employees.getId());
-		stmt.setString(2, employees.getEmpPw());
-		ResultSet rs = stmt.executeQuery();
-		if(rs.next()) {
-			return true;
-		}
-		return false;
-	} 
-	
 	// employees 수정
 	public int updateEmployees(String preEmployeesId, Employees employees) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
-		String checkIdSql = "SELECT COUNT(*) cnt\r\n"
-				+ "FROM id_list\r\n"
-				+ "WHERE id = ?";
-		PreparedStatement checkIdStmt = conn.prepareStatement(checkIdSql);
-		checkIdStmt.setString(1, employees.getId());
-		ResultSet checkIdRs = checkIdStmt.executeQuery();
-		// 중복 id있으면 0을 반환
-		if (checkIdRs.next()) {
-			if (checkIdRs.getInt("cnt") > 0) {
-				System.out.println("중복된 아이디");
-				return 0;
-			}
+		// id 중복 체크 중복이면 true반환
+		if(checkId(employees.getId())) {
+			return 0;
 		}
 		String updateIdSql = "UPDATE id_list SET id = ?, last_pw = ? WHERE id = ?";
 		PreparedStatement updateIdStmt = conn.prepareStatement(updateIdSql);
@@ -722,4 +730,25 @@ public class EmployeesDao {
 		row = updateEmpStmt.executeUpdate();
 		return row;
 	} 
+	
+	// employees 추가
+	public int insertEmployees(Employees employees) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String insertIdSql = "INSERT INTO id_list VALUES (?, ?, 1, NOW())";
+		PreparedStatement insertIdStmt = conn.prepareStatement(insertIdSql);
+		insertIdStmt.setString(1, employees.getId());
+		insertIdStmt.setString(2, employees.getEmpPw());
+		int row = insertIdStmt.executeUpdate();
+		if (row != 1) {
+			return 0;
+		}
+		String insertEmpSql = "INSERT INTO employees VALUES(?, ?, ?, NOW(), NOW())";
+		PreparedStatement insertEmpStmt = conn.prepareStatement(insertEmpSql);
+		insertEmpStmt.setString(1, employees.getId());
+		insertEmpStmt.setString(2, employees.getEmpPw());
+		insertEmpStmt.setInt(3, employees.getEmpLevel());
+		row = insertEmpStmt.executeUpdate();
+		return row;
+	}
 }

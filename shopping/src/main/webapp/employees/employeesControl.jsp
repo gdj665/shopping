@@ -18,6 +18,9 @@
 </head>
 <body>
 	<h1>직원 관리</h1>
+	<a href="<%=request.getContextPath()%>/employees/insertEmployees.jsp">
+		직원 추가
+	</a>
 	<table>
 		<tr>
 			<th>아이디</th>
