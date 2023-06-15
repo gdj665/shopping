@@ -44,7 +44,6 @@
 <title>포인트 사용</title>
 <!-- Latest compiled and minified CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -114,10 +113,8 @@
 
 		// URL 생성
 		var url = "<%= request.getContextPath() %>/order/orderPointAction.jsp?orderNo=" + orderNo + "&usepoint=" + usepoint;
-		
 		// 새 창에서 URL 열기
 		var newWindow = window.open(url, "newWindow");
-		
 		// 새로고침
 		newWindow.opener.location.reload();
 		// 현재 창 닫기

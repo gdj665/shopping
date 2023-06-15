@@ -14,12 +14,22 @@
 	if(request.getParameterValues("oqNo")==null){
 		
 		// null값이 있을 경우 홈으로 이동
+		System.out.println("updateEtcCsOne null 있음");
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
+	
+	//유효성 검사
+	if(session.getAttribute("loginId")==null){
+		
+		// null값이 있을 경우 홈으로 이동
+		System.out.println("updateEtcCsOne Id null 있음");
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
 	
 	// 값 받아오기
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
 	
 	//OrderDao 선언

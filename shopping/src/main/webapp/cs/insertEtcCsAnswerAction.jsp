@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "dao.cs.*" %>
+<%@ page import = "dao.main.*" %>
 <%@ page import = "vo.id.*" %>
 <%@ page import = "vo.cs.*" %>
 <%@ page import = "util.*" %>
@@ -19,37 +20,24 @@
 		return;
 	}
 	
-	//CsDao.java 선언
-	CsDao csdao = new CsDao();
-	int row = 0;
 	// 값받기
 	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
 	String oaContent = request.getParameter("oaContent");
-	String id = null;
+	String id = (String)session.getAttribute("loginId");
 	
-	if(session.getAttribute("loginId")!=null){
-		id = (String)session.getAttribute("loginId");
-		
-		// 8) 1대1 문의 답변 추가
+	//CsDao.java 선언
+	CsDao csdao = new CsDao();
+	EmployeesDao employeesdao = new EmployeesDao();
+	
+	int empLevel = employeesdao.checkEmployees(id);
+	int row = 0;
+	
+	// 분기 값에 따라서 해당 댓글이 관리자 댓글인지 고객 댓글인지 판별
+	if(empLevel==0){
 		row = csdao.insertEtcCs(oqNo,oaContent,id);
-		
-	} else if(session.getAttribute("loginEmpId1")!=null){
-		id = (String)session.getAttribute("loginEmpId1");
-		
-		// 8-1) 1대1 문의 답변 추가(관리자 버전)
-		row = csdao.insertEmpAnswer(oqNo,oaContent,id);
-		
-	} else if (session.getAttribute("loginEmpId2")!=null){
-		id = (String)session.getAttribute("loginEmpId2");
-		
-		// 8-1) 1대1 문의 답변 추가(관리자 버전)
+	} else if(empLevel>0){
 		row = csdao.insertEmpAnswer(oqNo,oaContent,id);
 	}
-
-	
-	
-	
-	
 	
 	if(row>0){
 		System.out.println("insertEtcCsAction row값 정상");

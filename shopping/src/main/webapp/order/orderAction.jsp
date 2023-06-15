@@ -67,14 +67,35 @@
 	//int row6 = orderdao.updateAddressDate(address);
 	//System.out.println("row6-->"+row6);
 	
+	
 	// 성공 여부에 따른 페이지 출력
-	if(row>0 && row2>0 && row3>0  && row5>0){
+	if(row>0 && row2>0 && row3>0  && row4>0 && row5>0){
 		System.out.println("주문 결제완료");
-		response.sendRedirect(request.getContextPath()+"/order/successOrder.jsp");
+		String msg = "결제가 완료되었습니다";
+		String redirectUrl = request.getContextPath()+"/home.jsp";
+		
+		// alert 메세지 출력
+		String script = 
+				"<script>"+
+					"alert('" + msg + "');"+
+					"window.location.href='" + redirectUrl + "';"+
+				"</script>";
+		response.getWriter().println(script);
 		return;
+		
 	} else {
+		
 		System.out.println("주문 결제실패");
-		response.sendRedirect(request.getContextPath()+"/order/failOrder.jsp");
+		String msg = "결제가 실패하였습니다 관리자에게 문의해주시기 바랍니다";
+		String redirectUrl = request.getContextPath()+"/home.jsp";
+		
+		// alert 메세지 출력
+		String script = 
+				"<script>"+
+					"alert('" + msg + "');"+
+					"window.location.href='" + redirectUrl + "';"+
+				"</script>";
+		response.getWriter().println(script);
 		return;
 	}
 %>

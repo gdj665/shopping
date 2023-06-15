@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "dao.cs.*" %>
+<%@ page import = "dao.main.*" %>
 <%@ page import = "vo.id.*" %>
 <%@ page import = "vo.cs.*" %>
 <%@ page import = "util.*" %>
@@ -21,9 +22,7 @@
 	}
 	
 	//유효성 검사 2
-	if(session.getAttribute("loginId")==null
-		&&session.getAttribute("loginEmpId1")==null
-		&&session.getAttribute("loginEmpId2")==null){
+	if(session.getAttribute("loginId")==null){
 		
 		// null값이 있을 경우 홈으로 이동
 		System.out.println("insertProductCsAction ID값 null 있음");
@@ -36,17 +35,20 @@
 	String qContent = request.getParameter("qContent");
 	String id = (String)session.getAttribute("loginId");
 	
-	if((String)session.getAttribute("loginEmpId1")!=null){
-		id = (String)session.getAttribute("loginEmpId1");
-	} else if ((String)session.getAttribute("loginEmpId2")!=null){
-		id = (String)session.getAttribute("loginEmpId2");
-	}
+	
 	//CsDao.java 선언
 	CsDao csdao = new CsDao();
+	EmployeesDao employeesdao = new EmployeesDao();
+	
+	int empLevel = employeesdao.checkEmployees(id);
+	int row = 0;
+	
+	if(empLevel==0){
+		// 4) 고객이 제품관련 문의 질문
+		row = csdao.insertProductQuestion(productNo,id,qContent);
+	}
 	
 	
-	// 4) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
-	int row = csdao.insertProductQuestion(productNo,id,qContent);
 	
 	if(row==1){
 		System.out.println("insertProductCsAction row값 정상");

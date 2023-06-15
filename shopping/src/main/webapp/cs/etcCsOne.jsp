@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "dao.cs.*" %>
+<%@ page import = "dao.main.*" %>
 <%@ page import = "vo.id.*" %>
 <%@ page import = "vo.cs.*" %>
 <%@ page import = "util.*" %>
@@ -9,29 +10,28 @@
 <%
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
-
+	/*
 	//유효성 검사
-	if(request.getParameterValues("oqNo")==null){
+	if(request.getParameterValues("oqNo")==null
+		|| session.getAttribute("loginId")==null){
 		
 		// null값이 있을 경우 홈으로 이동
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
-
+	*/
 	// 값 받아오기
-	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
-	String id = null;
+	//int oqNo = Integer.parseInt(request.getParameter("oqNo"));
+	int oqNo = 14;
+	String id = (String)session.getAttribute("loginId");
 	
-	if(session.getAttribute("loginId")!=null){
-		id = (String)session.getAttribute("loginId");
-	} else if(session.getAttribute("loginEmpId1")!=null){
-		id = (String)session.getAttribute("loginEmpId1");
-	} else if (session.getAttribute("loginEmpId2")!=null){
-		id = (String)session.getAttribute("loginEmpId2");
-	}
+	
 	
 	//OrderDao 선언
 	CsDao csdao = new CsDao();
+	EmployeesDao employeesdao = new EmployeesDao();
+	
+	int empLevel = employeesdao.checkEmployees(id);
 
 	// 7) 1대1문의 상세 페이지불러오기
 	ArrayList<HashMap<String,Object>> list = new ArrayList<>();
@@ -264,10 +264,18 @@
                 		</div>
                 		<div class="col-lg-8">
 		                	<h2>1대1 상세보기</h2>
-		                	<div>
-		                		<a class="btn btn-outline-secondary btn-sm" style="float:right; margin-right:10px;" href="<%=request.getContextPath() %>/cs/deleteEtcCsOneAction.jsp?oqNo=<%=oqNo %>">삭제하기</a>
-			                	<a class="btn btn-outline-secondary btn-sm" style="float:right; margin-right:10px;" href="#" onclick="openNewWindow()">수정하기</a>
-		                	</div>
+		                	<%
+								for(HashMap<String,Object> m : list2){
+									if(m.get("id").equals(id)) {
+							%>
+				                	<div>
+				                		<a class="btn btn-outline-secondary btn-sm" style="float:right; margin-right:10px;" href="<%=request.getContextPath() %>/cs/deleteEtcCsOneAction.jsp?oqNo=<%=oqNo %>">삭제하기</a>
+					                	<a class="btn btn-outline-secondary btn-sm" style="float:right; margin-right:10px;" href="#" onclick="openNewWindow()">수정하기</a>
+				                	</div>
+		                	<%
+									}
+								}
+		                	%>
 		                	<br><br>
 		                	<form action="<%=request.getContextPath() %>/cs/insertEtcCsAnswerAction.jsp">
 			                	<table class="table">
@@ -290,7 +298,7 @@
 										<tr>
 											<%
 												//일반 고객일 경우 댓글 작성
-												if(session.getAttribute("loginId")!=null){
+												if(empLevel==0){
 											%>
 												<td style="width:780px;">
 													<label for="comment">댓글 작성&nbsp;&nbsp;&nbsp;<sapn style="font-weight:bold;"><%=id %></sapn></label>
@@ -302,7 +310,7 @@
 												</td>
 											<%
 												// 관리자 일경우 댓글작성
-												} else if (session.getAttribute("loginEmpId1")!=null || session.getAttribute("loginEmpId2")!=null){
+												} else if (empLevel>0){
 											%>
 												<td style="width:780px;">
 													<label for="comment">댓글 작성&nbsp;&nbsp;&nbsp;<sapn style="font-weight:bold;">관리자</sapn></label>
@@ -340,7 +348,7 @@
 										<div style="float:right; color:#BDBDBD;">
 											<%=(String)m.get("updatedate") %>
 										<%
-											if(m.get("id").equals(id) || session.getAttribute("loginEmpId1")!=null || session.getAttribute("loginEmpId2")!=null){
+											if(m.get("id").equals(id) || empLevel>0){
 										%>
 											<a style="text-decoration: none; color:#000000;" href="<%=request.getContextPath()%>/cs/deleteEtcCsCommentAction.jsp?oaNo=<%=(int)m.get("oaNo") %>&oqNo=<%=oqNo%>">삭제</a>
 										<%
@@ -370,114 +378,7 @@
     </div>
     <!-- Faq Section End -->
 
-    <!-- Partner Logo Section Begin -->
-    <div class="partner-logo">
-        <div class="container">
-            <div class="logo-carousel owl-carousel">
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="img/logo-carousel/logo-1.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="img/logo-carousel/logo-2.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="img/logo-carousel/logo-3.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="img/logo-carousel/logo-4.png" alt="">
-                    </div>
-                </div>
-                <div class="logo-item">
-                    <div class="tablecell-inner">
-                        <img src="img/logo-carousel/logo-5.png" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Partner Logo Section End -->
-
-    <!-- Footer Section Begin -->
-    <footer class="footer-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="footer-left">
-                        <div class="footer-logo">
-                            <a href="#"><img src="img/footer-logo.png" alt=""></a>
-                        </div>
-                        <ul>
-                            <li>Address: 60-49 Road 11378 New York</li>
-                            <li>Phone: +65 11.188.888</li>
-                            <li>Email: hello.colorlib@gmail.com</li>
-                        </ul>
-                        <div class="footer-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 offset-lg-1">
-                    <div class="footer-widget">
-                        <h5>Information</h5>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Checkout</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Serivius</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="footer-widget">
-                        <h5>My Account</h5>
-                        <ul>
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Shopping Cart</a></li>
-                            <li><a href="#">Shop</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="newslatter-item">
-                        <h5>Join Our Newsletter Now</h5>
-                        <p>Get E-mail updates about our latest shop and special offers.</p>
-                        <form action="#" class="subscribe-form">
-                            <input type="text" placeholder="Enter Your Mail">
-                            <button type="button">Subscribe</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="copyright-reserved">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="copyright-text">
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        </div>
-                        <div class="payment-pic">
-                            <img src="img/payment-method.png" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer Section End -->
+    
 
     <!-- Js Plugins -->
 	<script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>

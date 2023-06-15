@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "dao.cs.*" %>
+<%@ page import = "dao.main.*" %>
 <%@ page import = "vo.id.*" %>
 <%@ page import = "vo.cs.*" %>
 <%@ page import = "util.*" %>
@@ -12,7 +13,8 @@
 		
 	//유효성 검사
 	if(request.getParameterValues("oqTitle")==null
-		||request.getParameterValues("oqContent")==null){
+		||request.getParameterValues("oqContent")==null
+		||session.getAttribute("loginId")==null){
 		
 		// null값이 있을 경우 홈으로 이동
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
@@ -22,14 +24,19 @@
 	// 값받기
 	String oqTitle = request.getParameter("oqTitle");
 	String oqContent = request.getParameter("oqContent");
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 
+	
 	//CsDao.java 선언
 	CsDao csdao = new CsDao();
+	EmployeesDao employeesdao = new EmployeesDao();
 	
-	
-	// 4) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
-	int row = csdao.insertCsList(id,oqTitle,oqContent);
+	int row = 0;
+	int empLevel = employeesdao.checkEmployees(id);
+	if(empLevel==0){
+		// 4) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
+		row = csdao.insertCsList(id,oqTitle,oqContent);
+	}
 	
 	if(row==1){
 		System.out.println("insertEtcCsListAction row값 정상");

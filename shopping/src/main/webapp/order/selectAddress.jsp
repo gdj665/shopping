@@ -21,10 +21,8 @@
 	// 값 받아오기
 	String id = (String)session.getAttribute("loginId");
 	
-	
 	//OrderDao 선언
 	OrderDao orderdao = new OrderDao();
-	
 	
 	// 7) 받을 주소출력
 	ArrayList<HashMap<String,Object>> list = new ArrayList<>();
@@ -39,7 +37,6 @@
 <title>Insert title here</title>
 <!-- Latest compiled and minified CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -83,6 +80,5 @@
 		window.opener.location.reload();
 		window.close();
 	};
-	
 </script>
 </html>

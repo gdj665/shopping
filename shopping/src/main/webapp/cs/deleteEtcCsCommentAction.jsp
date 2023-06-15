@@ -13,7 +13,7 @@
 	//유효성 검사
 	if(request.getParameterValues("oqNo")==null
 		||request.getParameterValues("oaNo")==null
-		||request.getAttribute("loginId")==null){
+		||session.getAttribute("loginId")==null){
 		
 		// null값이 있을 경우 홈으로 이동
 		System.out.println("deleteEtcCsCommentAction null값 있음");

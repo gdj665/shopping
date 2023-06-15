@@ -20,11 +20,20 @@
 		return;
 	}
 	
+	//유효성 검사2
+	if(session.getAttribute("loginId")==null){
+		
+		// null값이 있을 경우 홈으로 이동
+		System.out.println("updateEtcCsOneAction Id null 있음");
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
+	
 	// 값받기
 	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
 	String oqTitle = request.getParameter("oqTitle");
 	String oqContent = request.getParameter("oqContent");
-	String id = "admin";
+	String id = (String)session.getAttribute("loginId");
 
 	//CsDao.java 선언
 	CsDao csdao = new CsDao();

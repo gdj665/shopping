@@ -570,8 +570,11 @@ public class OrderDao {
 	    DBUtil DBUtil = new DBUtil();
 	    Connection conn = DBUtil.getConnection();
 	    HttpSession session = request.getSession();
+	    // 로그인 상태가되면
 	    if (session.getAttribute("loginId") != null) {
+	    	// 세션의 cartMap에 있던 값을 가져와서 cartMap에 다시넣기
 	    	HashMap<String, Cart> cartMap = (HashMap<String, Cart>) session.getAttribute("cartMap");
+	    	// cartMap이 null이 아니고 cartMap이 비어있지 않다면 실행
 	        if (cartMap != null && !cartMap.isEmpty()) {
 	            String sql = "INSERT INTO cart (id, product_no, cart_cnt, createdate, updatedate) VALUES (?, ?, ?, NOW(), NOW())";
 	            PreparedStatement stmt = conn.prepareStatement(sql);
@@ -585,7 +588,8 @@ public class OrderDao {
 	            
 	            // 로그인 후 카트 테이블에 추가한 데이터는 더 이상 필요하지 않으므로 삭제
 	            cartMap.clear();
-	            session.setAttribute("cartList", cartMap);
+	            // 비워진 카트를 다시  cartMap 에 부여
+	            session.setAttribute("cartMap", cartMap);
 	        }
 	    }
 	}

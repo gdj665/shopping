@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "dao.cs.*" %>
+<%@ page import = "dao.main.*" %>
 <%@ page import = "vo.id.*" %>
 <%@ page import = "vo.cs.*" %>
 <%@ page import = "util.*" %>
@@ -28,9 +29,15 @@
 
 	//CsDao.java 선언
 	CsDao csdao = new CsDao();
+	EmployeesDao employeesdao = new EmployeesDao();
 	
-	// 12) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
-	int row = csdao.deleteProductQuestion(qNo);
+	int empLevel = employeesdao.checkEmployees(id);
+	int row = 0;
+	
+	if(empLevel==0){
+		// 12) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
+		row = csdao.deleteProductQuestion(qNo);
+	}
 	
 	if(row==1){
 		System.out.println("deleteProductQuestionAction row값 정상");
