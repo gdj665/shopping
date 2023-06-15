@@ -19,6 +19,9 @@
     	OrderDao orderdao = new OrderDao();
     	int row = orderdao.insertCartAction(id,productNo,cartCnt);
     	
+    	// 제품 상세 페이지로 이동합니다.
+		response.sendRedirect(request.getContextPath() + "/product/productOne.jsp?productNo=" + productNo);
+		return;
     }
     
 	Cart cart = new Cart();

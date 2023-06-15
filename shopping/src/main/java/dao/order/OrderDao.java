@@ -126,7 +126,7 @@ public class OrderDao {
 				+ "FROM cart c\r\n"
 				+ "	LEFT OUTER JOIN product p ON c.product_no = p.product_no\r\n"
 				+ "	LEFT OUTER JOIN discount d ON c.product_no = d.product_no\r\n"
-				+ "WHERE c.checked = 'Y'";
+				+ "WHERE c.checked = 'Y' AND c.id=?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();
@@ -151,7 +151,7 @@ public class OrderDao {
 				+ "FROM cart c\r\n"
 				+ "	LEFT OUTER JOIN product p ON c.product_no = p.product_no\r\n"
 				+ "	LEFT OUTER JOIN customer m ON c.id = m.id\r\n"
-				+ "WHERE m.id = ? AND c.checked = 'Y'";
+				+ "WHERE c.id = ? AND c.checked = 'Y'";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, id);
 		ResultSet rs = stmt.executeQuery();
@@ -236,7 +236,7 @@ public class OrderDao {
 		String sql = "SELECT order_no,order_status,order_price,order_point_use,createdate,updatedate,\r\n"
 				+ "order_price-order_point_use total_price\r\n"
 				+ "FROM orders\r\n"
-				+ "WHERE id = 'admin'\r\n"
+				+ "WHERE id = ?\r\n"
 				+ "ORDER BY createdate DESC\r\n"
 				+ "LIMIT 1;";
 		PreparedStatement stmt = conn.prepareStatement(sql);

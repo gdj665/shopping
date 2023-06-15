@@ -299,8 +299,7 @@
 									</td>
 									<!-- 장바구니 사진삽입 -->
                                     <td class="cart-pic first-row">
-                                    	<img src="<%=(String)m.get("productSaveFilename")%>">
-                                    	<%=(String)m.get("productSaveFilename")%>
+                                    	<img style="width:100px; height:100px;" src="<%=request.getContextPath() + "/img/productImg/" + (String)m.get("productSaveFilename")%>">
                                     </td>
                                     <!-- 제품이름 -->
                                     <td class="cart-title first-row">

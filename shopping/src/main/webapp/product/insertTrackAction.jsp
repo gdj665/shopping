@@ -11,6 +11,9 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.util.*" %>
 <%
+	//한글 깨짐 방지
+	request.setCharacterEncoding("utf-8");
+
 	if (request.getParameter("productNo") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;

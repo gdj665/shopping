@@ -1,14 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	/* if (request.getParameter("productNo") == null
+	//한글 깨짐 방지
+	request.setCharacterEncoding("utf-8");
+	
+	if (request.getParameter("productNo") == null
 			|| request.getParameter("totalTrackCnt") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
-	} */
-	// int productNo = Integer.parseInt(request.getParameter("productNo"));
-	int productNo = 1; 
-	// int totalTrackCnt = Integer.parseInt(request.getParameter("totalTrackCnt"));
-	int totalTrackCnt = 2;
+	}
+	int productNo = Integer.parseInt(request.getParameter("productNo"));
+	int totalTrackCnt = Integer.parseInt(request.getParameter("totalTrackCnt"));
 %>
 <!DOCTYPE html>
 <html>

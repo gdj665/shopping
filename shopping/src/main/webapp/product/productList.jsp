@@ -61,7 +61,7 @@
 				</td>
 				<td>
 					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-						<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+						<img style="width:150px; height:150px;" src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
 					</a>
 				</td>
 				<td>
