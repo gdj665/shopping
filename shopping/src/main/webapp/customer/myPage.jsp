@@ -68,8 +68,13 @@
 				<td><%=(String)(m.get("createdate"))%></td>
 			</tr>
 		</table>
+		
+		<a href="<%=request.getContextPath()%>/customer/updateMember.jsp?id=<%=id%>">수정</a>
+		<a href="<%=request.getContextPath()%>/customer/memberOut.jsp?id=<%=id%>">삭제</a>
+		<a href="<%=request.getContextPath()%>/customer/updatePassword.jsp?id=<%=id%>">비밀번호 수정</a>
 	<% 			
 		}
 	%>
+			
 </body>
 </html>

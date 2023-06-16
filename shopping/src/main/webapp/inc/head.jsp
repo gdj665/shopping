@@ -61,6 +61,7 @@
 					if(!checkLogin){
 			%>
 		                <li><a href="<%=request.getContextPath()%>/customer/login.jsp" class="login-panel"><i class="fa fa-user"></i>Login</a></li>
+		                <li><a href="<%=request.getContextPath()%>/customer/memberjoin.jsp" class="login-panel"><i class="fa fa-user"></i>회원가입</a></li>
 			<%
 					} else {
 						// employees 일경우 아닐경우 분기
@@ -70,6 +71,7 @@
 			                    <ul class="dropdown">
 			                        <li><a href="<%=request.getContextPath()%>/customer/myPage.jsp">마이 페이지</a></li>
 			                        <li><a href="<%=request.getContextPath()%>/customer/orderMyPage.jsp">주문내역</a></li>
+			                        <li><a href="<%=request.getContextPath()%>/customer/pointMyPage.jsp">포인트조회</a></li>
 			                        <li><a href="<%=request.getContextPath()%>/customer/logoutAction.jsp">logout</a></li>
 			                    </ul>
 			                </li>

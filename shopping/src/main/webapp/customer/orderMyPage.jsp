@@ -29,7 +29,9 @@
 	System.out.println(id+"<--orderMyPage id");	
 	
 	OrderListDao orderDao = new OrderListDao();
+
 	ArrayList<HashMap<String, Object>> list = orderDao.orderList(id, beginRow, rowPerPage);
+	System.out.println(list + "<-- orderMyPage orderList");
 	
 	
 	int totalRow = orderDao.orderCnt();
@@ -58,42 +60,31 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>구매내역</h1>
-	<h1>
-		 <%
-        	if(request.getParameter("msg") != null){
-         %>
-        		<%=request.getParameter("msg") %>
-         <% 
-        	}
-      	 %>		
-	</h1>
+	<h1>주문내역</h1>
+	
 	<%
-		for(HashMap<String, Object> s : list){
+		for(HashMap<String, Object> m : list){
 	%>
 		<table>
 			<tr>
-				<td>주문번호</td>
-				<td>상품이름</td>
-				<td>결제상태</td>
-				<td>배송상태</td>
-				<td>수량</td>
-				<td>주문가격</td>
-				<td>주문배송지</td>
-				<td>구매일</td>
+				<th>주문번호</th>
+				<th>상품이름</th>
+				<th>배송상태</th>
+				<th>수량</th>
+				<th>주문가격</th>
+				<th>구매일</th>
 			</tr>
 			<tr>
-				<td><%=(Integer)(s.get("orderNo"))%></td>
-				<td><%=(String)(s.get("productName"))%></td>
-				<td><%=(String)(s.get("orderStatus"))%></td>
-				<td><%=(Integer)(s.get("orderCnt"))%></td>
-				<td><%=(Integer)(s.get("orderPrice"))%></td>
-				<td><%=(String)(s.get("createdate"))%></td>
+				<td><%=(Integer)(m.get("orderNo"))%></td>
+				<td><%=(String)(m.get("productName"))%></td>
+				<td><%=(Integer)(m.get("orderCnt"))%></td>
+				<td><%=(String)(m.get("createdate"))%></td>
 				
 			</tr>
 		</table>
 	
 	<div>
+	
 		<%
 			}
 			if(startPage > 5){
