@@ -42,46 +42,57 @@
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
 	<h4>앨범 리스트</h4>
-	<table>
-		<tr>
-		<%
-			int cnt = 0;
-			for(Product p : productList) {
-				if(cnt %2 == 0){
-		%>
-					</tr>
-					<tr>
-		<%
-				}
-		%>
-				<td>
-					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-						<%=p.getProductName()%>
-					</a>
-				</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-						<img style="width:150px; height:150px;" src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
-					</a>
-				</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
-						수정
-					</a>
-				</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
-						삭제
-					</a>
-				</td>
-		<%
-			cnt++;
-			}
-		%>
-		</tr>
-	</table>
 	<a href="<%=request.getContextPath()%>/product/insertProduct.jsp">
 		추가
 	</a>
+	<div class="product-list">
+		<div class="row">
+		<%
+			for(Product p : productList) {
+				Product productOne = new Product();
+				productOne = md.selectProductOne(p.getProductNo());
+		%>
+		    <div class="col-lg-3 col-sm-4">
+		        <div class="product-item">
+					<a href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
+						수정
+					</a>
+					<a href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
+						삭제
+					</a>
+		            <div class="pi-pic">
+		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+						</a>
+		            </div>
+		            <div class="pi-text">
+		                <div class="catagory-name"><%=p.getCategorySubName()%></div>
+		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+		                    <h5><%=p.getProductName()%></h5>
+		                </a>
+				<%
+					if (productOne.getProductDiscountPrice() == productOne.getProductPrice()){
+				%>
+						<div class="product-price">
+						    <%=productOne.getProductPrice()%>원
+						</div>
+				<%
+					} else {
+				%>
+						<div class="product-price">
+							<%=productOne.getProductDiscountPrice()%>원
+						    <span><%=productOne.getProductPrice()%>원</span>
+						</div>
+				<%
+					}
+				%>
+		            </div>
+		        </div>
+		    </div>
+		<%
+			}
+		%>
+		</div>
+	</div>
 </body>
 </html>
