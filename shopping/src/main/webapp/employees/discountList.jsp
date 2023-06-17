@@ -67,79 +67,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 </head>
-<body>
-	<h1>할인품목 관리</h1>
-	<a href="<%=request.getContextPath()%>/employees/insertDiscount.jsp">
-		할인 추가
-	</a>
-	<h4>할인 검색</h4>
-	<form action="<%=request.getContextPath()%>/employees/discountList.jsp" method="get">
-		상품명, 번호<input type="text" name="searchProduct">
-		할인율 <input type="number" name="searchRate">
-		<select name="searchDate">
-			<option value="discountWhole">전체</option>
-			<option value="discountBegin">할인시작날짜</option>
-			<option value="discountEnd">할인종료날짜</option>
-		</select>
-		<input type="date" name="searchBeginDate">
-		<input type="date" name="searchEndDate">
-		<button type="submit">검색</button>
-	</form>
-	<table>
-		<tr>
-			<th>품목</th>
-			<th>품명</th>
-			<th>할인시작날짜</th>
-			<th>할인종료날짜</th>
-			<th>할인율</th>
-			<th>작성일</th>
-			<th>수정일</th>
-			<th>수정</th>
-			<th>삭제</th>
-		</tr>
-	<%
-		for (Discount d : discountList){
-	%>
-			<tr>
-				<td>
-					<%=d.getProductNo()%>
-				</td>
-				<td>
-					<%=d.getProductName()%>
-				</td>
-				<td>
-					<%=d.getDiscountBegin()%>
-				</td>
-				<td>
-					<%=d.getDiscountEnd()%>
-				</td>
-				<td>
-					<%=(int)(d.getDiscountRate() * 100)%>%
-				</td>
-				<td>
-					<%=d.getCreatedate()%>
-				</td>
-				<td>
-					<%=d.getUpdatedate()%>
-				</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/employees/updateDiscount.jsp?discountNo=<%=d.getDiscountNo()%>">
-						수정
-					</a>
-				</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/employees/deleteDiscountAction.jsp?discountNo=<%=d.getDiscountNo()%>">
-						삭제
-					</a>
-				</td>
-			</tr>
-	<%		
-			
-		}
-	%>
-	</table>
+<style>
+	.subBtn {
+		text-decoration: none;
+		color : #000000;
+	}
+</style>
+<body class="sb-nav-fixed">
+	<div>
+		<jsp:include page="/inc/employeesNav.jsp"></jsp:include>
+	</div>
+    <div id="layoutSidenav">
+    	<!-- 좌측 사이드 바 시작 -->
+        <div>
+			<jsp:include page="/inc/employeesSideNav.jsp"></jsp:include>
+		</div>
+        <!-- 좌측 사이바 종료 -->
+        
+        <!-- 본문 시작 -->
+        <div id="layoutSidenav_content">
+        	<!-- 내용 시작 -->
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">할인 품목 관리</h1>
+                    <br>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            제품 할인 관리 데이터베이스 관리 테이블
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            제품 할인 관리
+                        </div>
+                        <div class="card-body">
+                            <table id="datatablesSimple">
+                                <thead>
+                                    <tr>
+										<th>품목</th>
+										<th>품명</th>
+										<th>할인시작날짜</th>
+										<th>할인종료날짜</th>
+										<th>할인율</th>
+										<th>작성일</th>
+										<th>수정일</th>
+										<th>수정</th>
+										<th>삭제</th>
+									</tr>
+                                </thead>
+                                <tbody>
+                                <%
+									for (Discount d : discountList){
+								%>
+										<tr>
+											<td>
+												<%=d.getProductNo()%>
+											</td>
+											<td>
+												<%=d.getProductName()%>
+											</td>
+											<td>
+												<%=d.getDiscountBegin()%>
+											</td>
+											<td>
+												<%=d.getDiscountEnd()%>
+											</td>
+											<td>
+												<%=(int)(d.getDiscountRate() * 100)%>%
+											</td>
+											<td>
+												<%=d.getCreatedate()%>
+											</td>
+											<td>
+												<%=d.getUpdatedate()%>
+											</td>
+											<td>
+												<a class="subBtn" href="<%=request.getContextPath()%>/employees/updateDiscount.jsp?discountNo=<%=d.getDiscountNo()%>">
+													수정
+												</a>
+											</td>
+											<td>
+												<a class="subBtn" href="<%=request.getContextPath()%>/employees/deleteDiscountAction.jsp?discountNo=<%=d.getDiscountNo()%>">
+													삭제
+												</a>
+											</td>
+										</tr>
+                                <%
+									}
+                                %>
+                                </tbody>
+                            </table>
+							<a style="float:right;" class="btn btn-outline-secondary" href="<%=request.getContextPath()%>/employees/insertDiscount.jsp">
+								할인 추가
+							</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <!-- 내용 종료 -->
+            
+            <!-- footer 시작 -->
+            <div>
+				<jsp:include page="/inc/employeesFooter.jsp"></jsp:include>
+			</div>
+            <!-- footer종료 -->
+        </div>
+        <!-- 본문 종료 -->
+    </div>
 </body>
 </html>
