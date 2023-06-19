@@ -608,6 +608,31 @@ public class OrderDao {
         row = stmt.executeUpdate();
 		return row;
 	}
+	
+	//27 관리자 주문내역관리 (오더넘버에 맞는 주문내역 출력)
+	public ArrayList<HashMap<String,Object>> orderHistoryOne(int orderNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "SELECT oh.product_no,p.product_name,oh.order_cnt,p.product_price * (1 - ifnull(d.discount_rate, 0)) productDiscountPrice\r\n"
+				+ "FROM orders_history oh\r\n"
+				+ "	LEFT OUTER JOIN product p ON oh.product_no = p.product_no\r\n"
+				+ "	LEFT OUTER JOIN discount d ON oh.product_no = d.product_no	\r\n"
+				+ "WHERE order_no = ?;";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, orderNo);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		while(rs.next()){
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("productNo",rs.getString("oh.product_no"));
+			m.put("productName",rs.getString("p.product_name"));
+			m.put("orderCnt",rs.getString("oh.order_cnt"));
+			m.put("productDiscountPrice",rs.getString("productDiscountPrice"));
+			list.add(m);
+		}
+		return list;
+	}
 	//테스트 용
 	public static void main(String[] args) throws Exception {
 		

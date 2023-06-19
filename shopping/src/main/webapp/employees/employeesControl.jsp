@@ -55,7 +55,7 @@
 										<th>아이디</th>
 										<th>이름</th>
 										<th>레벨</th>
-										<th></th>
+										<th>상세보기</th>
 									</tr>
                                 </thead>
                                 <tbody>
