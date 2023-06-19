@@ -167,17 +167,6 @@
     </section>
     <!-- Shopping Cart Section End -->
 
-<!-- Js Plugins -->
-<script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
-<script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>
-<script src="<%=request.getContextPath() %>/template/js/jquery-ui.min.js"></script>
-<script src="<%=request.getContextPath() %>/template/js/jquery.countdown.min.js"></script>
-<script src="<%=request.getContextPath() %>/template/js/jquery.nice-select.min.js"></script>
-<script src="<%=request.getContextPath() %>/template/js/jquery.zoom.min.js"></script>
-<script src="<%=request.getContextPath() %>/template/js/jquery.dd.min.js"></script>
-<script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
-<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
-<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
 <script>
 	// 구매하기 버튼을 눌럿는대 장바구니에서 체크된 항목이 없으면 장바구니에 선택된 제품이 없다고 메세지 출력
 	// 장바구니에 제품이 있을 경우 구매 페이지로 이동

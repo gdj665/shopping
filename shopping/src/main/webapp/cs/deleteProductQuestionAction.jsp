@@ -41,7 +41,7 @@
 	
 	if(row==1){
 		System.out.println("deleteProductQuestionAction row값 정상");
-		response.sendRedirect(request.getContextPath()+"/cs/productCsList.jsp?id="+id);
+		response.sendRedirect(request.getContextPath()+"/product/productOne.jsp?productNo="+productNo);
 		return;
 	} else {
 		System.out.println("deleteProductQuestionAction row값 오류");

@@ -34,7 +34,16 @@
 	                <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                    <nav class="sb-sidenav-menu-nested nav">
 	                        <a class="nav-link" href="<%=request.getContextPath()%>/employees/orderList.jsp">주문 내역 관리</a>
-	                        <a class="nav-link" href="<%=request.getContextPath()%>/employees/customerCsList.jsp">문의 내역 관리</a>
+	                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+	                            문의 내역 관리
+								<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+							</a>
+							<div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+								<nav class="sb-sidenav-menu-nested nav">
+									<a class="nav-link" href="<%=request.getContextPath()%>/employees/empProductCsList.jsp">제품문의 내역</a>
+									<a class="nav-link" href="<%=request.getContextPath()%>/employees/empCustomerCsList.jsp">1대1 문의 내역</a>
+								</nav>
+							</div>
 	                    </nav>
 	                </div>
 	                <!-- 제품 서비스 관리 -->

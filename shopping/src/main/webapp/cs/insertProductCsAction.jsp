@@ -52,7 +52,7 @@
 	
 	if(row==1){
 		System.out.println("insertProductCsAction row값 정상");
-		response.sendRedirect(request.getContextPath()+"/cs/productCsList.jsp?id="+productNo);
+		response.sendRedirect(request.getContextPath()+"/product/productOne.jsp?productNo="+productNo);
 		return;
 	} else {
 		System.out.println("insertProductCsAction row값 오류");

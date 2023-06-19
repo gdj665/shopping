@@ -134,12 +134,6 @@
 											<option value="4">주문취소</option>
 										</select>
 									</div>
-									<br><br>
-									<div>
-										<a style="float:right;" class="btn btn-outline-secondary" href="<%=request.getContextPath()%>/employees/insertEmployees.jsp">
-											직원 추가
-										</a>
-									</div>
 								</div>
 	                        </div>
 	                    </div>

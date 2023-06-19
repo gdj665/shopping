@@ -1,14 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
+<%@page import="dao.cs.*"%>
+<%
+	CsDao csdao = new CsDao();
+	ArrayList<HashMap<String,Object>> list = csdao.empQuestionList();
+%>
 <!DOCTYPE html>
 <html>
 <head>
-</head>
 <style>
 	.subBtn {
 		text-decoration: none;
 		color : #000000;
 	}
 </style>
+</head>
 <body class="sb-nav-fixed">
 	<div>
 		<jsp:include page="/inc/employeesNav.jsp"></jsp:include>
@@ -25,54 +31,49 @@
         	<!-- 내용 시작 -->
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">관리자 추가 페이지</h1>
+                    <h1 class="mt-4">제품문의 관리</h1>
                     <br>
                     <div class="card mb-4">
                         <div class="card-body">
-                            관리자 추가 데이터베이스 관리 테이블
+                            제품문의 관리 데이터베이스 관리 테이블
                         </div>
                     </div>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            관리자 추가 관리
+                            제품문의관리
                         </div>
                         <div class="card-body">
-	                        <form action="<%=request.getContextPath()%>/employees/insertEmployeesAction.jsp" method="post">
-	                            <table class="table">
-	                                <tr>
+                            <table id="datatablesSimple" onclick="handleTableRowClick(event)">
+                                <thead>
+                                    <tr>
+										<th>번호</th>
+										<th>제품번호</th>
 										<th>아이디</th>
-										<td>
-											<input class="form-control" type="text" name="employeesId" required="required">
-										</td>
+										<th>질문내용</th>
+										<th>작성일</th>
+										<th>수정일</th>
+										<th>상세보기</th>
 									</tr>
-									<tr>
-										<th>비밀번호</th>
-										<td>
-											<input class="form-control" type="password" name="employeesPw" required="required">
-										</td>
-									</tr>
-									<tr>
-										<th>비밀번호 확인</th>
-										<td>
-											<input class="form-control" type="password" name="checkPw" required="required">
-										</td>
-									</tr>
-									<tr>
-										<th>이름</th>
-										<td>
-											<input class="form-control" type="text"  name="employeesName" required="required">
-										</td>
-									</tr>
-									<tr>
-										<th>레벨</th>
-										<td>
-											<input class="form-control" type="number" name="employeesLevel" required="required">
-										</td>
-									</tr>
-	                            </table>
-                           		<button class="btn btn-outline-secondary" type="submit">추가</button>
-							</form>
+									</thead>
+									<tbody>
+									<%
+										for(HashMap<String,Object> m : list){
+									%>
+										<tr>
+											<td><%=m.get("qNo") %></td>
+											<td><%=m.get("productNo") %></td>
+											<td><%=(String)m.get("id") %></td>
+											<td><%=(String)m.get("qContent") %></td>
+											<td><%=(String)m.get("createdate") %></td>
+											<td><%=(String)m.get("updatedate") %></td>
+											<td><a class="subBtn" href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=m.get("productNo") %>">상세보기</a></td>
+										</tr>
+									<%
+										}
+									%>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

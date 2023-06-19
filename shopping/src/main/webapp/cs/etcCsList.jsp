@@ -55,21 +55,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Fashi | Template</title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/bootstrap.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/font-awesome.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/themify-icons.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/elegant-icons.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/owl.carousel.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/nice-select.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/jquery-ui.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/slicknav.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/style.css" type="text/css">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -136,25 +121,12 @@
         </div>
     </div>
     <!-- Faq Section End -->
-
-
-    <!-- Js Plugins -->
-	<script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery-ui.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery.countdown.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery.nice-select.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery.zoom.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery.dd.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
-	<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
-	<script>
-		function openNewWindow() {
-			var url = "<%=request.getContextPath() %>/cs/insertEtcCsList.jsp";
-			window.open(url, '신규 문의 등록', 'width=500,height=500');
-		}
-	</script>
+<script>
+	function openNewWindow() {
+		var url = "<%=request.getContextPath() %>/cs/insertEtcCsList.jsp";
+		window.open(url, '신규 문의 등록', 'width=500,height=500');
+	}
+</script>
 </body>
 
 </html>

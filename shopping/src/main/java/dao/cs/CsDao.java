@@ -277,4 +277,48 @@ public class CsDao {
 		row = stmt.executeUpdate();
 		return row;
 	}
+	
+	// 15) 제품문의 전체 출력 checked=N
+	public ArrayList<HashMap<String,Object>> empQuestionList() throws Exception{
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT q_no,id,product_no,q_content,createdate,updatedate FROM question WHERE checked='N'";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		while(rs.next()) {
+			HashMap<String,Object> q = new HashMap<>();
+			q.put("qNo",rs.getInt("q_no"));
+			q.put("id",rs.getString("id"));
+			q.put("productNo",rs.getInt("product_no"));
+			q.put("qContent",rs.getString("q_content"));
+			q.put("createdate",rs.getString("createdate"));
+			q.put("updatedate",rs.getString("updatedate"));
+			list.add(q);
+		}
+		return list;
+	}
+	
+	// 16) 제품문의 전체 출력 checked=N
+	public ArrayList<HashMap<String,Object>> empOneQuestion() throws Exception{
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT oq_no,id,oq_title,oq_content,createdate,updatedate FROM one_question WHERE checked='N'";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		while(rs.next()) {
+			HashMap<String,Object> q = new HashMap<>();
+			q.put("oqNo",rs.getInt("oq_no"));
+			q.put("id",rs.getString("id"));
+			q.put("oqTitle",rs.getString("oq_title"));
+			q.put("oqContent",rs.getString("oq_content"));
+			q.put("createdate",rs.getString("createdate"));
+			q.put("updatedate",rs.getString("updatedate"));
+			list.add(q);
+		}
+		return list;
+	}
 }
