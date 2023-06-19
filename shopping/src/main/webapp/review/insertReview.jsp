@@ -8,8 +8,7 @@
 	}
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	ReviewDao rd = new ReviewDao();
-	// String id = (String)session.getAttribute("loginId");
-	String id = "aa";
+	String id = (String)session.getAttribute("loginId");
 	boolean checkId = rd.checkId(id, productNo);
 	// System.out.println(checkId);
 	if(!checkId){
@@ -25,12 +24,54 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		let cnt = 1;
+		$('#addFile').click(function(){
+			if($('.pic').length == 0){
+				let inputName = "reviewImgFile" + cnt;
+				$('#files').append("<div><input type=\"file\" name=" + inputName + " class=\"pic\"></div>");
+				console.log(inputName);
+				cnt++;
+			} else {
+				if($('.pic').last().val() == ''){
+					alert('빈 파일업로드 태그가 있읍니다.');
+				} else {
+					let inputName = "reviewImgFile" + cnt;
+					$('#files').append("<div><input type=\"file\" name=" + inputName + " class=\"pic\"></div>");
+					cnt++;
+					console.log(inputName);
+					console.log(cnt);
+				}
+			}
+		})
+		$('#delFile').click(function(){
+			$('.pic').last().remove();
+			cnt--;
+			console.log(cnt);
+		})
+		$('#imgCnt').html('<input type="hidden" name="imgCnt" value="' + cnt + '">');
+		$('#submit').click(function(){
+			$('#insertForm').submit();
+		})
+	})
+</script>
 </head>
 <body>
-	<h4><%=productName%> 리뷰 작성 페이지</h4>
-	<form action="<%=request.getContextPath()%>/review/insertReviewAction.jsp" method="post" enctype="multipart/form-data">
+	<div>
+		<jsp:include page="/inc/search.jsp"></jsp:include>
+	</div>
+	<div>
+		<jsp:include page="/inc/head.jsp"></jsp:include>
+	</div>
+	<hr>
+	<h4><%=productName%> 앨범 리뷰 작성 페이지</h4>
+	<hr>
+	<form action="<%=request.getContextPath()%>/review/insertReviewAction.jsp" method="post" enctype="multipart/form-data" id="insertForm">
+		<div id="imgCnt"></div>
 		<input type="hidden" name="productNo" value="<%=productNo%>">
-		<table>
+		<table class="table">
 			<tr>
 				<th>리뷰 제목</th>
 				<td>
@@ -43,24 +84,17 @@
 					<textarea cols="50" rows="4" name="reviewContent" required="required"></textarea>
 				</td>
 			</tr>
-			<tr>
-				<th rowspan="3">리뷰 이미지</th>
-				<td>
-					jpg 파일만 선택하세요.<input type="file" name="reviewImgFile1">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					jpg 파일만 선택하세요.<input type="file" name="reviewImgFile2">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					jpg 파일만 선택하세요.<input type="file" name="reviewImgFile3">
-				</td>
-			</tr>
 		</table>
-		<button type="submit">작성</button>
+		<div>
+			리뷰 이미지
+			<button class="btn btn-sm btn-outline-danger" id="addFile" type="button">파일추가</button>
+			<button class="btn btn-sm btn-outline-danger" id="delFile" type="button">파일삭제</button>
+		</div>
+		<div>
+			jpg 파일만 업로드 가능합니다.
+		</div>
+		<div id="files"></div>
+		<button type="button" id="submit">작성</button>
 	</form>
 </body>
 </html>

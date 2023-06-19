@@ -27,7 +27,11 @@
 	
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	MainDao md = new MainDao();
-	ReviewDao rd = new ReviewDao();
+	EmployeesDao ed = new EmployeesDao();
+	
+	int checkId = 0;
+	checkId = ed.checkEmployees(loginId);
+	System.out.println(checkId + " <- checkId");
 	
 	// 앨범 세부 내용
 	Product p = new Product();
@@ -51,16 +55,26 @@
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
-	<h1>앨범 정보</h1>
-	<a href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=productNo%>">
-		수정
-	</a>
-	<a href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=productNo%>">
-		삭제
-	</a>
-	<table>
+	<hr>
+	<h4>
+		앨범 정보
+		<%
+			if(checkId > 0){
+		%>
+			<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=productNo%>">
+				수정
+			</a>
+			<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=productNo%>">
+				삭제
+			</a>
+		<%
+			}
+		%>
+	</h4>
+	<hr>
+	<table class="table">
 		<tr>
-			<td rowspan="2">
+			<td rowspan="8">
 				<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
 			</td>
 			<td colspan="2">
@@ -68,7 +82,7 @@
 					<input type="hidden" name="id" value="<%=id%>">
 					<input type="hidden" name="productNo" value="<%=productNo%>">
 					구매수량: <input type="number" name="cartCnt">
-					<button type="submit" form="addCart">장바구니 추가</button>
+					<button class="btn btn-outline-secondary btn-sm" type="submit" form="addCart">장바구니 추가</button>
 				</form>
 			</td>
 		</tr>
@@ -81,8 +95,8 @@
 			</td>
 		</tr>
 	</table>
-	<h2>수록곡(<%=trackList.size()%>)</h2>
-	<table>
+	<h4>수록곡(<%=trackList.size()%>)</h4>
+	<table class="table">
 		<tr>
 			<th>번호</th>
 			<th>곡정보</th>

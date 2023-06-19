@@ -103,6 +103,13 @@
 						<div class="container">
 						    <nav class="nav-menu">
 						        <ul>
+								     <li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=한국&subName=전체">국가</a>
+					                    <ul class="dropdown">
+					                        <li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=한국&subName=전체">한국</a></li>
+					                        <li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=일본&subName=전체">일본</a></li>
+					                        <li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=미국&subName=전체">미국</a></li>
+					                    </ul>
+					                </li>
 									<li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=<%=mainName%>&subName=전체">전체</a></li>
 									<li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=<%=mainName%>&subName=싱글">싱글</a></li>
 									<li><a href="<%=request.getContextPath()%>/product/productList.jsp?mainName=<%=mainName%>&subName=ep">ep</a></li>

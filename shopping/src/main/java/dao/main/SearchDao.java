@@ -14,17 +14,18 @@ public class SearchDao {
 	public ArrayList<Product> searchSinger(String[] searchWord) throws Exception {
 		//System.out.println(searchWord.length);
 		// 나눠진 searchWord를 하나로 합침 
-		String joinSearchWord = searchWord[0];
+		String joinSearchWord = "%" + searchWord[0];
 		for (int i = 1; i < searchWord.length; i++) {
 			joinSearchWord += searchWord[i];
 		}
+		joinSearchWord += "%";
 		//System.out.println(joinSearchWord);
 		
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		String sql = "SELECT distinct product_singer productSinger\r\n"
 				+ "FROM product\r\n"
-				+ "WHERE product_singer = ?";
+				+ "WHERE product_singer LIKE ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, joinSearchWord);
 		//System.out.println(stmt);

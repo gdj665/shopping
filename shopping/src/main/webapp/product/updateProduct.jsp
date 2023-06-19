@@ -35,10 +35,18 @@
 	<div>
 		<jsp:include page="/inc/search.jsp"></jsp:include>
 	</div>
-	<h1>앨범 정보 수정</h1>
-	<form action="<%=request.getContextPath()%>/product/updateProductAction.jsp" method="post" enctype="multipart/form-data">
+	<div>
+		<jsp:include page="/inc/head.jsp"></jsp:include>
+	</div>
+	<hr>
+	<h4>
+		앨범 정보 수정
+		<button class="btn btn-danger" type="submit" form="update">수정</button>
+	</h4>
+	<hr>
+	<form action="<%=request.getContextPath()%>/product/updateProductAction.jsp" method="post" enctype="multipart/form-data" id="update">
 		<input type="hidden" name="productNo" value="<%=productNo%>">
-		<table>
+		<table class="table">
 			<tr>
 				<td rowspan="8">
 					<div>
@@ -62,10 +70,27 @@
 				</td>
 				<td>
 					<select name="productStatus" required="required">
-						<option value="<%=p.getProductStatus()%>"><%=p.getProductStatus()%></option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
+						<%
+							if(p.getProductStatus().equals("1")){
+						%>
+								<option value="1">판매중</option>
+								<option value="2">품절</option>
+								<option value="3">단종</option>
+						<%
+							} else if(p.getProductStatus().equals("2")){
+						%>
+								<option value="2">품절</option>
+								<option value="1">판매중</option>
+								<option value="3">단종</option>
+						<%
+							} else if(p.getProductStatus().equals("3")){
+						%>
+								<option value="3">단종</option>
+								<option value="1">판매중</option>
+								<option value="2">품절</option>
+						<%
+							} 
+						%>
 					</select>
 				</td>
 			</tr>
@@ -118,18 +143,20 @@
 				</td>
 			</tr>
 		</table>
-		<h2>수록곡(<%=trackList.size()%>)</h2>
-		<table>
+		<hr>
+		<h4>
+			수록곡(<%=trackList.size()%>)
+			<a class="btn-danger btn" href="<%=request.getContextPath()%>/product/addTrackAction.jsp?productNo=<%=productNo%>&trackNo=<%=trackList.size() + 1%>">
+				추가
+			</a>
+		</h4>
+		<hr>
+		<table class="table">
 			<tr>
 				<th>번호</th>
 				<th>제목</th>
 				<th>재생시간</th>
 				<th>삭제</th>
-				<th>
-					<a href="<%=request.getContextPath()%>/product/addTrackAction.jsp?productNo=<%=productNo%>&trackNo=<%=trackList.size() + 1%>">
-						추가
-					</a>
-				</th>
 			</tr>
 		<%
 			for (Track t : trackList){
@@ -155,7 +182,6 @@
 			}
 		%>
 		</table>
-		<button type="submit">수정</button>
 	</form>
 </body>
 </html>

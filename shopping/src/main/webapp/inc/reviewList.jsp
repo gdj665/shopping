@@ -24,16 +24,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>리뷰</h1>
-	
-	<table>
-		<tr>
-			<td>
-				<a href="<%=request.getContextPath()%>/review/insertReview.jsp?productNo=<%=productNo%>">
-					리뷰 작성
-				</a>
-			</td>
-		</tr>
+	<h3>
+		리뷰
+		<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/review/insertReview.jsp?productNo=<%=productNo%>">
+			리뷰 작성
+		</a>
+	</h3>
+	<table class="table">
 	<%
 		for(Review r : reviewTitleList){
 	%>
@@ -41,6 +38,11 @@
 				<td>
 					<a href="<%=request.getContextPath()%>/review/review.jsp?reviewNo=<%=r.getReviewNo()%>">
 						<%=r.getReviewTitle()%>
+					</a>
+				</td>
+				<td>
+					<a href="<%=request.getContextPath()%>/review/review.jsp?reviewNo=<%=r.getReviewNo()%>">
+						<%=r.getId()%>
 					</a>
 				</td>
 			</tr>

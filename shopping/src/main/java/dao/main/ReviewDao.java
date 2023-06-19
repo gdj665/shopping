@@ -61,7 +61,7 @@ public class ReviewDao {
 	public ArrayList<Review> selectReviewTitleList(int productNo) throws Exception{
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
-		String sql = "SELECT review_no reviewNo, review_title reviewTitle\r\n"
+		String sql = "SELECT review_no reviewNo, review_title reviewTitle, id\r\n"
 				+ "FROM review\r\n"
 				+ "WHERE product_no = ? \r\n"
 				+ "ORDER BY createdate DESC";
@@ -74,6 +74,7 @@ public class ReviewDao {
 			Review r = new Review();
 			r.setReviewNo(rs.getInt("reviewNo"));
 			r.setReviewTitle(rs.getString("reviewTitle"));
+			r.setId(rs.getString("id"));
 			reviewList.add(r);
 		}
 		return reviewList;

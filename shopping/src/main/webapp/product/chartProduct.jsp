@@ -4,12 +4,17 @@
 <%@ page import = "java.util.*" %>
 <%
 	// cotroller
+	String loginId = (String)session.getAttribute("loginId");
 	int viewNum = 20;
 	
 	// model
 	MainDao md = new MainDao();
+	EmployeesDao ed = new EmployeesDao();
 	ArrayList<Product> productList = new ArrayList<>();
 	productList = md.selectPopularProduct(viewNum);
+	int checkId = 0;
+	checkId = ed.checkEmployees(loginId);
+	System.out.println(checkId + " <- checkId");
 %>
 <!DOCTYPE html>
 <html>
@@ -24,10 +29,18 @@
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
+	<hr>
 	<h3>앨범 차트</h3>
+	<hr>
+<%
+	if(checkId > 0){
+%>
 	<a href="<%=request.getContextPath()%>/product/insertProduct.jsp">
 		추가
 	</a>
+<%
+	}
+%>
 	<div class="product-list">
 		<div class="row">
 		<%
@@ -37,12 +50,18 @@
 		%>
 		    <div class="col-lg-4 col-sm-6">
 		        <div class="product-item">
+	        <%
+				if(checkId > 0){
+			%>
 					<a href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
 						수정
 					</a>
 					<a href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
 						삭제
 					</a>
+			<%
+				}
+			%>
 		            <div class="pi-pic">
 		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
 							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">

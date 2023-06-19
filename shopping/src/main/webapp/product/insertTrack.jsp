@@ -18,7 +18,15 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1><%=productNo%> 수록곡 입력</h1>
+	<div>
+		<jsp:include page="/inc/search.jsp"></jsp:include>
+	</div>
+	<div>
+		<jsp:include page="/inc/head.jsp"></jsp:include>
+	</div>
+	<hr>
+	<h4>수록곡 입력</h4>
+	<hr>
 	<form action="<%=request.getContextPath()%>/product/insertTrackAction.jsp" method="post">
 		<input type="hidden" name="productNo" value="<%=productNo%>">
 		<input type="hidden" name="totalTrackCnt" value="<%=totalTrackCnt%>">

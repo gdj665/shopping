@@ -23,13 +23,14 @@
 		return;
 	} */
 	ArrayList<String> checkReviewImgList = new ArrayList<>();
-	int maxImgCnt = 3;
+	int maxImgCnt = Integer.parseInt(mRequest.getParameter("imgCnt"));
+	System.out.println(maxImgCnt);
 	for (int i = 1; i <= maxImgCnt; i++){
 		String reviewImgFile = "reviewImgFile" + i;
-		// System.out.println(reviewImgFile);
+		System.out.println(reviewImgFile);
 		String reviewImg = mRequest.getContentType(reviewImgFile);
-		// System.out.println(mRequest.getContentType(reviewImgFile));
-		// System.out.println(reviewImg);
+		System.out.println(mRequest.getContentType(reviewImgFile));
+		System.out.println(reviewImg);
 		if (reviewImg != null){
 			checkReviewImgList.add(reviewImg);
 		}
@@ -54,8 +55,7 @@
 	}
 	
 	// input type="text" 값 반환 API --> board 테이블 저장
-	// String id = (String)session.getAttribute("loginId");
-	String id = "aa";
+	String id = (String)session.getAttribute("loginId");
 	String reviewTitle = mRequest.getParameter("reviewTitle");
 	String reviewContent = mRequest.getParameter("reviewContent");
 	int productNo = Integer.parseInt(mRequest.getParameter("productNo"));

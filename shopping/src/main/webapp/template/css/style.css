@@ -779,7 +779,7 @@ ol {
 
 .nav-item .nav-menu li .dropdown {
 	position: absolute;
-	right: 0;
+	right: 1;
 	top: 82px;
 	width: 150px;
 	z-index: 99;

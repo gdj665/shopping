@@ -4,12 +4,17 @@
 <%@ page import = "java.util.*" %>
 <%
 	// cotroller
+	String loginId = (String)session.getAttribute("loginId");
 	int viewNum = 20;
 	
 	// model
 	MainDao md = new MainDao();
+	EmployeesDao ed = new EmployeesDao();
 	ArrayList<Product> productList = new ArrayList<>();
 	productList = md.selectRecentlyProduct(viewNum);
+	int checkId = 0;
+	checkId = ed.checkEmployees(loginId);
+	System.out.println(checkId + " <- checkId");
 %>
 <!DOCTYPE html>
 <html>
@@ -24,10 +29,20 @@
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
-	<h3>최신 앨범</h3>
-	<a href="<%=request.getContextPath()%>/product/insertProduct.jsp">
-		추가
-	</a>
+	<hr>
+	<h3>
+		최신 앨범
+	<%
+		if(checkId > 0){
+	%>
+		<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/insertProduct.jsp">
+			추가
+		</a>
+	<%
+		}
+	%>
+	</h3>
+	<hr>
 	<div class="product-list">
 		<div class="row">
 		<%
@@ -37,12 +52,18 @@
 		%>
 		    <div class="col-lg-4 col-sm-6">
 		        <div class="product-item">
-					<a href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
+		        <%
+					if(checkId > 0){
+				%>
+					<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
 						수정
 					</a>
-					<a href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
+					<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
 						삭제
 					</a>
+				<%
+					}
+				%>
 		            <div class="pi-pic">
 		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
 							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">

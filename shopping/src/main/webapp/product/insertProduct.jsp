@@ -12,9 +12,17 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>앨범 입력</h1>
+	<div>
+		<jsp:include page="/inc/search.jsp"></jsp:include>
+	</div>
+	<div>
+		<jsp:include page="/inc/head.jsp"></jsp:include>
+	</div>
+	<hr>
+	<h4>앨범 입력</h4>
+	<hr>
 	<form action="<%=request.getContextPath()%>/product/insertProductAction.jsp" method="post" enctype="multipart/form-data">
-	<table>
+	<table class="table">
 		<tr>
 			<th>앨범 카테고리</th>
 			<td>
