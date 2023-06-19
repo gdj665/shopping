@@ -746,7 +746,7 @@ public class EmployeesDao {
 		String insertEmpSql = "INSERT INTO employees VALUES(?, ?, ?, NOW(), NOW())";
 		PreparedStatement insertEmpStmt = conn.prepareStatement(insertEmpSql);
 		insertEmpStmt.setString(1, employees.getId());
-		insertEmpStmt.setString(2, employees.getEmpPw());
+		insertEmpStmt.setString(2, employees.getEmpName());
 		insertEmpStmt.setInt(3, employees.getEmpLevel());
 		row = insertEmpStmt.executeUpdate();
 		return row;
