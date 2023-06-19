@@ -61,11 +61,11 @@
       					 %>		
                         <form action="<%=request.getContextPath()%>/customer/loginAction.jsp" method="get">
                             <div class="group-input">
-                                <label for="username">Username or email address *</label>
+                                <label for="username">아이디 *</label>
                                 <input type="text" name="id">
                             </div>
                             <div class="group-input">
-                                <label for="pass">Password *</label>
+                                <label for="pass">비밀번호 *</label>
                                 <input type="password" name="lastPw">
                             </div>
                             <div class="group-input gi-check">
@@ -78,11 +78,11 @@
                                     <a href="#" class="forget-pass">Forget your Password</a>
                                 </div>
                             </div>
-                            <button type="submit" class="site-btn login-btn">Sign In</button>
+                            <button type="submit" class="site-btn login-btn">로그인</button>
                         </form>
  <!-- ------------------------------------로그인폼------------------------------------------------------------------------------------------------------------------------------- -->
                         <div class="switch-login">
-                            <a href="./register.html" class="or-login">Or Create An Account</a>
+                            <a href="<%=request.getContextPath()%>/home.jsp" class="or-login">홈으로</a>
                         </div>
                     </div>
                 </div>

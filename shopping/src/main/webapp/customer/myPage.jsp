@@ -18,17 +18,9 @@
 	System.out.println(m + "<-- myPage list");
 	
 %>
-
 <!DOCTYPE html>
 <html lang="zxx">
-
-<head>
-    <meta charset="UTF-8">
-    
-</head>
-
-<body>
-    <!-- Page Preloder -->
+<!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
@@ -40,133 +32,86 @@
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
 
+
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="breadcrumb-text product-more">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./shop.html">Shop</a>
-                        <span>Check Out</span>
+                    <div class="breadcrumb-text">
+                        <a href="#"><i class="fa fa-home"></i> Home</a>
+                        <span>Register</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb Section Begin -->
-
-<!-- -----------------------------------------------------마이 페이지 폼 시작 ------------------------------------------------------------------ -->
-
-    <!-- Shopping Cart Section Begin -->
-    <section class="checkout-section spad">
+    <!-- Breadcrumb Form Section Begin -->
+<!-- -------------------------------------------------------------마이페이지--------------------------------------------------------------- -->
+    <!-- Register Section Begin -->
+    <div class="register-login-section spad">
         <div class="container">
-            <form action="#" class="checkout-form">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <a href="#" class="content-btn">Click Here To Login</a>
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="register-form">
+                        <h2>마이페이지</h2>
+                        <%
+							if(id != null){
+						%>
+                        <form action="#">
+                            <div class="group-input">
+                                <label for="username">아이디*</label>
+                                <%=(String)(m.get("cstmId"))%>
+                            </div>
+                            <div class="group-input">
+                                <label for="pass">이름*</label>
+                                <%=(String)(m.get("cstmName"))%>
+                            </div>
+                            <div class="group-input">
+                                <label for="con-pass">주소*</label>
+                                <%=(String)(m.get("cstmAddress"))%>
+                            </div>
+                            <div class="group-input">
+                                <label for="con-pass">이메일*</label>
+                                <%=(String)(m.get("cstmEmail"))%>
+                            </div>
+                            <div class="group-input">
+                                <label for="con-pass">생일*</label>
+                                <%=(String)(m.get("cstmBirth"))%>
+                            </div>
+                            <div class="group-input">
+                                <label for="con-pass">전화번호*</label>
+                                <%=(String)(m.get("cstmPhone"))%>
+                            </div>
+                            <div class="group-input">
+                                <label for="con-pass">등급*</label>
+                                <%=(String)(m.get("cstmRank"))%>
+                            </div>
+                            <div class="group-input">
+                                <label for="con-pass">포인트*</label>
+                                <%=(Integer)(m.get("cstmPoint"))%>
+                            </div>
+                            <div class="group-input">
+                                <label for="con-pass">가입일*</label>
+                                <%=(String)(m.get("createdate"))%>
+                            </div>
+                            <button type="submit" class="site-btn register-btn"><a href="<%=request.getContextPath()%>/customer/updateMember.jsp?id=<%=id%>">회원정보수정</a></button>
+                        </form>
+                        <div class="switch-login">
+                            <a href="<%=request.getContextPath()%>/customer/memberOut.jsp?id=<%=id%>" class="or-login">회원탈퇴</a>
                         </div>
-                        <h4>Biiling Details</h4>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="fir">아이디<span>*</span></label>
-                                <td><%=(String)(m.get("cstmId"))%></td>
-                            </div>
-                            <div class="col-lg-6">
-                                <label for="last">이름<span>*</span></label>
-                                <td><%=(String)(m.get("cstmName"))%></td>
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="cun-name">주소</label>
-                                <td><%=(String)(m.get("cstmAddress"))%></td>
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="cun">이메일<span>*</span></label>
-                                <td><%=(String)(m.get("cstmEmail"))%></td>
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="street">생일<span>*</span></label>
-                                <td><%=(String)(m.get("cstmBirth"))%></td>
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="zip">전화번호</label>
-                                <td><%=(String)(m.get("cstmPhone"))%></td>
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="town">등급<span>*</span></label>
-                                <td><%=(String)(m.get("cstmRank"))%></td>
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="town">포인트<span>*</span></label>
-                                <td><%=(Integer)(m.get("cstmPoint"))%></td>
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="town">가입일<span>*</span></label>
-                                <td><%=(String)(m.get("createdate"))%></td>
-                            </div>
-                            <div class="col-lg-6">
-                                <a href="<%=request.getContextPath()%>/customer/updateMember.jsp?id=<%=id%>">수정</a>
-                            </div>
-                            <div class="col-lg-6">
-                                <a href="<%=request.getContextPath()%>/customer/memberOut.jsp?id=<%=id%>">삭제</a>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="create-item">
-                                    <label for="acc-create">
-                                        Create an account?
-                                        <input type="checkbox" id="acc-create">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <input type="text" placeholder="Enter Your Coupon Code">
-                        </div>
-                        <div class="place-order">
-                            <h4>Your Order</h4>
-                            <div class="order-total">
-                                <ul class="order-table">
-                                    <li>Product <span>Total</span></li>
-                                    <li class="fw-normal">Combination x 1 <span>$60.00</span></li>
-                                    <li class="fw-normal">Combination x 1 <span>$60.00</span></li>
-                                    <li class="fw-normal">Combination x 1 <span>$120.00</span></li>
-                                    <li class="fw-normal">Subtotal <span>$240.00</span></li>
-                                    <li class="total-price">Total <span>$240.00</span></li>
-                                </ul>
-                                <div class="payment-check">
-                                    <div class="pc-item">
-                                        <label for="pc-check">
-                                            Cheque Payment
-                                            <input type="checkbox" id="pc-check">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div class="pc-item">
-                                        <label for="pc-paypal">
-                                            Paypal
-                                            <input type="checkbox" id="pc-paypal">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="order-btn">
-                                    <button type="submit" class="site-btn place-btn">Place Order</button>
-                                </div>
-                            </div>
-                        </div>
+                        <% 			
+							}
+						%>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </section>
-    <!-- Shopping Cart Section End -->
-
-<!-- -----------------------------------------------------마이 페이지 폼 시작 ------------------------------------------------------------------ -->
-
+    </div>
+    
+<!-- -------------------------------------------------------------마이페이지--------------------------------------------------------------- -->
+    <!-- Register Form Section End -->
+    
     <!-- Partner Logo Section Begin -->
     <div class="partner-logo">
         <div class="container">
@@ -276,7 +221,17 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     </footer>
     <!-- Footer Section End -->
 
-    
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.countdown.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.zoom.min.js"></script>
+    <script src="js/jquery.dd.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
