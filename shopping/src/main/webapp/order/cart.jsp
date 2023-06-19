@@ -45,36 +45,19 @@
 <!DOCTYPE html>
 <html>
 <meta charset="UTF-8">
-<title></title>
+<title>장바구니</title>
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Fashi Template">
     <meta name="keywords" content="Fashi, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Fashi | Template</title>
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-
-    <!-- Css Styles -->
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/bootstrap.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/font-awesome.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/themify-icons.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/elegant-icons.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/owl.carousel.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/nice-select.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/jquery-ui.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/slicknav.min.css" type="text/css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/template/css/style.css" type="text/css">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-	
-	<style>
-		a {
-			text-decoration: none;
-			color: #000000;
-		}
-	</style>
+<style>
+	.subBtn {
+		text-decoration: none;
+		color : #000000;
+	}
+</style>
 </head>
 
 <body>
@@ -101,7 +84,7 @@
 									<th>가격</th>
 									<th>수량</th>
 									<th>합계</th>
-									<th><i class="ti-close"></i></th>
+									<th></th>
 								</tr>
                             </thead>
                             <tbody>
@@ -145,7 +128,7 @@
 									<!-- 제품과 갯수를 고른 뒤 총 합을 출력 (장바구니 전체 출력 X) -->
                                     <td class="total-price first-row"><%=m.get("totalPrice") %></td>
                                     <td class="close-td first-row">
-	                                    <a href="<%=request.getContextPath()%>/order/deleteCartAction.jsp?cartNo=<%=(int)m.get("cartNo")%>">
+	                                    <a class="subBtn" href="<%=request.getContextPath()%>/order/deleteCartAction.jsp?cartNo=<%=(int)m.get("cartNo")%>">
 											<i class="ti-close"></i>
 	                                    </a>
                                     </td>
@@ -160,8 +143,12 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="cart-buttons">
-                                <a href="#" class="primary-btn continue-shop">Continue shopping</a>
-                                <button type="submit" class="primary-btn up-cart">장바구니 정보 변경</button>
+                                <div>
+                                	<a href="<%=request.getContextPath() %>/home.jsp" class="primary-btn continue-shop">쇼핑 계속하기</a>
+                                </div>
+                                <div>
+                                	<button type="submit" class="primary-btn up-cart">장바구니 정보 변경</button>
+                                </div>
                             </div>
                             </form>
                         </div>

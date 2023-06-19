@@ -13,6 +13,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+	.subBtn {
+		text-decoration: none;
+		color : #000000;
+	}
+</style>
 </head>
 <body class="sb-nav-fixed">
 	<div>
@@ -79,7 +85,7 @@
 											<%=c.getCstmAgree()%>
 										</td>
 										<td>
-											<a href="<%=request.getContextPath()%>/employees/customerOneControl.jsp?customerId=<%=c.getId()%>">
+											<a class="subBtn" href="<%=request.getContextPath()%>/employees/customerOneControl.jsp?customerId=<%=c.getId()%>">
 												상세보기
 											</a>
 										</td>

@@ -1,7 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import = "dao.order.*" %>
+<%@ page import = "util.*" %>
+<%@ page import = "vo.order.*" %>
+<%@ page import = "java.util.*" %>
+<%@ page import = "java.net.*" %>
 <%
 	request.setCharacterEncoding("utf-8");
+
+	//값 받아오기
+	String id = (String)session.getAttribute("loginId");
+
+	//OrderDao사용 선언
+	OrderDao orderdao = new OrderDao();
+	
+	// 1) OrderDao 장바구니 리스트 출력 메서드
+	ArrayList<HashMap<String,Object>> list = orderdao.cartList(id);
+	
+	// 2) OrderDao 장바구니 각 항목의 총 합계의 최종합계를 구하는 메서드
+	int row = orderdao.totalPrice(id);
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,58 +60,56 @@
 	            </div>
 	            <div class="col-lg-3 text-right col-md-3">
 	                <ul class="nav-right">
-	                    <li class="heart-icon">
-	                        <a href="#">
-	                            <i class="icon_heart_alt"></i>
-	                            <span>1</span>
-	                        </a>
-	                    </li>
 	                    <li class="cart-icon">
 	                        <a href="<%=request.getContextPath()%>/order/cart.jsp">
 	                            <i class="icon_bag_alt"></i>
-	                            <span>3</span>
+	                            <span></span>
 	                        </a>
 	                        <div class="cart-hover">
 	                            <div class="select-items">
 	                                <table>
 	                                    <tbody>
+	                                    	<%
+												// 장바구니 리스트 출력
+												for(HashMap<String,Object> m : list){
+													int productNo = (int)m.get("productNo");
+													int cartCnt = (int)m.get("cartCnt");
+													String checked = (String)m.get("checked");
+													
+													
+													// 3) 각 제품의 재고량을 구하는 메서드
+													int tcnt = orderdao.totalstock(productNo);
+											%>
 	                                        <tr>
-	                                            <td class="si-pic"><img src="img/select-product-1.jpg" alt=""></td>
+	                                            <td class="si-pic">
+	                                            	<img style="width:60px; height:60px;" src="<%=request.getContextPath() + "/img/productImg/" + (String)m.get("productSaveFilename")%>">
+	                                            </td>
 	                                            <td class="si-text">
 	                                                <div class="product-selected">
-	                                                    <p>$60.00 x 1</p>
-	                                                    <h6>Kabino Bedside Table</h6>
+	                                                	<h6><%=(String)m.get("productName") %></h6>
+	                                                    <p><%=m.get("discountPrice")%> x <%=cartCnt %></p>
 	                                                </div>
 	                                            </td>
 	                                            <td class="si-close">
 	                                                <i class="ti-close"></i>
 	                                            </td>
 	                                        </tr>
-	                                        <tr>
-	                                            <td class="si-pic"><img src="img/select-product-2.jpg" alt=""></td>
-	                                            <td class="si-text">
-	                                                <div class="product-selected">
-	                                                    <p>$60.00 x 1</p>
-	                                                    <h6>Kabino Bedside Table</h6>
-	                                                </div>
-	                                            </td>
-	                                            <td class="si-close">
-	                                                <i class="ti-close"></i>
-	                                            </td>
-	                                        </tr>
+	                                        <%
+												}
+	                                        %>
 	                                    </tbody>
 	                                </table>
 	                            </div>
 	                            <div class="select-total">
 	                                <span>total:</span>
-	                                <h5>$120.00</h5>
+	                                <h5><%=row%>원</h5>
 	                            </div>
 	                            <div class="select-button">
 	                                <a href="<%=request.getContextPath()%>/order/cart.jsp" class="primary-btn checkout-btn">장바구니 이동</a>
 	                            </div>
 	                        </div>
 	                    </li>
-	                    <li class="cart-price">$150.00</li>
+	                    <li class="cart-price"><%=row%></li>
 	                </ul>
 	            </div>
 	        </div>

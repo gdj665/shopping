@@ -77,7 +77,7 @@ public class EmployeesDao {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		String sql = "SELECT id, order_no orderNo, order_status orderStatus, order_price orderPrice, order_point_use orderPointUse, createdate\r\n"
-				+ "FROM orders\r\n"
+				+ "FROM orders WHERE order_status NOT IN(0)\r\n"
 				+ "ORDER BY createdate DESC";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
