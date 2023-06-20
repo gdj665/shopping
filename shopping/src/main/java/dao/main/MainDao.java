@@ -4,6 +4,8 @@ import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import org.apache.catalina.connector.Response;
 
 import util.DBUtil;
@@ -13,7 +15,37 @@ import vo.product.ProductImg;
 import vo.product.Track;
 
 public class MainDao {
-		
+	
+	// 앨범 총 갯수
+	public int productCnt(String mainName, String subName) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		String sql = "SELECT COUNT(*)\r\n"
+				+ "FROM product p INNER JOIN category c\r\n"
+				+ "	ON p.category_no = c.category_no\r\n"
+				+ "WHERE c.category_main_name = ? AND c.category_sub_name = ?";
+		if ("전체".equals(subName)) {
+			sql = "SELECT COUNT(*)\r\n"
+					+ "FROM product p INNER JOIN category c\r\n"
+					+ "	ON p.category_no = c.category_no\r\n"
+					+ "WHERE c.category_main_name = ?";
+		}
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		if ("전체".equals(subName)) {
+			stmt.setString(1, mainName);
+		} else {
+			stmt.setString(1, mainName);
+			stmt.setString(2, subName);
+		}
+		ResultSet rs = stmt.executeQuery();
+		int totalCnt = 0;
+		if(rs.next()){
+			totalCnt = rs.getInt("COUNT(*)");
+
+		}
+		return totalCnt;
+	}
+	
 	// 카테고리 체크
 	// 카테고리 별로 product를 출력하기 위해서 카테고리를 특정화 해야한다.
 	// mainName 과 subName을 조건으로 주고 결과값을 int 값으로 categoryNo를 받아온다.

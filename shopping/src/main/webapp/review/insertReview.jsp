@@ -88,12 +88,12 @@
 			리뷰 이미지
 			<button class="btn btn-sm btn-outline-danger" id="addFile" type="button">파일추가</button>
 			<button class="btn btn-sm btn-outline-danger" id="delFile" type="button">파일삭제</button>
+			<button class="btn btn-sm btn-outline-danger" id="submit">작성</button>
 		</div>
 		<div>
 			jpg 파일만 업로드 가능합니다.
 		</div>
 		<div id="files"></div>
-		<button id="submit">작성</button>
 	</form>
 </body>
 </html>

@@ -24,14 +24,24 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>상품 리뷰</h1>
-	<a href="<%=request.getContextPath()%>/review/updateReview.jsp?reviewNo=<%=reviewNo%>">
-		수정
-	</a>
-	<a href="<%=request.getContextPath()%>/review/deleteReviewAction.jsp?reviewNo=<%=reviewNo%>&productNo=<%=review.getProductNo()%>">
-		삭제
-	</a>
-	<table>
+	<div>
+		<jsp:include page="/inc/search.jsp"></jsp:include>
+	</div>
+	<div>
+		<jsp:include page="/inc/head.jsp"></jsp:include>
+	</div>
+	<hr>
+	<h4>
+		상품 리뷰
+		<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/review/updateReview.jsp?reviewNo=<%=reviewNo%>">
+			수정
+		</a>
+		<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/review/deleteReviewAction.jsp?reviewNo=<%=reviewNo%>&productNo=<%=review.getProductNo()%>">
+			삭제
+		</a>
+	</h4>
+	<hr>
+	<table class="table">
 		<tr>
 			<th>리뷰 제목</th>
 			<td>
@@ -50,26 +60,42 @@
 				<%=review.getCreatedate()%>
 			</td>
 		</tr>
-	</table>
-	<h4>
-		<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=review.getProductNo()%>">
-			<%=review.getProductName()%>
-		</a>
-	</h4>
-	<table>
 		<tr>
+			<th>
+				앨범명
+			</th>
+			<td>
+				<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=review.getProductNo()%>">
+					<%=review.getProductName()%>
+				</a>
+			</td>
+		</tr>
+	</table>
+	<hr>
+	<div class="product-list">
+		<div class="row">
 	<%
 			for(Review r : reviewImgList){
 	%>
-				<td>
-					<img src="<%=request.getContextPath() + "/img/reviewImg/" + r.getReviewSaveFilename()%>">
-				</td>
+			    <div class="col-lg-2 col-sm-2">
+			        <div class="product-item">
+			            <div class="pi-pic">
+							<img src="<%=request.getContextPath() + "/img/reviewImg/" + r.getReviewSaveFilename()%>">
+			            </div>
+			        </div>
+			    </div>
 	<%	
 			}
 	%>
+		</div>
+	</div>
+	<hr>
+	<table class="table">
+		<tr>
+			<th>
+				리뷰 내용
+			</th>
 		</tr>
-	</table>
-	<table>
 		<tr>
 			<td>
 				<%=review.getReviewContent()%>

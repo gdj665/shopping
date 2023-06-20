@@ -48,7 +48,7 @@
 				Product productOne = new Product();
 				productOne = md.selectProductOne(p.getProductNo());
 		%>
-		    <div class="col-lg-4 col-sm-6">
+		    <div class="col-lg-3 col-sm-6">
 		        <div class="product-item">
 	        <%
 				if(checkId > 0){
@@ -64,7 +64,7 @@
 			%>
 		            <div class="pi-pic">
 		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+							<img width="200px" height="300px" src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
 						</a>
 		            </div>
 		            <div class="pi-text">
