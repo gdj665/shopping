@@ -27,22 +27,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function(){
-		let cnt = 1;
+		let cnt = 0;
+		$('#imgCnt').val(cnt);
 		$('#addFile').click(function(){
 			if($('.pic').length == 0){
+				cnt++;
 				let inputName = "reviewImgFile" + cnt;
 				$('#files').append("<div><input type=\"file\" name=" + inputName + " class=\"pic\"></div>");
 				console.log(inputName);
-				cnt++;
+				$('#imgCnt').val(cnt);
 			} else {
 				if($('.pic').last().val() == ''){
 					alert('빈 파일업로드 태그가 있읍니다.');
 				} else {
+					cnt++;
 					let inputName = "reviewImgFile" + cnt;
 					$('#files').append("<div><input type=\"file\" name=" + inputName + " class=\"pic\"></div>");
-					cnt++;
 					console.log(inputName);
 					console.log(cnt);
+					$('#imgCnt').val(cnt);
 				}
 			}
 		})
@@ -50,10 +53,6 @@
 			$('.pic').last().remove();
 			cnt--;
 			console.log(cnt);
-		})
-		$('#imgCnt').html('<input type="hidden" name="imgCnt" value="' + cnt + '">');
-		$('#submit').click(function(){
-			$('#insertForm').submit();
 		})
 	})
 </script>
@@ -69,7 +68,7 @@
 	<h4><%=productName%> 앨범 리뷰 작성 페이지</h4>
 	<hr>
 	<form action="<%=request.getContextPath()%>/review/insertReviewAction.jsp" method="post" enctype="multipart/form-data" id="insertForm">
-		<div id="imgCnt"></div>
+		<input type="hidden" id="imgCnt" name="imgCnt">
 		<input type="hidden" name="productNo" value="<%=productNo%>">
 		<table class="table">
 			<tr>
@@ -94,7 +93,7 @@
 			jpg 파일만 업로드 가능합니다.
 		</div>
 		<div id="files"></div>
-		<button type="button" id="submit">작성</button>
+		<button id="submit">작성</button>
 	</form>
 </body>
 </html>

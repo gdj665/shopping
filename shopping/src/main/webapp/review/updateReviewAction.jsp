@@ -29,7 +29,7 @@
 	
 	// 파일 들어온거 체크해서 list 만들기
 	ArrayList<String> checkReviewImgList = new ArrayList<>();
-	int maxImgCnt = 3;
+	int maxImgCnt = Integer.parseInt(mRequest.getParameter("imgCnt"));
 	for (int i = 1; i <= maxImgCnt; i++){
 		String reviewImgFile = "reviewImgFile" + i;
 		// System.out.println(reviewImgFile);
@@ -118,5 +118,5 @@
 		i++;
 	}
 	
-	response.sendRedirect(request.getContextPath() + "/review/updateReview.jsp?reviewNo=" + reviewNo);
+	response.sendRedirect(request.getContextPath() + "/review/review.jsp?reviewNo=" + reviewNo);
 %>

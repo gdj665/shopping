@@ -14,8 +14,8 @@
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	
 	// id 유효성 검사
-	// String id = (String)session.getAttribute("loginId");
-	String id = "aa";
+	String id = (String)session.getAttribute("loginId");
+	System.out.println(id);
 	ReviewDao rd = new ReviewDao();
 	ArrayList<String> idList = new ArrayList<>();
 	idList = rd.checkId(reviewNo);
@@ -25,12 +25,13 @@
 		if (s.equals(id)){
 			checkId = true;
 			System.out.println("id 일치");
+			break;
 		}
-		if (!checkId){
-			response.sendRedirect(request.getContextPath() + "/review/review.jsp?reviewNo=" + reviewNo);
-			System.out.println("접근권한이 없습니다.");
-			return;
-		}
+	}
+	if (!checkId){
+		response.sendRedirect(request.getContextPath() + "/review/review.jsp?reviewNo=" + reviewNo);
+		System.out.println("접근권한이 없습니다.");
+		return;
 	}
 	ArrayList<Review> deleteReviewImgList = new ArrayList<>();
 	deleteReviewImgList = rd.selectReviewImg(reviewNo);

@@ -41,9 +41,7 @@
 					</a>
 				</td>
 				<td>
-					<a href="<%=request.getContextPath()%>/review/review.jsp?reviewNo=<%=r.getReviewNo()%>">
-						<%=r.getId()%>
-					</a>
+					<%=r.getId()%>
 				</td>
 			</tr>
 	<%

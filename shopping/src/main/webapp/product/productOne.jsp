@@ -36,6 +36,9 @@
 	// 앨범 세부 내용
 	Product p = new Product();
 	p = md.selectProductOne(productNo);
+	// 할인 데이터 가져오기 위함
+	Product productOne = new Product();
+	productOne = md.selectProductOne(productNo);
 	
 	// 수록곡 리스트
 	ArrayList<Track> trackList = new ArrayList<>();
@@ -46,7 +49,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>앨범상세보기</title>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('#cartBtn').click(function(){
+				console.log($('#cartCnt').val())
+				if($('#cartCnt').val() < 1){
+					alert('1개 이상 구매해주세요');
+				}else{
+					$('#addCart').submit();
+				}
+			})
+		})
+	</script>
 </head>
 <body>
 	<div>
@@ -72,29 +88,73 @@
 		%>
 	</h4>
 	<hr>
-	<table class="table">
-		<tr>
-			<td rowspan="8">
-				<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
-			</td>
-			<td colspan="2">
-				<form action="<%=request.getContextPath()%>/product/addCartAction.jsp" method="post" id="addCart">
-					<input type="hidden" name="id" value="<%=id%>">
-					<input type="hidden" name="productNo" value="<%=productNo%>">
-					구매수량: <input type="number" name="cartCnt">
-					<button class="btn btn-outline-secondary btn-sm" type="submit" form="addCart">장바구니 추가</button>
-				</form>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<%=p.getProductName()%>
-			</td>
-			<td>
-				<%=md.calculateTime(p.getTrackSumTime())%>
-			</td>
-		</tr>
-	</table>
+	<div class="product-list">
+		<div class="row">
+		    <div class="col-lg-4 col-sm-6">
+		        <div class="product-item">
+		            <div class="pi-pic">
+		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+						</a>
+		            </div>
+		        </div>
+		    </div>
+		    <div class="col-lg-6 col-sm-6">
+				<table class="table">
+					<tr>
+						<th>앨범가격</th>
+						<td>
+							<%
+								if (productOne.getProductDiscountPrice() == productOne.getProductPrice()){
+							%>
+									    <%=productOne.getProductPrice()%>원
+							<%
+								} else {
+							%>
+										<%=productOne.getProductDiscountPrice()%>원
+									  	<font style="text-decoration:line-through"><%=productOne.getProductPrice()%>원</font>
+							<%
+								}
+							%>
+						</td>
+					</tr>
+					<tr>
+						<th colspan="2">
+							<form action="<%=request.getContextPath()%>/product/addCartAction.jsp" method="post" id="addCart">
+								<input type="hidden" name="id" value="<%=id%>">
+								<input type="hidden" name="productNo" value="<%=productNo%>">
+								구매수량: <input type="number" id="cartCnt" name="cartCnt">
+								<button class="btn btn-outline-secondary btn-sm" type="button" id="cartBtn" form="addCart">장바구니 추가</button>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<th>앨범명</th>
+						<td>
+							<%=p.getProductName()%>
+						</td>
+					</tr>
+					<tr>
+						<th>가수명</th>
+						<td>
+							<%=p.getProductSinger()%>
+						</td>
+					</tr>
+					<tr>
+						<th>총 재생 시간</th>
+						<td>
+							<%=md.calculateTime(p.getTrackSumTime())%>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<%=p.getProductInfo()%>
+						</td>
+					</tr>
+				</table>
+		    </div>
+		</div>
+	</div>
 	<h4>수록곡(<%=trackList.size()%>)</h4>
 	<table class="table">
 		<tr>
