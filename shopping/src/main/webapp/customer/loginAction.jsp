@@ -62,6 +62,7 @@
 		if(cstmCnt > 0){
 			session.setAttribute("loginId", id);
 			System.out.print("고객로그인 : " + session.getAttribute("loginId"));
+			// 로그인 할시에 비회원 장바구니에 데이터가 있었다면 모두 로그인한 계정 장바구니로 이동
 			OrderDao orderDao = new OrderDao();
 			orderDao.noLoginAddCart(id, request);
 			response.sendRedirect(request.getContextPath()+"/home.jsp");

@@ -3,14 +3,34 @@
 <%@page import="dao.main.EmployeesDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	if(request.getParameter("customerId") == null){
-		response.sendRedirect(request.getContextPath() + "/home.jsp");
+	//한글 깨짐 방지
+	request.setCharacterEncoding("utf-8");
+
+	//유효성 검사
+	if(session.getAttribute("loginId") == null){
+		// null값이 있을 경우 홈으로 이동
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
-	String customerId = request.getParameter("customerId");
+	
+	//값 받기
+	String id = (String)session.getAttribute("loginId");
+	
+	// EmployeesDao 선언
 	EmployeesDao ad = new EmployeesDao();
+	
+	// 관리자 레벨 출 력
+	int empLevel = ad.checkEmployees(id);
+	
+	// 관리자가 아닐시 홈화면으로
+	if(empLevel<1){
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
+	
+	//회원정보출력
 	Customer customer = new Customer();
-	customer = ad.selectCustomer(customerId);
+	customer = ad.selectCustomer(id);
 %>
 <!DOCTYPE html>
 <html>
@@ -23,6 +43,7 @@
 	}
 </style>
 <body class="sb-nav-fixed">
+	<!-- 상단 nav 출력 -->
 	<div>
 		<jsp:include page="/inc/employeesNav.jsp"></jsp:include>
 	</div>

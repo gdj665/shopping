@@ -19,21 +19,27 @@ public class OrderDao {
 		Connection conn = dbUtil.getConnection();
 		
 		String sql = "SELECT c.product_no,\r\n"
-				+ "c.cart_no,\r\n"
-				+ "c.id,\r\n"
-				+ "p.product_name,\r\n"
-				+ "IFNULL(p.product_price*(1-d.discount_rate),p.product_price) discount_price,\r\n"
-				+ "i.product_save_filename,\r\n"
-				+ "c.cart_cnt,\r\n"
-				+ "IFNULL(p.product_price*(1-d.discount_rate),p.product_price)* c.cart_cnt total_price,\r\n"
-				+ "c.checked,\r\n"
-				+ "c.createdate,\r\n"
-				+ "c.updatedate \r\n"
-				+ "	FROM cart c \r\n"
-				+ "	LEFT OUTER JOIN product p ON c.product_no = p.product_no \r\n"
-				+ "	LEFT OUTER JOIN discount d ON p.product_no = d.product_no \r\n"
-				+ "	LEFT OUTER JOIN product_img i ON p.product_no = i.product_no \r\n"
-				+ "	LEFT OUTER JOIN customer m ON c.id = m.id \r\n"
+				+ "       c.cart_no,\r\n"
+				+ "       c.id,\r\n"
+				+ "       p.product_name,\r\n"
+				+ "       CASE\r\n"
+				+ "           WHEN CURDATE() BETWEEN d.discount_begin AND d.discount_end THEN p.product_price * (1 - IFNULL(d.discount_rate, 0))\r\n"
+				+ "           ELSE p.product_price\r\n"
+				+ "       END discount_price,\r\n"
+				+ "       i.product_save_filename,\r\n"
+				+ "       c.cart_cnt,\r\n"
+				+ "       CASE\r\n"
+				+ "           WHEN CURDATE() BETWEEN d.discount_begin AND d.discount_end THEN (p.product_price * (1 - IFNULL(d.discount_rate, 0))) * c.cart_cnt\r\n"
+				+ "           ELSE p.product_price * c.cart_cnt\r\n"
+				+ "       END total_price,\r\n"
+				+ "       c.checked,\r\n"
+				+ "       c.createdate,\r\n"
+				+ "       c.updatedate\r\n"
+				+ "FROM cart c\r\n"
+				+ "LEFT JOIN product p ON c.product_no = p.product_no\r\n"
+				+ "LEFT JOIN discount d ON p.product_no = d.product_no\r\n"
+				+ "LEFT JOIN product_img i ON p.product_no = i.product_no\r\n"
+				+ "LEFT JOIN customer m ON c.id = m.id\r\n"
 				+ "WHERE m.id = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1,id);
@@ -496,7 +502,6 @@ public class OrderDao {
 		row = insertAddressStmt.executeUpdate();
 		return row;
 	}
-	/*
 	// 21) 주문 결제시 사용한 주소 최근사용으로 당기기
 	public int updateAddressDate(String address) throws Exception {
 		int row = 0;
@@ -509,7 +514,6 @@ public class OrderDao {
 		row = stmt.executeUpdate();
 		return row;
 	}
-	*/
 	// 22) 선택된 주소를 order.jsp에 출력
 	public ArrayList<HashMap<String,Object>> addressOne(int addressNo) throws Exception {
 		DBUtil DBUtil = new DBUtil();
@@ -597,16 +601,34 @@ public class OrderDao {
 	// 26) 로그인 되어 있는 상태에서 장바구니에 데이터 삽입
 	public int insertCartAction(String id,int productNo, int cartCnt) throws Exception {
 		int row = 0;
+		int ckProduct = 0;
 		DBUtil DBUtil = new DBUtil();
 	    Connection conn = DBUtil.getConnection();
 	    
-	    String sql = "INSERT INTO cart(id,product_no,cart_cnt,createdate,updatedate) VALUES (?,?,?,now(),now())";
-	    PreparedStatement stmt = conn.prepareStatement(sql);
-	    stmt.setString(1, id);
-        stmt.setInt(2, productNo);
-        stmt.setInt(3, cartCnt);
-        row = stmt.executeUpdate();
-		return row;
+	    String selSql = "SELECT count(*) FROM cart WHERE product_no = ?";
+	    PreparedStatement selStmt = conn.prepareStatement(selSql);
+	    selStmt.setInt(1, productNo);
+	    ResultSet selRs = selStmt.executeQuery();
+	    if(selRs.next()) {
+	    	ckProduct = selRs.getInt("count(*)");
+	    }
+	    if(ckProduct>0) {
+			String sql = "UPDATE cart SET cart_cnt=cart_cnt+?,createdate=now(),updatedate=now() WHERE id=? AND product_no=?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, cartCnt);
+			stmt.setString(2, id);
+			stmt.setInt(3, productNo);
+			row = stmt.executeUpdate();
+			return row;
+	    } else {
+	    	String sql = "INSERT INTO cart(id,product_no,cart_cnt,createdate,updatedate) VALUES (?,?,?,now(),now())";
+		    PreparedStatement stmt = conn.prepareStatement(sql);
+		    stmt.setString(1, id);
+	        stmt.setInt(2, productNo);
+	        stmt.setInt(3, cartCnt);
+	        row = stmt.executeUpdate();
+			return row;
+	    }
 	}
 	
 	//27 관리자 주문내역관리 (오더넘버에 맞는 주문내역 출력)

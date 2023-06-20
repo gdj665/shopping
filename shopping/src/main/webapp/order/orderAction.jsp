@@ -19,7 +19,6 @@
 		return;
 	}
 	
-	
 	// 값 받아오기
 	String id = (String)session.getAttribute("loginId");
 	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
@@ -64,8 +63,8 @@
 	System.out.println("row5-->"+row5);
 	
 	// 21) 제품 구매할때 최근 사용 주소 변경
-	//int row6 = orderdao.updateAddressDate(address);
-	//System.out.println("row6-->"+row6);
+	int row6 = orderdao.updateAddressDate(address);
+	System.out.println("row6-->"+row6);
 	
 	
 	// 성공 여부에 따른 페이지 출력

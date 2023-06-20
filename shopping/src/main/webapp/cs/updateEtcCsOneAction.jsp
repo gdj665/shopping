@@ -38,10 +38,10 @@
 	//CsDao.java 선언
 	CsDao csdao = new CsDao();
 	
-	// 4) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
+	// 11) ETC문의글 수정 메서드
 	int row = csdao.updateEtcCsOne(oqTitle,oqContent,oqNo);
 	
-	if(row==1){
+	if(row>0){
 		System.out.println("updateEtcCsOneAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/cs/etcCsOne.jsp?oqNo="+oqNo);
 		return;

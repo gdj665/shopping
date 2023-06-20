@@ -31,15 +31,17 @@
 	CsDao csdao = new CsDao();
 	EmployeesDao employeesdao = new EmployeesDao();
 	
+	// 관리자or고객 분기
 	int empLevel = employeesdao.checkEmployees(id);
 	int row = 0;
 	
+	// 고객만 사용가능
 	if(empLevel==0){
-		// 12) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
+		// 14) 제품 문의 질문 삭제 메서드
 		row = csdao.deleteProductQuestion(qNo);
 	}
 	
-	if(row==1){
+	if(row>0){
 		System.out.println("deleteProductQuestionAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/product/productOne.jsp?productNo="+productNo);
 		return;

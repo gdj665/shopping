@@ -29,13 +29,16 @@
 	CsDao csdao = new CsDao();
 	EmployeesDao employeesdao = new EmployeesDao();
 	
+	// empLevel분기
 	int empLevel = employeesdao.checkEmployees(id);
 	int row = 0;
 	
 	// 분기 값에 따라서 해당 댓글이 관리자 댓글인지 고객 댓글인지 판별
 	if(empLevel==0){
+		// 8) 답변 입력 메서드
 		row = csdao.insertEtcCs(oqNo,oaContent,id);
 	} else if(empLevel>0){
+		// 8-1) 관리자 답변 입력 메서드
 		row = csdao.insertEmpAnswer(oqNo,oaContent,id);
 	}
 	

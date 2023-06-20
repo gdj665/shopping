@@ -48,7 +48,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	<form id="updateEtcCsOne" action="<%=request.getContextPath() %>/cs/updateEtcCsOneAction.jsp">
+	<form id="updateEtcCsOne" action="<%=request.getContextPath() %>/cs/updateEtcCsOneAction.jsp" method="post">
 		<br>
 		<h3 style="margin-left:10px;">문의 내역 수정</h3>
 		<br>

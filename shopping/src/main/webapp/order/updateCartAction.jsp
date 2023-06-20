@@ -11,7 +11,6 @@
 	// OrderDao 사용 선언
 	OrderDao orderdao = new OrderDao();
 	
-	
 	// 유효성 검사
 	if((request.getParameterValues("cartCnt")==null)
 		||(request.getParameterValues("cartNo")==null)
@@ -23,7 +22,6 @@
 		return;
 	}
 	
-	
 	// 값 받아오기
 	String id = (String)session.getAttribute("loginId");
 	String[] cartCntValues = request.getParameterValues("cartCnt");
@@ -31,11 +29,9 @@
 	// row값 분기 변수 선언
 	int row = 0;
 	
-	
 	// 카트 번호와 카트수량 디버깅
 	System.out.println("cartCntValues.length-->" + cartCntValues.length);
 	System.out.println("cartNoValues.length-->" + cartNoValues.length);
-	
 	
 	// checkbox를 통해서 값 가져오기
 	// 새로운 array를 cartNoValues의 길이 만큼 생성
@@ -80,7 +76,7 @@
 	  
 	
 	// 성공 실패 분기
-	if(row==1){
+	if(row>0){
 		System.out.println("updateCartAction row값 정상");
 		// 성공시에 다시 카트 페이지로 이동
 		response.sendRedirect(request.getContextPath()+"/order/cart.jsp?id="+id);

@@ -19,11 +19,9 @@
 		return;
 	}	
 
-
 	// 값 받아오기
 	String id = (String)session.getAttribute("loginId");
 	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
-	
 	
 	//OrderDao 선언
 	OrderDao orderdao = new OrderDao();
@@ -52,7 +50,7 @@
 	<h3 style="text-align: center;">포인트 사용</h3>
 	<hr>
 	<div class="container">
-		<form id="updateOrderPoint" action="<%=request.getContextPath() %>/order/orderPointAction.jsp">
+		<form id="updateOrderPoint" action="<%=request.getContextPath() %>/order/orderPointAction.jsp" method="post">
 			<table>
 				<%
 					for(Customer c : list3){
@@ -76,6 +74,7 @@
 				<button class="btn btn-outline-secondary btn-block" type="submit" onclick="submitForm()">사용하기</button><br>
 			</div>
 		</form>
+		<!-- 모든포인트 사용 -->
 		<div class="d-grid">
 			<a href="#" class="btn btn-outline-secondary btn-block" onclick="useAllPoints()">모든 포인트 사용하기</a>
 		</div>

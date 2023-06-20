@@ -35,7 +35,6 @@
 	String qContent = request.getParameter("qContent");
 	String id = (String)session.getAttribute("loginId");
 	
-	
 	//CsDao.java 선언
 	CsDao csdao = new CsDao();
 	EmployeesDao employeesdao = new EmployeesDao();
@@ -44,13 +43,11 @@
 	int row = 0;
 	
 	if(empLevel==0){
-		// 4) 고객이 제품관련 문의 질문
+		// 4) 사용자 제품문의 질문 등록 메서드
 		row = csdao.insertProductQuestion(productNo,id,qContent);
 	}
 	
-	
-	
-	if(row==1){
+	if(row>0){
 		System.out.println("insertProductCsAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/product/productOne.jsp?productNo="+productNo);
 		return;

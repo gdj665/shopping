@@ -8,12 +8,13 @@
 		return;
 	}
 	int orderStatus = Integer.parseInt(request.getParameter("orderStatus"));
+	String id = request.getParameter("id");
 	String[] checkedOrderNo = request.getParameterValues("checkedOrderNo");
 	System.out.println(orderStatus + " <- orderStatus");
 	System.out.println(checkedOrderNo[0] + " <- checkedOrderNo");
 	
 	EmployeesDao ed = new EmployeesDao();
-	int checkUpdate = ed.orderStatusUpdate(orderStatus, checkedOrderNo);
+	int checkUpdate = ed.orderStatusUpdate(orderStatus, checkedOrderNo,id);
 	System.out.println(checkUpdate + " <- checkUpdate");
 	
 	response.sendRedirect(request.getContextPath() + "/employees/orderList.jsp");

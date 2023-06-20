@@ -34,11 +34,11 @@
 	int row = 0;
 	int empLevel = employeesdao.checkEmployees(id);
 	if(empLevel==0){
-		// 4) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
+		// 6) 1대1 문의 추가 메서드
 		row = csdao.insertCsList(id,oqTitle,oqContent);
 	}
 	
-	if(row==1){
+	if(row>0){
 		System.out.println("insertEtcCsListAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/cs/etcCsList.jsp?id="+id);
 		return;

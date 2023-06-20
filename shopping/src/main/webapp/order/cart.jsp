@@ -53,6 +53,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <style>
+	<!-- a태그 버튼 줄 삭제 및 색 변경 -->
 	.subBtn {
 		text-decoration: none;
 		color : #000000;
@@ -61,9 +62,11 @@
 </head>
 
 <body>
+	<!-- 검색 최상단 호출 -->
     <div>
 		<jsp:include page="/inc/search.jsp"></jsp:include>
 	</div>
+	<!-- nav 호출 -->
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
@@ -74,72 +77,73 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cart-table">
-                    	<form action="<%=request.getContextPath() %>/order/updateCartAction.jsp">
-                        <table>
-                            <thead>
-	                            <tr>
-									<th>선택</th>
-									<th>이미지</th>
-									<th class="p-name">상품명</th>
-									<th>가격</th>
-									<th>수량</th>
-									<th>합계</th>
-									<th></th>
-								</tr>
-                            </thead>
-                            <tbody>
-                            	<!-- 장바구니 리스트 출력문 -->
-								<%
-									// 장바구니 리스트 출력
-									for(HashMap<String,Object> m : list){
-										int productNo = (int)m.get("productNo");
-										int cartCnt = (int)m.get("cartCnt");
-										String checked = (String)m.get("checked");
-										
-										
-										// 3) 각 제품의 재고량을 구하는 메서드
-										int tcnt = orderdao.totalstock(productNo);
-								%>
-                                <tr>
-                                	<!-- 카트 테이블 기본키 넘기기 -->
-                                	<!-- 장바구니 체크박스 -->
-                                	<td>
-										<input type="hidden" name="cartNo" value="<%=(int)m.get("cartNo")%>">
-										<input name="checked<%=cnt%>" value="Y" class="form-check-input" type="checkbox" <%= (checked != null && checked.equals("Y")) ? "checked" : "" %>/>
-									</td>
-									<!-- 장바구니 사진삽입 -->
-                                    <td class="cart-pic first-row">
-                                    	<img style="width:100px; height:100px;" src="<%=request.getContextPath() + "/img/productImg/" + (String)m.get("productSaveFilename")%>">
-                                    </td>
-                                    <!-- 제품이름 -->
-                                    <td class="cart-title first-row">
-                                        <%=(String)m.get("productName") %>
-                                    </td>
-                                    <!-- 할인률 적용 후 가격 -->
-                                    <td class="p-price first-row">
-                                 	   <%=m.get("discountPrice")%>
-                                    </td>
-                                    <!-- 해당 제품의 재고량 안에서 수량 선택 가능 -->
-                                    <td class="qua-col first-row">
-	                                    <div class="pro-qty">
-											<input name="cartCnt" id="cartQty" value="<%=cartCnt %>" type="text">
-										</div>
-									</td>
-									<!-- 제품과 갯수를 고른 뒤 총 합을 출력 (장바구니 전체 출력 X) -->
-                                    <td class="total-price first-row"><%=m.get("totalPrice") %></td>
-                                    <td class="close-td first-row">
-	                                    <a class="subBtn" href="<%=request.getContextPath()%>/order/deleteCartAction.jsp?cartNo=<%=(int)m.get("cartNo")%>">
-											<i class="ti-close"></i>
-	                                    </a>
-                                    </td>
-                                </tr>
-                                <%
-									cnt++;
-									}
-								%>
-                            </tbody>
-                        </table>
-                    </div>
+                    	<form id="cart" action="<%=request.getContextPath() %>/order/updateCartAction.jsp" method="post">
+	                        <table>
+	                            <thead>
+		                            <tr>
+										<th>선택</th>
+										<th>이미지</th>
+										<th class="p-name">상품명</th>
+										<th>가격</th>
+										<th>수량</th>
+										<th>합계</th>
+										<th></th>
+									</tr>
+	                            </thead>
+	                            <tbody>
+	                            	<!-- 장바구니 리스트 출력문 -->
+									<%
+										// 장바구니 리스트 출력
+										for(HashMap<String,Object> m : list){
+											int productNo = (int)m.get("productNo");
+											int cartCnt = (int)m.get("cartCnt");
+											String checked = (String)m.get("checked");
+											
+											
+											// 3) 각 제품의 재고량을 구하는 메서드
+											int tcnt = orderdao.totalstock(productNo);
+									%>
+	                                <tr>
+	                                	<!-- 카트 테이블 기본키 넘기기 -->
+	                                	<!-- 장바구니 체크박스 -->
+	                                	<td>
+											<input type="hidden" name="cartNo" value="<%=(int)m.get("cartNo")%>">
+											<input name="checked<%=cnt%>" value="Y" class="form-check-input" type="checkbox" <%= (checked != null && checked.equals("Y")) ? "checked" : "" %>/>
+										</td>
+										<!-- 장바구니 사진삽입 -->
+	                                    <td class="cart-pic first-row">
+	                                    	<img style="width:100px; height:100px;" src="<%=request.getContextPath() + "/img/productImg/" + (String)m.get("productSaveFilename")%>">
+	                                    </td>
+	                                    <!-- 제품이름 -->
+	                                    <td class="cart-title first-row">
+	                                        <%=(String)m.get("productName") %>
+	                                    </td>
+	                                    <!-- 할인률 적용 후 가격 -->
+	                                    <td class="p-price first-row">
+	                                 	   <%=m.get("discountPrice")%>
+	                                    </td>
+	                                    <!-- 해당 제품의 재고량 안에서 수량 선택 가능 -->
+	                                    <td class="qua-col first-row">
+		                                    <div class="pro-qty">
+												<input name="cartCnt" id="cartQty" value="<%=cartCnt %>" type="text">
+											</div>
+										</td>
+										<!-- 제품과 갯수를 고른 뒤 총 합을 출력 (장바구니 전체 출력 X) -->
+	                                    <td class="total-price first-row"><%=m.get("totalPrice") %></td>
+	                                    <td class="close-td first-row">
+		                                    <a class="subBtn" href="<%=request.getContextPath()%>/order/deleteCartAction.jsp?cartNo=<%=(int)m.get("cartNo")%>">
+												<i class="ti-close" style="color:#000000;"></i>
+		                                    </a>
+	                                    </td>
+	                                </tr>
+	                                <%
+										cnt++;
+										}
+									%>
+	                            </tbody>
+	                        </table>
+                        </form>
+                    </div><!-- cart table종료 -->
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="cart-buttons">
@@ -147,10 +151,9 @@
                                 	<a href="<%=request.getContextPath() %>/home.jsp" class="primary-btn continue-shop">쇼핑 계속하기</a>
                                 </div>
                                 <div>
-                                	<button type="submit" class="primary-btn up-cart">장바구니 정보 변경</button>
+                                	<button form="cart" type="submit" class="primary-btn up-cart">장바구니 정보 변경</button>
                                 </div>
                             </div>
-                            </form>
                         </div>
                         <div class="col-lg-4 offset-lg-4">
 							<div class="proceed-checkout">
@@ -161,12 +164,24 @@
 							</div><!-- proceed-checkout -->
                         </div>
                     </div>
-                </div>
+                </div><!-- col-lg-12종료 -->
             </div>
         </div>
     </section>
     <!-- Shopping Cart Section End -->
-
+    
+    
+<!-- Js Plugins -->
+<script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery-ui.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.countdown.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.nice-select.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.zoom.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.dd.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
 <script>
 	// 구매하기 버튼을 눌럿는대 장바구니에서 체크된 항목이 없으면 장바구니에 선택된 제품이 없다고 메세지 출력
 	// 장바구니에 제품이 있을 경우 구매 페이지로 이동
@@ -185,8 +200,7 @@
 	$('#cartQty').change(function(){
 		
 	});
-</script>
-<script>
+	
 	// 제품 수량을 재고량 보다 많이 입력했을 때 재고량 만큼만 입력되게함
 	<%
 		for(HashMap<String,Object> m : list){
@@ -209,5 +223,4 @@
 	%>
 </script>
 </body>
-
 </html>

@@ -29,10 +29,10 @@
 	//CsDao.java 선언
 	CsDao csdao = new CsDao();
 
-	// 4) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
+	// 12) 기타 문의 댓글 삭제 메서드
 	int row = csdao.deleteEtcAnswer(oaNo);
 	
-	if(row==1){
+	if(row>0){
 		System.out.println("deleteEtcCsCommentAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/cs/etcCsOne.jsp?oqNo="+oqNo);
 		return;

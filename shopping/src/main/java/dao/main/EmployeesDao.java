@@ -244,7 +244,7 @@ public class EmployeesDao {
 	}
 	
 	// 주문 내역 상태 변경
-	public int orderStatusUpdate(int orderStatus, String[] orderNo) throws Exception {
+	public int orderStatusUpdate(int orderStatus, String[] orderNo,String id) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		String sql = "UPDATE orders SET order_status = ?\r\n"
@@ -257,6 +257,47 @@ public class EmployeesDao {
 			stmt.setInt(2, i);
 			int row = stmt.executeUpdate();
 			checkUpdateList.add(row);
+			if(orderStatus==4) {
+				int buyPoint = 0;
+				int usePoint = 0;
+				String pointSql = "SELECT point_pm,point FROM point_history WHERE order_no=?";
+				PreparedStatement pointStmt = conn.prepareStatement(pointSql);
+				pointStmt.setInt(1, i);
+				ResultSet pointRs = pointStmt.executeQuery();
+				while(pointRs.next()) {
+					if(pointRs.getString("point_pm").equals("+")) {
+						buyPoint = buyPoint+pointRs.getInt("point");
+						System.out.println("buyPoint-->"+buyPoint);
+					}else if(pointRs.getString("point_pm").equals("-")){
+						usePoint = usePoint+pointRs.getInt("point");
+						System.out.println("usePoint-->"+usePoint);
+					}
+				}
+				String cstmPointSql1 = "UPDATE customer SET cstm_point = cstm_point + ? WHERE id = ?";
+				PreparedStatement cstmPointStmt1 = conn.prepareStatement(cstmPointSql1);
+				cstmPointStmt1.setInt(1, usePoint);
+				cstmPointStmt1.setString(2, id);
+				row = cstmPointStmt1.executeUpdate();
+
+				String cstmPointSql2 = "UPDATE customer SET cstm_point = cstm_point - ? WHERE id = ?";
+				PreparedStatement cstmPointStmt2 = conn.prepareStatement(cstmPointSql2);
+				cstmPointStmt2.setInt(1, buyPoint);
+				cstmPointStmt2.setString(2, id);
+				row = cstmPointStmt2.executeUpdate();
+
+				String historyPointSql1 = "INSERT INTO point_history(order_no, point_pm, point, createdate) VALUES (?, '+', ?, NOW())";
+				PreparedStatement historyPointStmt1 = conn.prepareStatement(historyPointSql1);
+				historyPointStmt1.setInt(1, i);
+				historyPointStmt1.setInt(2, usePoint);
+				row = historyPointStmt1.executeUpdate();
+
+				String historyPointSql2 = "INSERT INTO point_history(order_no, point_pm, point, createdate) VALUES (?, '-', ?, NOW())";
+				PreparedStatement historyPointStmt2 = conn.prepareStatement(historyPointSql2);
+				historyPointStmt2.setInt(1, i);
+				historyPointStmt2.setInt(2, buyPoint);
+				row = historyPointStmt2.executeUpdate();
+
+			}
 		}
 		int checkUpdate = checkUpdateList.size();
 		return checkUpdate;

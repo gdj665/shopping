@@ -30,8 +30,6 @@
 		return;
 	}
 	
-	
-	
 	// 값받기
 	String id = (String)session.getAttribute("loginId");
 	int aNo = Integer.parseInt(request.getParameter("aNo"));
@@ -41,15 +39,18 @@
 	CsDao csdao = new CsDao();
 	EmployeesDao employeesdao = new EmployeesDao();
 	
+	// 값선언
 	int empLevel = employeesdao.checkEmployees(id);
+	// 성공한 sql문
 	int row = 0;
 	
+	// 관리자만 가능
 	if(empLevel>0){
-		// 4) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
+		// 13) 제품 문의 댓글 삭제 메서드
 		row = csdao.deleteProductAnswer(aNo);
 	}
 	
-	if(row==1){
+	if(row>0){
 		System.out.println("deleteProductAnswerAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/product/productOne.jsp?productNo="+productNo);
 		return;

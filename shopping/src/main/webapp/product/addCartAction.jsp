@@ -40,12 +40,24 @@
 			// 장바구니가 이미 있으면 기존 맵을 사용합니다.
 			cartMap = (HashMap<String, Cart>) session.getAttribute("cartMap");
 		}
-		
+		//기본 ckProduct false선언
+		boolean ckProduct = false;
+	    for (Cart ckCart : cartMap.values()) {
+	    	// 원래있던 카트에 productNo와 추가된 cartNo가 같으면 진행
+	        if (ckCart.getProductNo()==(productNo)) {
+	            // 동일한 ProductNo가 있으면 해당 cartCnt를 증가시킵니다.
+	            ckCart.setCartCnt(ckCart.getCartCnt() + cartCnt);
+	            // true로 변환시켜서 제품추가 다시 안되도록 설정
+	            ckProduct = true;
+	        }
+	    }
+	    // 동일 제품 추가안된 제품의 경우에는 새롭게 추가
+	    if (!ckProduct) {
 		// 제품을 추가
 		// 제품을 추가할때마다 새로운 ID값을 추가
 		cart.setId(UUID.randomUUID().toString());
 		cartMap.put(cart.getId(), cart);
-		
+	    }
 		// 디버깅용 코드
 		for (Cart c : cartMap.values()) {
 			System.out.println(c.getId());

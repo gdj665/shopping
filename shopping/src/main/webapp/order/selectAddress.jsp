@@ -28,7 +28,6 @@
 	ArrayList<HashMap<String,Object>> list = new ArrayList<>();
 	list = orderdao.addressName(id);
 
-	
 %>
 <!DOCTYPE html>
 <html>
@@ -48,7 +47,8 @@
 	<hr>
 	<br>
 	<div class="container">
-		<form id="addressForm" action="<%= request.getContextPath() %>/order/order.jsp">
+		<!-- 최근사용 주소 목록 출력 -->
+		<form id="addressForm" action="<%= request.getContextPath() %>/order/order.jsp" method="post">
 		<%
 			for(HashMap<String,Object> m : list){
 		%>
@@ -58,11 +58,13 @@
 			}
 		%>
 		<br>
+		<!-- 선택 버튼 -->
 		<div class="d-grid">
 			<button class="btn btn-outline-secondary btn-block" type="submit" onclick="submitForm()">선택하기</button>
 		</div>
 		<br>
 		</form>
+		<!-- 주소찾기 버튼 -->
 		<div class="d-grid">
 			<a class="btn btn-outline-secondary btn-block" href="<%=request.getContextPath()%>/order/insertAddress.jsp">주소찾기</a>
 		</div>

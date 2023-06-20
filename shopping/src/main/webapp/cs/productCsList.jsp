@@ -11,7 +11,7 @@
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
 	
-	/*
+	// 유효성 검사
 	if(request.getParameter("productNo")==null){
 		
 		// null값이 있을 경우 홈으로 이동
@@ -19,12 +19,10 @@
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
-	*/
 	
 	// 값 받아오기
-	int productNo = 1;
+	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	String id = (String)session.getAttribute("loginId");
-	
 	
 	
 	//OrderDao 선언
@@ -79,7 +77,7 @@
                     <%
                     	if(empLevel==0){
                     %>
-						<form action="<%=request.getContextPath() %>/cs/insertProductCsAction.jsp">
+						<form action="<%=request.getContextPath() %>/cs/insertProductCsAction.jsp" method="post">
 							<input type="hidden" name="productNo" value="<%=productNo %>">
 							<table style="width:100%;">
 								<tr>

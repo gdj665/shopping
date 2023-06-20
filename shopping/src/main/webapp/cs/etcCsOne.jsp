@@ -10,6 +10,7 @@
 <%
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
+
 	//유효성 검사
 	if(request.getParameterValues("oqNo")==null
 		|| session.getAttribute("loginId")==null){
@@ -22,12 +23,11 @@
 	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
 	String id = (String)session.getAttribute("loginId");
 	
-	
-	
 	//OrderDao 선언
 	CsDao csdao = new CsDao();
 	EmployeesDao employeesdao = new EmployeesDao();
 	
+	// employ레벨 확인
 	int empLevel = employeesdao.checkEmployees(id);
 
 	// 7) 1대1문의 상세 페이지불러오기
@@ -51,9 +51,11 @@
 </head>
 
 <body>
-	<div>
+	 <!-- 검색 최상단 호출 -->
+    <div>
 		<jsp:include page="/inc/search.jsp"></jsp:include>
 	</div>
+	<!-- nav 호출 -->
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
@@ -82,7 +84,7 @@
 								}
 		                	%>
 		                	<br><br>
-		                	<form action="<%=request.getContextPath() %>/cs/insertEtcCsAnswerAction.jsp">
+		                	<form action="<%=request.getContextPath() %>/cs/insertEtcCsAnswerAction.jsp" method="post">
 			                	<table class="table">
 									<%
 										for(HashMap<String,Object> m : list){

@@ -69,32 +69,54 @@
 	                                <table>
 	                                    <tbody>
 	                                    	<%
-												// 장바구니 리스트 출력
-												for(HashMap<String,Object> m : list){
-													int productNo = (int)m.get("productNo");
-													int cartCnt = (int)m.get("cartCnt");
-													String checked = (String)m.get("checked");
-													
-													
-													// 3) 각 제품의 재고량을 구하는 메서드
-													int tcnt = orderdao.totalstock(productNo);
+	                                    		if(session.getAttribute("loginId")==null){
+	                                    			HashMap<String, Cart> cartMap = (HashMap<String, Cart>) session.getAttribute("cartMap");
+	                                    			if(cartMap != null){
+	                                    			for (Cart c : cartMap.values()) {
+	                                    	%>
+	                                    				<tr>
+			                                            <td class="si-pic">
+			                                            </td>
+			                                            <td class="si-text">
+			                                                <div class="product-selected">
+			                                                	<h6><%=c.getProductNo() %></h6>
+			                                                    <p><%=c.getCartCnt() %></p>
+			                                                </div>
+			                                            </td>
+			                                            <td class="si-close">
+			                                                <i class="ti-close"></i>
+			                                            </td>
+                                    		<%
+	                                    			}
+	                                    			}
+	                                    		}else{
+													// 장바구니 리스트 출력
+													for(HashMap<String,Object> m : list){
+														int productNo = (int)m.get("productNo");
+														int cartCnt = (int)m.get("cartCnt");
+														String checked = (String)m.get("checked");
+														
+														
+														// 3) 각 제품의 재고량을 구하는 메서드
+														int tcnt = orderdao.totalstock(productNo);
 											%>
-	                                        <tr>
-	                                            <td class="si-pic">
-	                                            	<img style="width:60px; height:60px;" src="<%=request.getContextPath() + "/img/productImg/" + (String)m.get("productSaveFilename")%>">
-	                                            </td>
-	                                            <td class="si-text">
-	                                                <div class="product-selected">
-	                                                	<h6><%=(String)m.get("productName") %></h6>
-	                                                    <p><%=m.get("discountPrice")%> x <%=cartCnt %></p>
-	                                                </div>
-	                                            </td>
-	                                            <td class="si-close">
-	                                                <i class="ti-close"></i>
-	                                            </td>
-	                                        </tr>
+		                                        <tr>
+		                                            <td class="si-pic">
+		                                            	<img style="width:60px; height:60px;" src="<%=request.getContextPath() + "/img/productImg/" + (String)m.get("productSaveFilename")%>">
+		                                            </td>
+		                                            <td class="si-text">
+		                                                <div class="product-selected">
+		                                                	<h6><%=(String)m.get("productName") %></h6>
+		                                                    <p><%=m.get("discountPrice")%> x <%=cartCnt %></p>
+		                                                </div>
+		                                            </td>
+		                                            <td class="si-close">
+		                                                <i class="ti-close"></i>
+		                                            </td>
+		                                        </tr>
 	                                        <%
-												}
+													}
+	                                    		}
 	                                        %>
 	                                    </tbody>
 	                                </table>

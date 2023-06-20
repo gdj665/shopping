@@ -22,17 +22,14 @@
 	int cartNo = Integer.parseInt(request.getParameter("cartNo"));
 	String id = (String)session.getAttribute("loginId");
 	
-
 	// OrderDao 사용 선언
 	OrderDao orderdao = new OrderDao();
-	
 	
 	// 4) 장바구니 단일 삭제 메서드
 	int row = orderdao.deletecart(cartNo);
 	
-	
 	// row값 분기 설정
-	if(row==1){
+	if(row>0){
 		System.out.println("deleteCartAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/order/cart.jsp?id="+id);
 		return;

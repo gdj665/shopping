@@ -99,6 +99,7 @@
 											</td>
 											<td>
 												<%=o.getId()%>
+												<input type="hidden" name="id" value="<%=o.getId()%>">
 											</td>
 											<td>
 												<%=o.getOrderNo()%>

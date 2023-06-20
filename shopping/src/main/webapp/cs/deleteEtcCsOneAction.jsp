@@ -24,13 +24,13 @@
 	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
 	String id = (String)session.getAttribute("loginId");
 
-	//CsDao.java 선언
+	// CsDao.java 선언
 	CsDao csdao = new CsDao();
 	
-	// 12) 질문 입력테이블에 질문 입력하면 질문 테이블에 데이터 추가
+	// 9) 문의글 삭제 메서드
 	int row = csdao.deleteEtcCsOne(oqNo);
 	
-	if(row==1){
+	if(row>0){
 		System.out.println("deleteEtcCsOneAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/cs/etcCsList.jsp?id="+id);
 		return;

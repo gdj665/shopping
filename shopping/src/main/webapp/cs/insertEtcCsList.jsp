@@ -7,7 +7,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	<form id="insertEtcCsList" action="<%=request.getContextPath() %>/cs/insertEtcCsListAction.jsp">
+	<form id="insertEtcCsList" action="<%=request.getContextPath() %>/cs/insertEtcCsListAction.jsp" method="post">
 		<br>
 		<h3 style="margin-left:10px;">신규 문의 등록</h3>
 		<br>

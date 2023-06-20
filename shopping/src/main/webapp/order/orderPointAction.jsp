@@ -9,8 +9,8 @@
 	request.setCharacterEncoding("utf-8");
 	
 	//유효성 검사
-	if((request.getParameterValues("usepoint")==null)
-		||(request.getParameterValues("orderNo")==null)){
+	if((request.getParameter("usepoint")==null)
+		||(request.getParameter("orderNo")==null)){
 		
 		// null값이 있을 경우 홈으로 이동
 		System.out.println("orderPointAction null 있음");
@@ -24,7 +24,6 @@
 	
 	// OrderDao 사용 선언
 	OrderDao orderdao = new OrderDao();
-	
 	
 	// 17) 사용 포인트량 변경
 	int row = orderdao.updateUsePoint(usePoint,orderNo);

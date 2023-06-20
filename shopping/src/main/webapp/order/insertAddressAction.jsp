@@ -19,22 +19,18 @@
 		return;
 	}
 	
-	
 	// 값 받아오기
 	String address = request.getParameter("address1")+" "+request.getParameter("address2");
 	String id = (String)session.getAttribute("loginId");
 	
-
 	// OrderDao 사용 선언
 	OrderDao orderdao = new OrderDao();
-	
 	
 	// 20) 주소 추가 메서드
 	int row = orderdao.insertAddress(id,address);
 	
-	
 	// row값 분기 설정
-	if(row==1){
+	if(row>0){
 		System.out.println("insertAddressAction row값 정상");
 		response.sendRedirect(request.getContextPath()+"/order/selectAddress.jsp?id="+id);
 		return;

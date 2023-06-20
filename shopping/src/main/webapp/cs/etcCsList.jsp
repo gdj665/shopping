@@ -37,6 +37,7 @@
 	CsDao csdao = new CsDao();
 	EmployeesDao employeesdao = new EmployeesDao();
 	
+	// employ유효성 검사
 	int empLevel = employeesdao.checkEmployees(id);
 	ArrayList<HashMap<String,Object>> list = new ArrayList<>();
 	
@@ -54,13 +55,15 @@
     <meta name="keywords" content="Fashi, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Fashi | Template</title>
+    <title>1대1 문의</title>
 </head>
 
 <body>
+    <!-- 검색 최상단 호출 -->
     <div>
 		<jsp:include page="/inc/search.jsp"></jsp:include>
 	</div>
+	<!-- nav 호출 -->
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
@@ -71,6 +74,8 @@
                 <div class="col-lg-12">
                 	<h2>1대1 문의목록</h2>
                 	<br>
+                	<!-- 고객만 사용가능 -->
+                	<!-- 고객기준 1대1문의 내역 출력 -->
                 	<%
                 		if(empLevel==0){
                 	%>

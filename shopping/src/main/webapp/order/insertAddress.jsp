@@ -13,7 +13,7 @@
 	if(session.getAttribute("loginId") == null){
 		
 		// null값이 있을 경우 홈으로 이동
-		System.out.println("insertAddress null있음");
+		System.out.println("insertAddress id null있음");
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
@@ -28,7 +28,6 @@
 <title>신규 주소 추가</title>
 <!-- Latest compiled and minified CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -37,19 +36,19 @@
 	<h3 style="text-align: center;">배송지 추가</h3>
 	<hr>
 	<div class="container">
-		<form id="addressForm" action="<%=request.getContextPath()%>/order/insertAddressAction.jsp">
+		<!-- 카카오톡 api 사용 -->
+		<form id="addressForm" action="<%=request.getContextPath()%>/order/insertAddressAction.jsp" method="post">
 			<input class="form-control" type="text" id="sample6_postcode" placeholder="우편번호"><br>
 			<input class="form-control" type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 			<input class="form-control" name="address1" type="text" id="sample6_address" placeholder="주소"><br>
 			<input class="form-control" name="address2" type="text" id="sample6_detailAddress" placeholder="상세주소">
 			<input class="form-control" type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
-			
 			<div class="d-grid">
 				<button class="btn btn-outline-secondary btn-block" type="submit">추가하기</button>
 			</div>
 		</form>
 	</div>
-<!-- -->
+	
 <script>
 	function submitForm() {
 		// Form 데이터를 가져와서 새 창에 전송

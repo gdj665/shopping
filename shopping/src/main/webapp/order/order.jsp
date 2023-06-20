@@ -28,10 +28,8 @@
 		return;
 	}
 
-	
 	// 값 받아오기
 	String id = (String)session.getAttribute("loginId");
-	
 	
 	//OrderDao 선언
 	OrderDao orderdao = new OrderDao();
@@ -70,13 +68,15 @@
     <meta name="keywords" content="Fashi, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Fashi | Template</title>
+    <title>주문하기</title>
 </head>
 
 <body>
-   <div>
+	<!-- 검색 최상단 호출 -->
+    <div>
 		<jsp:include page="/inc/search.jsp"></jsp:include>
 	</div>
+	<!-- nav 호출 -->
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
@@ -84,29 +84,32 @@
     <!-- Shopping Cart Section Begin -->
     <section class="checkout-section spad">
         <div class="container">
-            <form id="orderForm" action="<%=request.getContextPath()%>/order/orderAction.jsp" class="checkout-form">
+            <form id="orderForm" action="<%=request.getContextPath()%>/order/orderAction.jsp" class="checkout-form" method="post">
                 <div class="row">
                     <div class="col-lg-6">
                         <!-- 주문자 기본 정보 삽입 -->
                         <h4>주문자 정보</h4>
                         <div class="row">
-                        	
                         	<!-- 주문자 이름, 이메일, 포인트량, 포인트 사용량 출력 -->
                         	<%
 								for(Customer c : list3){
 							%>
+								<!-- 주문자 이름 -->
 	                            <div class="col-lg-6">
 	                                <label for="fir">주문자 이름</label>
 	                                <input type="text" id="fir" value="<%=c.getCstmName() %>" readonly="readonly">
 	                            </div>
+	                            <!-- 주문자 이메일 -->
 	                            <div class="col-lg-6">
 	                                <label for="last">주문자 이메일</label>
 	                                <input type="text" id="last" value="<%=c.getCstmEmail() %>" readonly="readonly">
 	                            </div>
+	                            <!-- 보유 포인트 -->
 	                            <div class="col-lg-4">
 	                                <label for="cun-name">보유포인트</label>
 	                                <input type="text" id="cun-name" value="<%=c.getCstmPoint() %>" readonly="readonly">
 	                            </div>
+	                            <!-- 사용 포인트 -->
 	                            <%
 									for(HashMap<String,Object> m : list4){
 								%>
@@ -117,9 +120,10 @@
 	                            <%	
 									}
 								%>
+								<!-- 포인트사용 버튼 -->
 	                            <div class="col-lg-4">
 	                            	<label for="cun-name">&nbsp;</label>
-	                            	<a href="#" id="pointLink" style="padding-left:63px; display: flex; align-items: center; text-decoration: none;" class="site-btn place-btn">포인트사용</a>
+	                            	<a href="#" id="pointLink" style="padding-left:40px; display: flex; align-items: center; text-decoration: none;" class="site-btn place-btn">포인트사용</a>
 	                            </div>
                             <%
 								}
@@ -129,6 +133,7 @@
 						    <div class="col-lg-2" style="display: flex; align-items: center;">
 						        <label for="street">주소</label>
 						    </div>
+						    <!-- 최근사용 주소 -->
 						    <div class="col-lg-6" style="display: flex; align-items: center;">
 						        <a href="#" id="addressBtn" class="btn btn-outline-dark btn-sm">최근 사용주소 보기</a>
 						    </div>
@@ -161,6 +166,7 @@
 							%>
                         </div>
                     </div>
+                    <!-- order.jsp 우측 메인부분 출력 -->
                     <div class="col-lg-6">
                         <div class="place-order">
                         	<!-- 제품 리스트 출력 -->
@@ -168,6 +174,7 @@
                             <div class="order-total">
                                 <ul class="order-table">
                                     <li>제품명<span>수량</span></li>
+                                    <!-- 제품명과 수량 출력 -->
                                     <%
 										for(HashMap<String,Object> m : list2){
 									%>
@@ -179,6 +186,7 @@
 										}
 									%>
 										<li class="fw-normal"></li>
+									<!-- 총가격, 포인트사용량, 최종가격 출력 -->
 									<%
 										for(HashMap<String,Object> m : list4){
 									%>
@@ -190,12 +198,13 @@
 										}
 									%>
                                 </ul>
+                                <!--  결제하기 버튼 -->
                                 <div class="order-btn">
                                     <button id="orderBtn" type="submit" class="site-btn place-btn">결제하기</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div><!-- 메인 우측부분 종료 -->
                 </div>
             </form>
         </div>
@@ -220,5 +229,4 @@
 	});
 </script>
 </body>
-
 </html>
