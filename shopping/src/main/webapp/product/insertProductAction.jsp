@@ -1,3 +1,4 @@
+<%@page import="dao.main.EmployeesDao"%>
 <%@page import="dao.main.MainDao"%>
 <%@page import="vo.product.Category"%>
 <%@page import="vo.product.ProductImg"%>
@@ -10,16 +11,37 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.util.*" %>
 <%
+	//한글 깨짐 방지
+	request.setCharacterEncoding("utf-8");
+	
+	//유효성 검사
+	if(session.getAttribute("loginId") == null){
+		// null값이 있을 경우 홈으로 이동
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
+	
+	//값 받기
+	String id = (String)session.getAttribute("loginId");
+	
+	// EmployeesDao 선언
+	EmployeesDao ed = new EmployeesDao();
+	
+	// 관리자 레벨 출 력
+	int empLevel = ed.checkEmployees(id);
+	
+	// 관리자가 아닐시 홈화면으로
+	if(empLevel<1){
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
 
+	// 경로 지정
 	String dir = request.getServletContext().getRealPath("/img/productImg");
 	int maxFileSize = 1024 * 1024 * 10; // 10Mbyte
 	// request 객체를 MultipartRequest의 API를 사용할 수 있도록 랩핑
 	MultipartRequest mRequest = new MultipartRequest(request, dir, maxFileSize, "utf-8", new DefaultFileRenamePolicy());
-	
-	/* if (mRequest.getParameter("productNo") == null){
-		response.sendRedirect(request.getContextPath() + "/home.jsp");
-		return;
-	} */
+
 	// MultipartRequest API를 사용하여 스트림내에서 문자값을 반환받을 수 있다.
 	// 업로드 파일이 jpg 파일이 아니면
 	if (mRequest.getContentType("productImgFile").equals("image/jpeg") == false

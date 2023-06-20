@@ -4,6 +4,7 @@
 <%@ page import = "java.util.*" %>
 <%
 	//controller
+	// 유의성 검사
 	if (request.getParameter("productNo") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;

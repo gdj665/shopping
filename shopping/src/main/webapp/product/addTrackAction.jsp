@@ -11,12 +11,14 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.util.*" %>
 <%
+	// 유의성 검사
 	if (request.getParameter("productNo") == null
 			||request.getParameter("trackNo") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
 	}
 
+	// param값 선언
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	int trackNo = Integer.parseInt(request.getParameter("trackNo"));
 
@@ -29,6 +31,7 @@
 	track.setTrackNo(trackNo);
 	trackList.add(track);
 	
+	// track 데이터 입력
 	int checkInsert = md.insertTrack(trackList);
 	
 	System.out.printf("%d <- checkInsert, %d <- trackNo", checkInsert, trackNo);

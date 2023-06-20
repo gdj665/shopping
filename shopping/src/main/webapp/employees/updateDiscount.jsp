@@ -2,13 +2,42 @@
 <%@page import="dao.main.EmployeesDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+	//한글 깨짐 방지
+	request.setCharacterEncoding("utf-8");
+	
+	//유효성 검사
+	if(session.getAttribute("loginId") == null){
+		// null값이 있을 경우 홈으로 이동
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
+	
+	//값 받기
+	String id = (String)session.getAttribute("loginId");
+	
+	// EmployeesDao 선언
+	EmployeesDao ed = new EmployeesDao();
+	
+	// 관리자 레벨 출 력
+	int empLevel = ed.checkEmployees(id);
+	
+	// 관리자가 아닐시 홈화면으로
+	if(empLevel<1){
+		response.sendRedirect(request.getContextPath()+"/home.jsp");
+		return;
+	}
+	
+	// 유의성 검사
 	if(request.getParameter("discountNo") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
 	}
+	
+	// 수정할 discountNo param값 선언
 	int discountNo = Integer.parseInt(request.getParameter("discountNo"));
-	EmployeesDao ed = new EmployeesDao();
 	Discount d = new Discount();
+	
+	// dicountNo을 매개값으로 db 값 가져오기
 	d = ed.selectDiscountOne(discountNo);
 %>
 <!DOCTYPE html>

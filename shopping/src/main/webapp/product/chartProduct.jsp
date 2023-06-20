@@ -4,13 +4,18 @@
 <%@ page import = "java.util.*" %>
 <%
 	// cotroller
+	// id 받아오기
 	String loginId = (String)session.getAttribute("loginId");
+	
+	// 화면에 출력할 양
 	int viewNum = 20;
 	
 	// model
 	MainDao md = new MainDao();
 	EmployeesDao ed = new EmployeesDao();
 	ArrayList<Product> productList = new ArrayList<>();
+	
+	// viewNum만큼 출력
 	productList = md.selectPopularProduct(viewNum);
 	int checkId = 0;
 	checkId = ed.checkEmployees(loginId);
@@ -30,22 +35,25 @@
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
 	<hr>
-	<h3>앨범 차트</h3>
+	<h3>
+		앨범 차트
+	<%
+		if(checkId > 0){
+	%>
+		<a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/product/insertProduct.jsp">
+			추가
+		</a>
+	<%
+		}
+	%>
+	</h3>
 	<hr>
-<%
-	if(checkId > 0){
-%>
-	<a href="<%=request.getContextPath()%>/product/insertProduct.jsp">
-		추가
-	</a>
-<%
-	}
-%>
 	<div class="product-list">
 		<div class="row">
 		<%
 			for(Product p : productList) {
 				Product productOne = new Product();
+				// 할인데이터 받아오기위함
 				productOne = md.selectProductOne(p.getProductNo());
 		%>
 		    <div class="col-lg-3 col-sm-6">
@@ -53,10 +61,10 @@
 	        <%
 				if(checkId > 0){
 			%>
-					<a href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
+					<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
 						수정
 					</a>
-					<a href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
+					<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
 						삭제
 					</a>
 			<%
@@ -73,6 +81,7 @@
 		                    <h5><%=p.getProductName()%></h5>
 		                </a>
 				<%
+					// 할인값이랑 원래 값이랑 같으면 할인 X
 					if (productOne.getProductDiscountPrice() == productOne.getProductPrice()){
 				%>
 						<div class="product-price">

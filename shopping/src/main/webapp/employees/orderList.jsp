@@ -111,7 +111,25 @@
 												<%=o.getOrderPointUse()%>
 											</td>
 											<td>
-												<%=o.getOrderStatus()%>
+									<%
+												switch(o.getOrderStatus()){
+													case 0:
+														out.print("결제 미완료");
+														break;
+													case 1:
+														out.print("결제 완료");
+														break;
+													case 2:
+														out.print("배송 중");
+														break;
+													case 3:
+														out.print("배송 완료");
+														break;
+													case 4:
+														out.print("구매 확정");
+														break;
+												}
+									%>
 											</td>
 											<td>
 												<%=o.getCreatedate()%>

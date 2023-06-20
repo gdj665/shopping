@@ -17,10 +17,10 @@
 	String id = (String)session.getAttribute("loginId");
 	
 	// EmployeesDao 선언
-	EmployeesDao ad = new EmployeesDao();
+	EmployeesDao ed = new EmployeesDao();
 	
 	// 관리자 레벨 출 력
-	int empLevel = ad.checkEmployees(id);
+	int empLevel = ed.checkEmployees(id);
 	
 	// 관리자가 아닐시 홈화면으로
 	if(empLevel<1){
@@ -29,8 +29,9 @@
 	}
 	
 	//회원정보출력
+	String customerId = request.getParameter("customerId");
 	Customer customer = new Customer();
-	customer = ad.selectCustomer(id);
+	customer = ed.selectCustomer(customerId);
 %>
 <!DOCTYPE html>
 <html>

@@ -35,7 +35,7 @@
 	<%
 		if(checkId > 0){
 	%>
-		<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/insertProduct.jsp">
+		<a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/product/insertProduct.jsp">
 			추가
 		</a>
 	<%

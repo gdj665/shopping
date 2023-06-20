@@ -4,16 +4,19 @@
 <%@page import = "java.util.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+	// 유의성검사
     if (request.getParameter("productNo") == null
     	||request.getParameter("cartCnt") == null) {
         response.sendRedirect(request.getContextPath() + "/home.jsp");
         return;
     }
-
+	
+	// param값 받아오기
     String id = (String)session.getAttribute("loginId");
     int productNo = Integer.parseInt(request.getParameter("productNo"));
     int cartCnt = Integer.parseInt(request.getParameter("cartCnt"));
     
+    // 회원 비회원 분기
     if(session.getAttribute("loginId")!=null){
     	// OrderDao사용 선언
     	OrderDao orderdao = new OrderDao();

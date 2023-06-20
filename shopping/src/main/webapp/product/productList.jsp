@@ -20,6 +20,7 @@
 		subName = request.getParameter("subName");
 	}
 	
+	// 페이징
 	int rowPerPage = 4;
 	int beginRow = (currentPage - 1) * rowPerPage;
 	int endRow = beginRow + rowPerPage;
@@ -39,6 +40,7 @@
 	checkId = ed.checkEmployees(loginId);
 	System.out.println(checkId + " <- checkId");
 	
+	// 총 앨범수
 	totalCnt = md.productCnt(mainName, subName);
 	System.out.println(totalCnt);
 	totalPageCnt = (int)Math.ceil((double)totalCnt / rowPerPage);
@@ -65,17 +67,19 @@
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
 	<hr>
-	<h4>앨범 리스트</h4>
+	<h3>
+		앨범 리스트
+	<%
+		if(checkId > 0){
+	%>
+		<a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/product/insertProduct.jsp">
+			추가
+		</a>
+	<%
+		}
+	%>
+	</h3>
 	<hr>
-<%
-	if(checkId > 0){
-%>
-	<a href="<%=request.getContextPath()%>/product/insertProduct.jsp">
-		추가
-	</a>
-<%
-	}
-%>
 	<div class="product-list">
 		<div class="row">
 		<%
@@ -88,10 +92,10 @@
 			<%
 				if(checkId > 0){
 			%>
-					<a href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
+					<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=p.getProductNo()%>">
 						수정
 					</a>
-					<a href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
+					<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
 						삭제
 					</a>
 			<%
