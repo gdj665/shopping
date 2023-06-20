@@ -11,52 +11,50 @@
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
-
-	//세션아이디 변수에 저장
+	// 세션아이디 변수에 저장
 	String id = (String)(session.getAttribute("loginId"));
-	
-	//보여줄페이지 첫번째 행 선언
+
+	// 첫번쨰 페이지
 	int currentPage = 1; 
 	if(request.getParameter("currentPage") != null){
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
-	//페이지당 보여줄 행
+	
+	// 페이지당 보여줄 행
 	int rowPerPage = 10;
-
-	int beginRow = (currentPage -1) * rowPerPage;
-		
-	//세션아이디 디버깅
-	System.out.println(id+"<--orderMyPage id");	
 	
-	OrderListDao orderDao = new OrderListDao();
-
-	ArrayList<HashMap<String, Object>> list = orderDao.orderList(id, beginRow, rowPerPage);
-	System.out.println(list + "<-- orderMyPage orderList");
+	int beginRow = (currentPage -1) * rowPerPage;	
+	System.out.println(id+"<-- id");	
 	
 	
-	int totalRow = orderDao.orderCnt();
-	System.out.println(totalRow+"<-- orderMyPage totalRow");
+	PointDao pointDao = new PointDao();
+	ArrayList<HashMap<String, Object>> list = pointDao.cstmPointList(beginRow, rowPerPage, id);
 	
-	// 마지막 페이지 구하는 변수
+	// 총 행의 수를 얻기위한 메소드 사용
+	PointDao totalPoint = new PointDao();
+	int totalRow = totalPoint.pointRow();
+	System.out.println(totalRow+"<-- totalRow");
+	
+	// 마지막 페이지 구하기
 	int lastPage = totalRow/rowPerPage;
 	if(totalRow%rowPerPage != 0){
 		lastPage++;
 	}
 	int pageCount = 10;// 페이지당 출력될 페이지수
-	
+
 	int startPage = ((currentPage -1)/pageCount)*pageCount+1;
 	
 	int endPage = startPage+9;
 	if(endPage > lastPage){
 	endPage = lastPage;
 	}
-	System.out.println(startPage+"<-- orderMyPage startPage");
-	System.out.println(endPage+"<-- orderMyPage endPage");
+	System.out.println(startPage+"<-- startPage");
+	System.out.println(endPage+"<-- endPage");
 %>
 <!DOCTYPE html>
 <html lang="zxx">
 
-<div id="preloder">
+ <div id="preloder">
         <div class="loader"></div>
     </div>
 
@@ -82,7 +80,7 @@
         </div>
     </div>
     <!-- Breadcrumb Section Begin -->
-<!-- ---------------------------------------------------------주문내역----------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------포인트조회-------------------------------------------------------------------- -->
     <!-- Shopping Cart Section Begin -->
     <section class="shopping-cart spad">
         <div class="container">
@@ -90,62 +88,64 @@
                 <div class="col-lg-12">
                     <div class="cart-table">
                     <%
-						for(HashMap<String, Object> m : list){
+						for(HashMap<String, Object> s : list){
 					%>
                         <table>
                             <thead>
                                 <tr>
                                     <th>상품이미지</th>
-                                    <th class="p-name">주문번호</th>
-                                    <th>상품이름</th>
-                                    <th>상품가격</th>
-                                    <th>배송상태</th>
-                                    <th>구매일</th>
+                                    <th class="p-name">상품명</th>
+                                    <th>포인트</th>
+                                    <th>주문번호</th>
+                                    <th>적립일자</th>
                                     <th><i class="ti-close"></i></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="cart-pic first-row"><img style="width:100px; height:100px;" src="<%=request.getContextPath() + "/img/productImg/" + (String)m.get("saveFile")%>"></td>
+                                    <td class="cart-pic first-row"><img src="img/cart-page/product-1.jpg" alt=""></td>
                                     <td class="cart-title first-row">
-                                        <%=(Integer)(m.get("orderNo"))%>
+                                        <%=(Integer)(s.get("orderNo"))%>
                                     </td>
-                                    <td class="p-price first-row"><%=(String)(m.get("productName"))%></td>
-                                    <td class="p-price first-row"><%=(Integer)(m.get("productPrice"))%></td>
+                                    <td class="p-price first-row"><%=(Integer)(s.get("point"))%></td>
                                     <td class="qua-col first-row">
-                                                <%=(Integer)(m.get("orderCnt"))%>
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input type="text" value="1">
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td class="total-price first-row"><%=(String)(m.get("createdate"))%></td>
+                                    <td class="total-price first-row"><%=(String)(s.get("createdate"))%></td>
+                                    <td class="close-td first-row"><i class="ti-close"></i></td>
                                 </tr>
                                 
                             </tbody>
                         </table>
-                        <div>
-	
-	
-							<%
-								}
-								if(startPage > 5){
-							%>
-								<a href="<%=request.getContextPath()%>/customer/ordierMyPage.jsp?currentPage=<%=startPage-1%>">이전</a>
-							<%
-								}
-								for(int i = startPage; i<=endPage; i++){
-							%>
-								<a href="<%=request.getContextPath()%>/customer/ordierMyPage.jsp?currentPage=<%=i%>"><%=i%></a>
-							<%
-								}
-								if(endPage<lastPage){
-							%>
-								<a href="<%=request.getContextPath()%>/customer/ordierMyPage.jsp?currentPage=<%=endPage+1%>">다음</a>
-							<%
-								
-								}
-							%>
+                        <%
+							}
+						%>
+							<div>
+						<%
+							if(startPage > 5){
+						%>
+							<a href="<%=request.getContextPath()%>/customer/pointList.jsp?currentPage=<%=startPage-1%>">이전</a>
+						<%
+							}
+							for(int i = startPage; i<=endPage; i++){
+						%>
+							<a href="<%=request.getContextPath()%>/customer/pointList.jsp?currentPage=<%=i%>"><%=i%></a>
+						<%
+							}
+							if(endPage<lastPage){
+						%>
+							<a href="<%=request.getContextPath()%>/customer/pointList.jsp?currentPage=<%=endPage+1%>">다음</a>
+						<%
+							}
+						%>
 						</div>
                     </div>
                     <div class="row">
-                       
+                        
                         <div class="col-lg-4 offset-lg-4">
                             <div class="proceed-checkout">
                                 <ul>
@@ -161,7 +161,7 @@
         </div>
     </section>
     <!-- Shopping Cart Section End -->
-<!-- ---------------------------------------------------------주문내역----------------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------포인트조회-------------------------------------------------------------------- -->
     <!-- Partner Logo Section Begin -->
     <div class="partner-logo">
         <div class="container">
@@ -195,7 +195,7 @@
         </div>
     </div>
     <!-- Partner Logo Section End -->
-
+    
     <!-- Footer Section Begin -->
     <footer class="footer-section">
         <div class="container">
