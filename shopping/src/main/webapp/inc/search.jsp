@@ -56,7 +56,7 @@
 	                <div class="advanced-search">
 	                    <div class="input-group" style="width:500px;">
 	                    <form action="<%=request.getContextPath()%>/product/searchList.jsp" method="post">
-							<input style="width:450px;" type="text" name="searchWord" placeholder="검색어를 입력하세요">
+							<input style="width:450px;" type="text" name="searchWord" placeholder="검색어를 입력하세요" required="required">
 	                        <button type="submit"><i class="ti-search"></i></button>
 						</form>
 	                    </div>

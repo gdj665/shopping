@@ -53,151 +53,153 @@
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
-	<h3>'<%=searchWord%>'에 대한 검색 결과 입니다.</h3>
-	<hr>
-	<h3>가수(<%=searchSingerList.size()%>)</h3>
-	<hr>
-	<table class="table">
-		<tr>
-			<th>가수명</th>
-		</tr>
-		<tr>
-	<%
-			for(Product p : searchSingerList){
-	%>
-				<td>
-					<%=p.getProductSinger()%>
-				</td>
-	<%
-			}
-	%>
-		</tr>
-	</table>
-	<hr>
-	<h3>곡(<%=searchTrackWithSingerList.size() + searchTrackNameList.size() + searchTrackWithProductNameList.size()%>)</h3>
-	<hr>
-	<h4>가수명으로 검색(<%=searchTrackWithSingerList.size()%>)</h4>
-	<hr>
-	<table class="table">
-	<%
-		if(searchTrackWithSingerList.size() != 0){
-	%>
+	<div class="banner-section spad">
+		<h3>'<%=searchWord%>'에 대한 검색 결과 입니다.</h3>
+		<hr>
+		<h3>가수(<%=searchSingerList.size()%>)</h3>
+		<hr>
+		<table class="table">
 			<tr>
-				<th>노래명</th>
-				<th>가수명</th>
-				<th>앨범명</th>
+				<th colspan="<%=searchSingerList.size()%>">가수명</th>
 			</tr>
-	<%
-		}
-		for(Product p : searchTrackWithSingerList){
-	%>
 			<tr>
-				<td>
-					<%=p.getTrackName()%>
-				</td>
-				<td>
-					<%=p.getProductSinger()%>
-				</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-					<%=p.getProductName()%>
-					</a>
-				</td>
-			</tr>
-	<%
-			}
-	%>
-	</table>
-	<h4>곡명으로 검색(<%=searchTrackNameList.size()%>)</h4>
-	<hr>
-	<table class="table">
-	<%
-		if(searchTrackNameList.size() != 0){
-	%>
-			<tr>
-				<th>노래명</th>
-				<th>가수명</th>
-				<th>앨범명</th>
-			</tr>
-	<%
-		}
-		for(Product p : searchTrackNameList){
-	%>
-			<tr>
-				<td>
-					<%=p.getTrackName()%>
-				</td>
-				<td>
-					<%=p.getProductSinger()%>
-				</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-					<%=p.getProductName()%>
-					</a>
-				</td>
-			</tr>
-	<%
-			}
-	%>
-	</table>
-	<h4>앨범명으로 검색(<%=searchTrackWithProductNameList.size()%>)</h4>
-	<hr>
-	<table class="table">
-	<%
-		if(searchTrackWithProductNameList.size() != 0){
-	%>
-			<tr>
-				<th>노래명</th>
-				<th>가수명</th>
-				<th>앨범명</th>
-			</tr>
-	<%
-		}
-		for(Product p : searchTrackWithProductNameList){
-	%>
-			<tr>
-				<td>
-					<%=p.getTrackName()%>
-				</td>
-				<td>
-					<%=p.getProductSinger()%>
-				</td>
-				<td>
-					<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-					<%=p.getProductName()%>
-					</a>
-				</td>
-			</tr>
-	<%
-			}
-	%>
-	</table>
-	<h3>앨범(<%=searchProductName.size()%>)</h3>
-	<hr>
-	<div class="product-list">
-		<div class="row">
 		<%
-			for(Product p : searchProductName) {
-				Product productOne = new Product();
-				productOne = md.selectProductOne(p.getProductNo());
+				for(Product p : searchSingerList){
 		%>
-		    <div class="col-lg-4 col-sm-6">
-		        <div class="product-item">
-		            <div class="pi-pic">
-		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+					<td>
+						<%=p.getProductSinger()%>
+					</td>
+		<%
+				}
+		%>
+			</tr>
+		</table>
+		<hr>
+		<h3>곡(<%=searchTrackWithSingerList.size() + searchTrackNameList.size() + searchTrackWithProductNameList.size()%>)</h3>
+		<hr>
+		<h4>가수명으로 검색(<%=searchTrackWithSingerList.size()%>)</h4>
+		<hr>
+		<table class="table">
+		<%
+			if(searchTrackWithSingerList.size() != 0){
+		%>
+				<tr>
+					<th>노래명</th>
+					<th>가수명</th>
+					<th>앨범명</th>
+				</tr>
+		<%
+			}
+			for(Product p : searchTrackWithSingerList){
+		%>
+				<tr>
+					<td>
+						<%=p.getTrackName()%>
+					</td>
+					<td>
+						<%=p.getProductSinger()%>
+					</td>
+					<td>
+						<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+						<%=p.getProductName()%>
 						</a>
-		            </div>
-		            <div class="pi-text">
-		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-		                    <h5><%=p.getProductName()%></h5>
-		                </a>
-		            </div>
-		        </div>
-		    </div>
+					</td>
+				</tr>
+		<%
+				}
+		%>
+		</table>
+		<h4>곡명으로 검색(<%=searchTrackNameList.size()%>)</h4>
+		<hr>
+		<table class="table">
+		<%
+			if(searchTrackNameList.size() != 0){
+		%>
+				<tr>
+					<th>노래명</th>
+					<th>가수명</th>
+					<th>앨범명</th>
+				</tr>
 		<%
 			}
+			for(Product p : searchTrackNameList){
 		%>
+				<tr>
+					<td>
+						<%=p.getTrackName()%>
+					</td>
+					<td>
+						<%=p.getProductSinger()%>
+					</td>
+					<td>
+						<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+						<%=p.getProductName()%>
+						</a>
+					</td>
+				</tr>
+		<%
+				}
+		%>
+		</table>
+		<h4>앨범명으로 검색(<%=searchTrackWithProductNameList.size()%>)</h4>
+		<hr>
+		<table class="table">
+		<%
+			if(searchTrackWithProductNameList.size() != 0){
+		%>
+				<tr>
+					<th>노래명</th>
+					<th>가수명</th>
+					<th>앨범명</th>
+				</tr>
+		<%
+			}
+			for(Product p : searchTrackWithProductNameList){
+		%>
+				<tr>
+					<td>
+						<%=p.getTrackName()%>
+					</td>
+					<td>
+						<%=p.getProductSinger()%>
+					</td>
+					<td>
+						<a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+						<%=p.getProductName()%>
+						</a>
+					</td>
+				</tr>
+		<%
+				}
+		%>
+		</table>
+		<h3>앨범(<%=searchProductName.size()%>)</h3>
+		<hr>
+		<div class="product-list">
+			<div class="row">
+			<%
+				for(Product p : searchProductName) {
+					Product productOne = new Product();
+					productOne = md.selectProductOne(p.getProductNo());
+			%>
+			    <div class="col-lg-4 col-sm-6">
+			        <div class="product-item">
+			            <div class="pi-pic">
+			                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+								<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+							</a>
+			            </div>
+			            <div class="pi-text">
+			                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+			                    <h5><%=p.getProductName()%></h5>
+			                </a>
+			            </div>
+			        </div>
+			    </div>
+			<%
+				}
+			%>
+			</div>
 		</div>
 	</div>
 </body>
