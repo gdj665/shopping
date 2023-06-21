@@ -2305,7 +2305,7 @@ ol {
 
 .product-details .quantity .pro-qty input {
 	text-align: center;
-	width: 52px;
+	width: 115%;
 	font-size: 14px;
 	font-weight: 700;
 	border: none;

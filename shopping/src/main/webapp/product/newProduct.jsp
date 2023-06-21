@@ -66,7 +66,7 @@
 					%>
 			            <div class="pi-pic">
 			                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-								<img width="200px" height="300px" src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+								<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
 							</a>
 			            </div>
 			            <div class="pi-text">
