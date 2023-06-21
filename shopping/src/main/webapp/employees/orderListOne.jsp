@@ -99,10 +99,10 @@
 														<%=(String)m.get("productName") %>
 													</td>
 													<td>
-														<%=m.get("orderCnt") %>
+														<%=m.get("productDiscountPrice") %>
 													</td>
 													<td>
-														<%=m.get("productDiscountPrice") %>
+														<%=m.get("orderCnt") %>
 													</td>
 												</tr>
 									<%
