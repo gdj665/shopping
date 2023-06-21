@@ -19,13 +19,25 @@
 	// request 객체를 MultipartRequest의 API를 사용할 수 있도록 랩핑
 	MultipartRequest mRequest = new MultipartRequest(request, dir, maxFileSize, "utf-8", new DefaultFileRenamePolicy());
 	
-	/* if (mRequest.getParameter("productNo") == null){
+	// 유의성 검사
+	if (mRequest.getParameter("productNo") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
-	} */
+	}
 	
-	int reviewNo = Integer.parseInt(mRequest.getParameter("reviewNo"));
+	// input type="text" 값 반환 API --> board 테이블 저장
+	String id = (String)session.getAttribute("loiginId");
+	int productNo = Integer.parseInt(mRequest.getParameter("productNo"));
+	String reviewTitle = mRequest.getParameter("reviewTitle");
+	String reviewContent = mRequest.getParameter("reviewContent");
 	ReviewDao rd = new ReviewDao();
+	
+	// 유의성 검사
+	if (!rd.checkId(id, productNo)){
+		response.sendRedirect(request.getContextPath() + "/home.jsp");
+		return;
+	};
+	int reviewNo = Integer.parseInt(mRequest.getParameter("reviewNo"));
 	
 	// 파일 들어온거 체크해서 list 만들기
 	ArrayList<String> checkReviewImgList = new ArrayList<>();
@@ -59,10 +71,6 @@
 			return;
 		}
 	}
-	
-	// input type="text" 값 반환 API --> board 테이블 저장
-	String reviewTitle = mRequest.getParameter("reviewTitle");
-	String reviewContent = mRequest.getParameter("reviewContent");
 	
 	// review update 데이터 review class에 입력
 	Review review = new Review();
