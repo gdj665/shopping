@@ -21,6 +21,8 @@
     	// OrderDao사용 선언
     	OrderDao orderdao = new OrderDao();
     	int row = orderdao.insertCartAction(id,productNo,cartCnt);
+    	System.out.println("addCartAction row-->"+ row);
+    	System.out.println("id,productNo,cartCnt-->"+ id+" "+productNo+" "+cartCnt);
     	
     	// 제품 상세 페이지로 이동합니다.
 		response.sendRedirect(request.getContextPath() + "/product/productOne.jsp?productNo=" + productNo);

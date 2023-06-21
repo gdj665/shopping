@@ -605,9 +605,10 @@ public class OrderDao {
 		DBUtil DBUtil = new DBUtil();
 	    Connection conn = DBUtil.getConnection();
 	    
-	    String selSql = "SELECT count(*) FROM cart WHERE product_no = ?";
+	    String selSql = "SELECT count(*) FROM cart WHERE product_no = ? AND id=?";
 	    PreparedStatement selStmt = conn.prepareStatement(selSql);
 	    selStmt.setInt(1, productNo);
+	    selStmt.setString(2,id);
 	    ResultSet selRs = selStmt.executeQuery();
 	    if(selRs.next()) {
 	    	ckProduct = selRs.getInt("count(*)");
@@ -621,12 +622,12 @@ public class OrderDao {
 			row = stmt.executeUpdate();
 			return row;
 	    } else {
-	    	String sql = "INSERT INTO cart(id,product_no,cart_cnt,createdate,updatedate) VALUES (?,?,?,now(),now())";
-		    PreparedStatement stmt = conn.prepareStatement(sql);
-		    stmt.setString(1, id);
-	        stmt.setInt(2, productNo);
-	        stmt.setInt(3, cartCnt);
-	        row = stmt.executeUpdate();
+	    	String sql2 = "INSERT INTO cart(id,product_no,cart_cnt,createdate,updatedate) VALUES (?,?,?,now(),now())";
+		    PreparedStatement stmt2 = conn.prepareStatement(sql2);
+		    stmt2.setString(1, id);
+	        stmt2.setInt(2, productNo);
+	        stmt2.setInt(3, cartCnt);
+	        row = stmt2.executeUpdate();
 			return row;
 	    }
 	}
