@@ -72,6 +72,7 @@
 			                        <li><a href="<%=request.getContextPath()%>/customer/myPage.jsp">마이 페이지</a></li>
 			                        <li><a href="<%=request.getContextPath()%>/customer/orderMyPage.jsp">주문내역</a></li>
 			                        <li><a href="<%=request.getContextPath()%>/customer/pointMyPage.jsp">포인트조회</a></li>
+			                        <li><a href="<%=request.getContextPath()%>/cs/etcCsList.jsp">1대1 문의내역</a></li>
 			                        <li><a href="<%=request.getContextPath()%>/customer/logoutAction.jsp">logout</a></li>
 			                    </ul>
 			                </li>
