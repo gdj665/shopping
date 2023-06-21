@@ -121,16 +121,5 @@
 	        <%
 	        	}
 	        %>
-	<!-- Js Plugins -->
-    <script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
-    <script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>
-    <script src="<%=request.getContextPath() %>/template/js/jquery-ui.min.js"></script>
-    <script src="<%=request.getContextPath() %>/template/js/jquery.countdown.min.js"></script>
-    <script src="<%=request.getContextPath() %>/template/js/jquery.nice-select.min.js"></script>
-    <script src="<%=request.getContextPath() %>/template/js/jquery.zoom.min.js"></script>
-    <script src="<%=request.getContextPath() %>/template/js/jquery.dd.min.js"></script>
-    <script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
-    <script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
-    <script src="<%=request.getContextPath() %>/template/js/main.js"></script>
 </body>
 </html>

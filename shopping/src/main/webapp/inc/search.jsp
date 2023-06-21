@@ -47,11 +47,16 @@
 	<div class="container">
 	    <div class="inner-header">
 	        <div class="row">
-	            <div class="col-lg-9 col-md-9">
+		        <div class="col-lg-3 text-right col-md-3">
+		        	<a href="<%=request.getContextPath() %>/home.jsp">
+		        		<img style="float:left;" src="<%=request.getContextPath() %>/template/img/GDJLOGO.png">
+		        	</a>
+		        </div>
+	            <div class="col-lg-6 col-md-6">
 	                <div class="advanced-search">
-	                    <div class="input-group">
+	                    <div class="input-group" style="width:500px;">
 	                    <form action="<%=request.getContextPath()%>/product/searchList.jsp" method="post">
-							<input type="text" name="searchWord" placeholder="검색어를 입력하세요">
+							<input style="width:450px;" type="text" name="searchWord" placeholder="검색어를 입력하세요">
 	                        <button type="submit"><i class="ti-search"></i></button>
 						</form>
 	                    </div>

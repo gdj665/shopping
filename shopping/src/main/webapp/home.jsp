@@ -59,8 +59,7 @@
 			%>
 			</div>
 		</div>
-	</div>
-	<div class="banner-section spad">
+	<hr>
 	<h3>인기 앨범</h3>
 	<hr>
 		<div class="product-list">
