@@ -66,19 +66,7 @@
 	</div>
 
     <!-- Breadcrumb Section Begin -->
-    <div class="breacrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text product-more">
-                        <a href="./home.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./shop.html">Shop</a>
-                        <span>Shopping Cart</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!-- Breadcrumb Section Begin -->
 <!-- ----------------------------------------------------------------포인트조회-------------------------------------------------------------------- -->
     <!-- Shopping Cart Section Begin -->
@@ -87,43 +75,41 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cart-table">
-                    <%
-						for(HashMap<String, Object> s : list){
-					%>
+                   
                         <table>
                             <thead>
                                 <tr>
-                                    <th>상품이미지</th>
-                                    <th class="p-name">상품명</th>
-                                    <th>포인트</th>
                                     <th>주문번호</th>
+                                    <th>사용</th>
+                                    <th>포인트</th>
                                     <th>적립일자</th>
                                     <th><i class="ti-close"></i></th>
                                 </tr>
                             </thead>
+                             <%
+								for(HashMap<String, Object> s : list){
+							%>
                             <tbody>
                                 <tr>
-                                    <td class="cart-pic first-row"><img src="img/cart-page/product-1.jpg" alt=""></td>
-                                    <td class="cart-title first-row">
-                                        <%=(Integer)(s.get("orderNo"))%>
+                                    <td class="cart-pic first-row">
+                                    <%=(Integer)(s.get("orderNo"))%>
                                     </td>
-                                    <td class="p-price first-row"><%=(Integer)(s.get("point"))%></td>
-                                    <td class="qua-col first-row">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
+                                    <td>
+                                        <%=(String)(s.get("pointPm"))%>
                                     </td>
-                                    <td class="total-price first-row"><%=(String)(s.get("createdate"))%></td>
-                                    <td class="close-td first-row"><i class="ti-close"></i></td>
+                                    <td class="p-price first-row">
+                                    <%=(Integer)(s.get("point"))%>
+                                    </td>
+                                    <td class="total-price first-row">
+                                    <%=(String)(s.get("createdate"))%>
+                                    </td>
                                 </tr>
                                 
                             </tbody>
-                        </table>
                         <%
 							}
 						%>
+                        </table>
 							<div>
 						<%
 							if(startPage > 5){

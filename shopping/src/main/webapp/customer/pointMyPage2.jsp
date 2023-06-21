@@ -70,6 +70,7 @@
 			</tr>
 			<tr>
 				<td><%=(Integer)(s.get("orderNo"))%></td>
+				<td><%=(String)(s.get("productName"))%></td>
 				<td><%=(Integer)(s.get("point"))%></td>
 				<td><%=(String)(s.get("createdate"))%></td>
 			</tr>

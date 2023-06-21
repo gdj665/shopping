@@ -60,8 +60,8 @@
 					// checkLogin 이 false면 login창 아니면 아이디에 따라 다른 화면
 					if(!checkLogin){
 			%>
-		                <li><a href="<%=request.getContextPath()%>/customer/login.jsp" class="login-panel"><i class="fa fa-user"></i>Login</a></li>
-		                <li><a href="<%=request.getContextPath()%>/customer/memberjoin.jsp" class="login-panel"><i class="fa fa-user"></i>회원가입</a></li>
+		                <li><a href="<%=request.getContextPath()%>/customer/login.jsp" class="login-panel"><i class="fa fa-user"></i>&nbsp; Login</a></li>
+		                <li><a href="<%=request.getContextPath()%>/customer/memberjoin.jsp" class="login-panel"><i class="fa fa-user"></i>&nbsp; 회원가입</a></li>
 			<%
 					} else {
 						// employees 일경우 아닐경우 분기

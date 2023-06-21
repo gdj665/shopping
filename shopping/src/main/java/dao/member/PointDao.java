@@ -15,8 +15,11 @@ public class PointDao {
 			DBUtil dbUtil = new DBUtil(); 
 			Connection conn =  dbUtil.getConnection();
 			
-			PreparedStatement stmt =conn.prepareStatement( "SELECT p.order_no orderNo, p.point point, p.createdate createdate "
-					+ "FROM customer c INNER JOIN orders o ON  c.id = o.id INNER JOIN point_history p ON o.order_no = p.order_no "
+			PreparedStatement stmt =conn.prepareStatement( "SELECT p.order_no orderNo, p.point_pm pointPm, p.point point, p.createdate createdate "
+					+ "FROM customer c "
+					+ "INNER JOIN orders o ON  c.id = o.id "
+					+ "INNER JOIN point_history p ON o.order_no = p.order_no "
+					+ "INNER JOIN orders_history h ON h.order_no = o.order_no "
 					+ "WHERE c.id = ? ORDER BY p.createdate DESC LIMIT ?,? ");
 		
 			stmt.setString(1, id);
@@ -26,6 +29,7 @@ public class PointDao {
 			while(rs.next()) {
 				HashMap<String, Object> m = new HashMap<String, Object>();
 				m.put("orderNo",rs.getInt("orderNo"));
+				m.put("pointPm",rs.getString("pointPm"));
 				m.put("point", rs.getInt("point"));
 				m.put("createdate", rs.getString("createdate"));
 				list.add(m);

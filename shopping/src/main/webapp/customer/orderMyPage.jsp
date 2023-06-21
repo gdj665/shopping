@@ -89,9 +89,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cart-table">
-                    <%
-						for(HashMap<String, Object> m : list){
-					%>
                         <table>
                             <thead>
                                 <tr>
@@ -104,6 +101,9 @@
                                     <th><i class="ti-close"></i></th>
                                 </tr>
                             </thead>
+                    <%
+						for(HashMap<String, Object> m : list){
+					%>
                             <tbody>
                                 <tr>
                                     <td class="cart-pic first-row"><img style="width:100px; height:100px;" src="<%=request.getContextPath() + "/img/productImg/" + (String)m.get("saveFile")%>"></td>
@@ -119,12 +119,13 @@
                                 </tr>
                                 
                             </tbody>
+							<%
+								}
+                 			%>
                         </table>
                         <div>
 	
-	
 							<%
-								}
 								if(startPage > 5){
 							%>
 								<a href="<%=request.getContextPath()%>/customer/ordierMyPage.jsp?currentPage=<%=startPage-1%>">이전</a>
