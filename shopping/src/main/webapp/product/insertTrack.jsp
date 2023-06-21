@@ -51,42 +51,43 @@
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
-	<hr>
-	<h4>수록곡 입력</h4>
-	<hr>
-	<form action="<%=request.getContextPath()%>/product/insertTrackAction.jsp" method="post">
-		<input type="hidden" name="productNo" value="<%=productNo%>">
-		<input type="hidden" name="totalTrackCnt" value="<%=totalTrackCnt%>">
-		<table class="table">
-			<tr>
-				<th>곡 번호</th>
-				<th>곡 정보</th>
-				<th>재생 시간</th>
-			</tr>
-	<%
-			// 입력한 수록곡 수만큼 input 출력
-			for(int i = 0; i < totalTrackCnt; i++){
-	%>
+	<div class="banner-section spad">
+		<h4>수록곡 입력</h4>
+		<hr>
+		<form action="<%=request.getContextPath()%>/product/insertTrackAction.jsp" method="post">
+			<input type="hidden" name="productNo" value="<%=productNo%>">
+			<input type="hidden" name="totalTrackCnt" value="<%=totalTrackCnt%>">
+			<table class="table">
 				<tr>
-					<td>
-						<%=i + 1%>
-						<input type="hidden" name="trackNo" value ="<%=i + 1%>">
-					</td>
-					<td>
-						<input type="text" name="trackName" required="required">
-					</td>
-					<td>
-						<input type="number" name="trackTime" required="required">
-					</td>
+					<th>곡 번호</th>
+					<th>곡 정보</th>
+					<th>재생 시간</th>
 				</tr>
-	<%
-			}
-	%>
-		</table>
-		<button class="btn btn-outline-danger" type="submit">입력</button>
-		<a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=productNo%>">
-			취소
-		</a>
-	</form>
+		<%
+				// 입력한 수록곡 수만큼 input 출력
+				for(int i = 0; i < totalTrackCnt; i++){
+		%>
+					<tr>
+						<td>
+							<%=i + 1%>
+							<input type="hidden" name="trackNo" value ="<%=i + 1%>">
+						</td>
+						<td>
+							<input type="text" name="trackName" required="required">
+						</td>
+						<td>
+							<input type="number" name="trackTime" required="required">
+						</td>
+					</tr>
+		<%
+				}
+		%>
+			</table>
+			<button class="btn btn-outline-danger" type="submit">입력</button>
+			<a class="btn btn-outline-danger" href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=productNo%>">
+				취소
+			</a>
+		</form>
+	</div>
 </body>
 </html>

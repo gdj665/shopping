@@ -64,36 +64,37 @@
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
-	<hr>
-	<h4><%=productName%> 앨범 리뷰 작성 페이지</h4>
-	<hr>
-	<form action="<%=request.getContextPath()%>/review/insertReviewAction.jsp" method="post" enctype="multipart/form-data" id="insertForm">
-		<input type="hidden" id="imgCnt" name="imgCnt">
-		<input type="hidden" name="productNo" value="<%=productNo%>">
-		<table class="table">
-			<tr>
-				<th>리뷰 제목</th>
-				<td>
-					<input type="text" name="reviewTitle" required="required">
-				</td>
-			</tr>
-			<tr>
-				<th>리뷰 내용</th>
-				<td>
-					<textarea cols="50" rows="4" name="reviewContent" required="required"></textarea>
-				</td>
-			</tr>
-		</table>
-		<div>
-			리뷰 이미지
-			<button class="btn btn-sm btn-outline-danger" id="addFile" type="button">파일추가</button>
-			<button class="btn btn-sm btn-outline-danger" id="delFile" type="button">파일삭제</button>
-			<button class="btn btn-sm btn-outline-danger" id="submit">작성</button>
-		</div>
-		<div>
-			jpg 파일만 업로드 가능합니다.
-		</div>
-		<div id="files"></div>
-	</form>
+	<div class="banner-section spad">
+		<h4><%=productName%> 앨범 리뷰 작성 페이지</h4>
+		<hr>
+		<form action="<%=request.getContextPath()%>/review/insertReviewAction.jsp" method="post" enctype="multipart/form-data" id="insertForm">
+			<input type="hidden" id="imgCnt" name="imgCnt">
+			<input type="hidden" name="productNo" value="<%=productNo%>">
+			<table class="table">
+				<tr>
+					<th>리뷰 제목</th>
+					<td>
+						<input type="text" name="reviewTitle" required="required">
+					</td>
+				</tr>
+				<tr>
+					<th>리뷰 내용</th>
+					<td>
+						<textarea cols="50" rows="4" name="reviewContent" required="required"></textarea>
+					</td>
+				</tr>
+			</table>
+			<div>
+				리뷰 이미지
+				<button class="btn btn-sm btn-outline-danger" id="addFile" type="button">파일추가</button>
+				<button class="btn btn-sm btn-outline-danger" id="delFile" type="button">파일삭제</button>
+				<button class="btn btn-sm btn-outline-danger" id="submit">작성</button>
+			</div>
+			<div>
+				jpg 파일만 업로드 가능합니다.
+			</div>
+			<div id="files"></div>
+		</form>
+	</div>
 </body>
 </html>
