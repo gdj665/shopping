@@ -24,6 +24,11 @@
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
+	<!-- Hero Section Begin -->
+    <div>
+		<jsp:include page="/inc/banner.jsp"></jsp:include>
+	</div>
+    <!-- Hero Section End -->
 	<div class="banner-section spad">
 	<h3>최신 앨범</h3>
 	<hr>
@@ -38,7 +43,7 @@
 			        <div class="product-item">
 			            <div class="pi-pic">
 			                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-								<img width="200px" height="300px" src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+								<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
 							</a>
 			            </div>
 			            <div class="pi-text">
@@ -69,7 +74,7 @@
 			        <div class="product-item">
 			            <div class="pi-pic">
 			                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-								<img width="200px" height="300px" src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+								<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
 							</a>
 			            </div>
 			            <div class="pi-text">
@@ -86,5 +91,16 @@
 			</div>
 		</div>
 	</div>
+<!-- Js Plugins -->
+<script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery-ui.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.countdown.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.nice-select.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.zoom.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.dd.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
+<script src="<%=request.getContextPath() %>/template/js/main.js"></script>
 </body>
 </html>

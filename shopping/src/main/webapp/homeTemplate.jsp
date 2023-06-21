@@ -1,5 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="zxx">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -142,8 +143,8 @@
                         <i class="ti-menu"></i>
                         <span>All departments</span>
                         <ul class="depart-hover">
-                            <li class="active"><a href="#">Women’s Clothing</a></li>
-                            <li><a href="#">Men’s Clothing</a></li>
+                            <li class="active"><a href="#">Womenâs Clothing</a></li>
+                            <li><a href="#">Menâs Clothing</a></li>
                             <li><a href="#">Underwear</a></li>
                             <li><a href="#">Kid's Clothing</a></li>
                             <li><a href="#">Brand Fashion</a></li>
@@ -187,7 +188,7 @@
     <!-- Hero Section Begin -->
     <section class="hero-section">
         <div class="hero-items owl-carousel">
-            <div class="single-hero-items set-bg" data-setbg="img/hero-1.jpg">
+            <div class="single-hero-items set-bg" data-setbg="<%=request.getContextPath() %>/template/img/rewind.jpg">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-5">
@@ -203,7 +204,7 @@
                     </div>
                 </div>
             </div>
-            <div class="single-hero-items set-bg" data-setbg="img/hero-2.jpg">
+            <div class="single-hero-items set-bg" data-setbg="<%=request.getContextPath() %>/template/img/rewind.jpg">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-5">
@@ -229,25 +230,25 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="img/banner-1.jpg" alt="">
+                        <img src="<%=request.getContextPath() %>/template/img/리와인드2.jpg" alt="">
                         <div class="inner-text">
-                            <h4>Men’s</h4>
+                            <h4>Menâs</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="img/banner-2.jpg" alt="">
+                        <img src="<%=request.getContextPath() %>/template/img/리와인드2.jpg" alt="">
                         <div class="inner-text">
-                            <h4>Women’s</h4>
+                            <h4>Womenâs</h4>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="single-banner">
-                        <img src="img/banner-3.jpg" alt="">
+                        <img src="<%=request.getContextPath() %>/template/img/리와인드2.jpg" alt="">
                         <div class="inner-text">
-                            <h4>Kid’s</h4>
+                            <h4>Kidâs</h4>
                         </div>
                     </div>
                 </div>
@@ -262,7 +263,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="product-large set-bg" data-setbg="img/products/women-large.jpg">
-                        <h2>Women’s</h2>
+                        <h2>Womenâs</h2>
                         <a href="#">Discover More</a>
                     </div>
                 </div>
@@ -518,7 +519,7 @@
                 </div>
                 <div class="col-lg-3 offset-lg-1">
                     <div class="product-large set-bg m-large" data-setbg="img/products/man-large.jpg">
-                        <h2>Men’s</h2>
+                        <h2>Menâs</h2>
                         <a href="#">Discover More</a>
                     </div>
                 </div>
