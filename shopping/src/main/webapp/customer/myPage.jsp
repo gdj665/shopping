@@ -58,47 +58,65 @@
                         <%
 							if(id != null){
 						%>
-                        <form action="#">
-                            <div class="group-input">
-                                <label for="username">아이디*</label>
-                                <%=(String)(m.get("cstmId"))%>
-                            </div>
-                            <div class="group-input">
-                                <label for="pass">이름*</label>
-                                <%=(String)(m.get("cstmName"))%>
-                            </div>
-                            <div class="group-input">
-                                <label for="con-pass">주소*</label>
-                                <%=(String)(m.get("cstmAddress"))%>
-                            </div>
-                            <div class="group-input">
-                                <label for="con-pass">이메일*</label>
-                                <%=(String)(m.get("cstmEmail"))%>
-                            </div>
-                            <div class="group-input">
-                                <label for="con-pass">생일*</label>
-                                <%=(String)(m.get("cstmBirth"))%>
-                            </div>
-                            <div class="group-input">
-                                <label for="con-pass">전화번호*</label>
-                                <%=(String)(m.get("cstmPhone"))%>
-                            </div>
-                            <div class="group-input">
-                                <label for="con-pass">등급*</label>
-                                <%=(String)(m.get("cstmRank"))%>
-                            </div>
-                            <div class="group-input">
-                                <label for="con-pass">포인트*</label>
-                                <%=(Integer)(m.get("cstmPoint"))%>
-                            </div>
-                            <div class="group-input">
-                                <label for="con-pass">가입일*</label>
-                                <%=(String)(m.get("createdate"))%>
-                            </div>
-                            <button type="submit" class="site-btn register-btn"><a href="<%=request.getContextPath()%>/customer/updateMember.jsp?id=<%=id%>">회원정보수정</a></button>
-                        </form>
+                          <div class="specification-table">
+                                        <table>
+                                            <tr>
+                                                <td class="p-catagory">아이디</td>
+                                                <td>
+                                                    <div class="cart-add"><%=(String)(m.get("cstmId"))%></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-catagory">이름</td>
+                                                <td>
+                                                    <div class="cart-add"><%=(String)(m.get("cstmName"))%></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-catagory">주소</td>
+                                                <td>
+                                                    <div class="p-stock"><%=(String)(m.get("cstmAddress"))%></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-catagory">이메일</td>
+                                                <td>
+                                                    <div class="p-weight"><%=(String)(m.get("cstmEmail"))%></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-catagory">생일</td>
+                                                <td>
+                                                    <div class="p-size"><%=(String)(m.get("cstmBirth"))%></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-catagory">전화번호</td>
+                                                <td><%=(String)(m.get("cstmPhone"))%></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-catagory">등급</td>
+                                                <td>
+                                                    <div class="p-code"><%=(String)(m.get("cstmRank"))%></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-catagory">포인트</td>
+                                                <td>
+                                                    <div class="p-code"><%=(Integer)(m.get("cstmPoint"))%></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-catagory">가입일</td>
+                                                <td>
+                                                    <div class="p-code"><%=(String)(m.get("createdate"))%></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+				                            <a style="float:right; margin-left:10px;" class="btn btn-outline-danger" href="<%=request.getContextPath()%>/customer/memberOut.jsp?id=<%=id%>" class="or-login">회원탈퇴</a>
+                                            <a style="float:right;" class="btn btn-outline-danger" href="<%=request.getContextPath()%>/customer/updateMember.jsp?id=<%=id%>">회원정보수정</a>
+                                    </div>
                         <div class="switch-login">
-                            <a href="<%=request.getContextPath()%>/customer/memberOut.jsp?id=<%=id%>" class="or-login">회원탈퇴</a>
                         </div>
                         <% 			
 							}

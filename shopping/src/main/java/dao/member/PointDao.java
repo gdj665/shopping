@@ -19,7 +19,6 @@ public class PointDao {
 					+ "FROM customer c "
 					+ "INNER JOIN orders o ON  c.id = o.id "
 					+ "INNER JOIN point_history p ON o.order_no = p.order_no "
-					+ "INNER JOIN orders_history h ON h.order_no = o.order_no "
 					+ "WHERE c.id = ? ORDER BY p.createdate DESC LIMIT ?,? ");
 		
 			stmt.setString(1, id);
@@ -65,5 +64,25 @@ public class PointDao {
 			}
 				return row;
 			}
+		// 포인트 합계출력
+		public int totalpoint(String id) throws Exception {
+			int row = 0;
+			DBUtil dbUtil = new DBUtil();
+			Connection conn = dbUtil.getConnection();
+			
+			
+			String sql = "SELECT p.point point \r\n"
+					+ "FROM customer c \r\n"
+					+ "INNER JOIN orders o ON  c.id = o.id \r\n"
+					+ "INNER JOIN point_history p ON o.order_no = p.order_no \r\n"
+					+ "WHERE c.id = ? ORDER BY p.createdate DESC LIMIT 1";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1,id);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				row = rs.getInt("point");
+			}
+			return row;
+		}
 
 }

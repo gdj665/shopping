@@ -50,6 +50,10 @@
 	}
 	System.out.println(startPage+"<-- startPage");
 	System.out.println(endPage+"<-- endPage");
+	
+	int row = pointDao.totalpoint(id);
+	System.out.println(row);
+	
 %>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -88,6 +92,9 @@
                             </thead>
                              <%
 								for(HashMap<String, Object> s : list){
+									if((Integer)(s.get("point")) == 0){
+										continue;
+									}
 							%>
                             <tbody>
                                 <tr>
@@ -95,7 +102,12 @@
                                     <%=(Integer)(s.get("orderNo"))%>
                                     </td>
                                     <td>
-                                        <%=(String)(s.get("pointPm"))%>
+                                    <% if("+".equals((String)(s.get("pointPm")))){
+                                    	out.print("적립");
+                                    } else {
+                                    	out.print("사용");
+                                    }
+                                    %>
                                     </td>
                                     <td class="p-price first-row">
                                     <%=(Integer)(s.get("point"))%>
@@ -135,8 +147,7 @@
                         <div class="col-lg-4 offset-lg-4">
                             <div class="proceed-checkout">
                                 <ul>
-                                    <li class="subtotal">Subtotal <span>$240.00</span></li>
-                                    <li class="cart-total">Total <span>$240.00</span></li>
+                                    <li class="cart-total">Total <span><%=row%></span></li>
                                 </ul>
                                 <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
                             </div>

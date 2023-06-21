@@ -50,6 +50,9 @@
 	}
 	System.out.println(startPage+"<-- startPage");
 	System.out.println(endPage+"<-- endPage");
+	
+	int row = pointDao.totalpoint(id);
+	
 %>
 <!DOCTYPE html>
 <html>
