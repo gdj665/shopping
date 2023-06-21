@@ -84,6 +84,7 @@
 	<hr>
 	<form action="<%=request.getContextPath()%>/review/updateReviewAction.jsp" method="post" enctype="multipart/form-data">
 		<input type="hidden" id="imgCnt" name="imgCnt">
+		<input type="hidden" name="productNo" value="<%=review.getProductNo()%>">
 		<input type="hidden" id="reviewImgCnt" value="<%=reviewImgList.size()%>">
 		<input type="hidden" name="reviewNo" value="<%=reviewNo%>">
 		<table class="table">

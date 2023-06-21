@@ -1,3 +1,4 @@
+<%@page import="dao.main.EmployeesDao"%>
 <%@page import="vo.product.ReviewImg"%>
 <%@page import="vo.product.Review"%>
 <%@page import="dao.main.ReviewDao"%>
@@ -18,10 +19,26 @@
 	// request 객체를 MultipartRequest의 API를 사용할 수 있도록 랩핑
 	MultipartRequest mRequest = new MultipartRequest(request, dir, maxFileSize, "utf-8", new DefaultFileRenamePolicy());
 	
-	/* if (mRequest.getParameter("productNo") == null){
+	// 유의성 검사
+	if (mRequest.getParameter("productNo") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
-	} */
+	}
+	
+	// input type="text" 값 반환 API --> board 테이블 저장
+	String id = (String)session.getAttribute("loiginId");
+	int productNo = Integer.parseInt(mRequest.getParameter("productNo"));
+	String reviewTitle = mRequest.getParameter("reviewTitle");
+	String reviewContent = mRequest.getParameter("reviewContent");
+	ReviewDao rd = new ReviewDao();
+	
+	// 유의성 검사
+	if (!rd.checkId(id, productNo)){
+		response.sendRedirect(request.getContextPath() + "/home.jsp");
+		return;
+	};
+	
+	// review img 입력
 	ArrayList<String> checkReviewImgList = new ArrayList<>();
 	int maxImgCnt = Integer.parseInt(mRequest.getParameter("imgCnt"));
 	System.out.println(maxImgCnt);
@@ -54,13 +71,6 @@
 		}
 	}
 	
-	// input type="text" 값 반환 API --> board 테이블 저장
-	String id = (String)session.getAttribute("loginId");
-	String reviewTitle = mRequest.getParameter("reviewTitle");
-	String reviewContent = mRequest.getParameter("reviewContent");
-	int productNo = Integer.parseInt(mRequest.getParameter("productNo"));
-	
-	ReviewDao rd = new ReviewDao();
 	// review insert 데이터 review class에 입력
 	Review review = new Review();
 	review.setId(id);

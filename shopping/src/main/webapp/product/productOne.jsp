@@ -99,9 +99,7 @@
 	                <div class="col-lg-6">
 				        <div class="product-item">
 				            <div class="pi-pic">
-				                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-									<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
-								</a>
+								<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
 				            </div>
 				        </div>
 	                </div>
