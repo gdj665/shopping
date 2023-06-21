@@ -68,6 +68,17 @@
 		})
 	</script>
 </head>
+<style>
+	ul.nav {
+	  display: flex;
+	  justify-content: space-between;
+	}
+	
+	ul.nav li {
+	  flex-basis: calc(100% / 3); /* li 요소들을 세 개의 동일한 너비로 분할 */
+	  text-align: center; /* li 요소 내의 텍스트를 가운데 정렬 */
+	}
+</style>
 <body>
 	<div>
 		<jsp:include page="/inc/search.jsp"></jsp:include>
@@ -148,13 +159,13 @@
 	                <div class="tab-item">
 	                    <ul class="nav" role="tablist">
 	                        <li>
-	                            <a class="active" data-toggle="tab" href="#tab-1" role="tab">수록곡</a>
+	                            <a style="width:100%;" class="active" data-toggle="tab" href="#tab-1" role="tab">수록곡</a>
 	                        </li>
 	                        <li>
-	                            <a data-toggle="tab" href="#tab-2" role="tab">리뷰</a>
+	                            <a style="width:100%;" data-toggle="tab" href="#tab-2" role="tab">리뷰</a>
 	                        </li>
 	                        <li>
-	                            <a data-toggle="tab" href="#tab-3" role="tab">문의</a>
+	                            <a style="width:100%;" data-toggle="tab" href="#tab-3" role="tab">문의</a>
 	                        </li>
 	                    </ul>
 	                </div>
@@ -163,7 +174,7 @@
 	                        <div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
 	                            <div class="product-content">
 	                                <div class="row">
-	                                    <div class="col-lg-7">
+	                                    <div class="col-lg-12">
 	                                        <table class="table">
 												<tr>
 													<th>번호</th>
@@ -194,20 +205,25 @@
 											%>
 											</table>
 	                                    </div>
-	                                    <div class="col-lg-5">
-	                                        <img src="img/product-single/tab-desc.jpg" alt="">
-	                                    </div>
 	                                </div>
 	                            </div>
 	                        </div>
 	                        <div class="tab-pane fade" id="tab-2" role="tabpanel">
-		                        <div>
-									<jsp:include page="/inc/reviewList.jsp"></jsp:include>
+                        		<div class="row">
+                                    <div class="col-lg-12">
+				                        <div>
+											<jsp:include page="/inc/reviewList.jsp"></jsp:include>
+										</div>
+									</div>
 								</div>
 	                        </div>
 	                        <div class="tab-pane fade" id="tab-3" role="tabpanel">
-	                        	<div>
-									<jsp:include page="/cs/productCsList.jsp"></jsp:include>
+	                        	<div class="row">
+                                    <div class="col-lg-12">
+			                        	<div>
+											<jsp:include page="/cs/productCsList.jsp"></jsp:include>
+										</div>
+									</div>
 								</div>
 	                        </div>
 	                    </div>

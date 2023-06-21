@@ -70,9 +70,7 @@
     <div class="faq-section spad">
         <div class="container">
             <div class="row">
-            	<div class="col-lg-2">
-            	</div>
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <!-- 제품문의 입력 테이블 (고객 사용 가능) -->
                     <%
                     	if(empLevel==0){
@@ -84,10 +82,10 @@
 									<th colspan="2">상품문의</th>
 								</tr>
 								<tr>
-									<td style="width:700px;">
+									<td>
 										<textarea rows="3" class="form-control" name="qContent" placeholder="문의 내용을 입력해주시기 바랍니다"></textarea>
 									</td>
-									<td>
+									<td style="width:100px;">
 										<button style="margin-top:50px; margin-right:30px; float:right;" class="btn btn-outline-dark" type="submit">작성</button>
 									</td>
 								</tr>
@@ -168,13 +166,11 @@
 								<form action="<%=request.getContextPath()%>/cs/productCsListAction.jsp">
 									<table style="width:100%; background-color: #F6F6F6;">
 										<tr>
-											<th colspan="2"><label style="margin-left:10px; margin-top:10px;">&nbsp;&nbsp;↳&nbsp;답변작성필요</label></th>
+											<th><label style="margin-left:10px; margin-top:10px;">&nbsp;&nbsp;↳&nbsp;답변작성필요</label></th>
 										</tr>
 										<tr>
-											<td style="width:700px;">
-												<textarea rows="3" style="margin-left:10px; margin-bottom:20px;" class="form-control" name="aContent" placeholder="답변을 입력해주시기 바랍니다"></textarea>
-											</td>
 											<td>
+												<textarea rows="3" style="margin-left:10px; margin-bottom:20px;" class="form-control" name="aContent" placeholder="답변을 입력해주시기 바랍니다"></textarea>
 												<button style="margin-right:30px; margin-top:30px; float:right;" class="btn btn-outline-dark" type="submit">작성</button>
 											</td>
 										</tr>
@@ -188,9 +184,7 @@
 							}// 답변이 없을경우에는 입력창 출력하는 if문
 						}// 질문 리스트 출력 for문
 					%>
-                </div><!-- col-lg-8 -->
-                <div class="col-lg-2">
-            	</div>
+                </div><!-- col-lg-12 -->
             </div>
         </div>
     </div>
