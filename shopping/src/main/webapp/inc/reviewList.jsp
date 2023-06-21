@@ -8,7 +8,7 @@
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
 	}
-	
+	String id = (String)session.getAttribute("loginId");
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	// System.out.println(productNo);
 	ReviewDao rd = new ReviewDao();
@@ -16,6 +16,9 @@
 	ArrayList<Review> reviewTitleList = new ArrayList<>();
 	// 나열할 review title list 선언
 	reviewTitleList = rd.selectReviewTitleList(productNo);
+	
+	// 리뷰 작성탭 유의성
+	boolean checkId = rd.checkId(id, productNo);
 %>
 <!DOCTYPE html>
 <html>
@@ -24,29 +27,42 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h3>
-		리뷰
-		<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/review/insertReview.jsp?productNo=<%=productNo%>">
-			리뷰 작성
-		</a>
-	</h3>
-	<table class="table">
-	<%
-		for(Review r : reviewTitleList){
-	%>
-			<tr>
-				<td>
-					<a href="<%=request.getContextPath()%>/review/review.jsp?reviewNo=<%=r.getReviewNo()%>">
-						<%=r.getReviewTitle()%>
-					</a>
-				</td>
-				<td>
-					<%=r.getId()%>
-				</td>
-			</tr>
-	<%
-		}
-	%>
-	</table>
+	<div class="customer-review-option">
+    <h4>
+    	리뷰 수 <%=reviewTitleList.size()%>
+   	<%
+   		if (checkId){
+   	%>
+			<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/review/insertReview.jsp?productNo=<%=productNo%>">
+				리뷰 작성
+			</a>
+   	<%
+   		}
+   	%>
+    </h4>
+		<div class="comment-option">
+		<%
+			for(Review r : reviewTitleList){
+		%>
+			    <div class="co-item">
+			        <div class="avatar-text">
+			            <h5>
+				            <a href="<%=request.getContextPath()%>/review/review.jsp?reviewNo=<%=r.getReviewNo()%>">
+								<%=r.getReviewTitle()%>
+							</a>
+			            	<span>
+			            		<%=r.getCreatedate()%>
+			            	</span>
+			            </h5>
+			            <div class="at-reply">
+			            	<%=r.getId()%>
+			            </div>
+			        </div>
+			    </div>
+		<%
+			}
+		%>
+		</div>
+	</div>
 </body>
 </html>

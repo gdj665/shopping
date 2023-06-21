@@ -45,6 +45,9 @@
 	ArrayList<Track> trackList = new ArrayList<>();
 	trackList = md.selectTrack(productNo);
 	
+	String[] categoryName = md.printCategory(p.getCategoryNo());
+	String mainCategory = categoryName[0];
+	String subCategory = categoryName[1];
 %>
 <!DOCTYPE html>
 <html>
@@ -72,125 +75,149 @@
 	<div>
 		<jsp:include page="/inc/head.jsp"></jsp:include>
 	</div>
-	<hr>
-	<h4>
-		앨범 정보
-		<%
-			if(checkId > 0){
-		%>
-			<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=productNo%>">
-				수정
-			</a>
-			<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=productNo%>">
-				삭제
-			</a>
-		<%
-			}
-		%>
-	</h4>
-	<hr>
-	<div class="product-list">
-		<div class="row">
-		    <div class="col-lg-4 col-sm-6">
-		        <div class="product-item">
-		            <div class="pi-pic">
-		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
-							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
-						</a>
-		            </div>
-		        </div>
-		    </div>
-		    <div class="col-lg-6 col-sm-6">
-				<table class="table">
-					<tr>
-						<th>앨범가격</th>
-						<td>
-							<%
-								if (productOne.getProductDiscountPrice() == productOne.getProductPrice()){
-							%>
-									    <%=productOne.getProductPrice()%>원
-							<%
-								} else {
-							%>
-										<%=productOne.getProductDiscountPrice()%>원
-									  	<font style="text-decoration:line-through"><%=productOne.getProductPrice()%>원</font>
-							<%
-								}
-							%>
-						</td>
-					</tr>
-					<tr>
-						<th colspan="2">
-							<form action="<%=request.getContextPath()%>/product/addCartAction.jsp" method="post" id="addCart">
-								<input type="hidden" name="id" value="<%=id%>">
-								<input type="hidden" name="productNo" value="<%=productNo%>">
-								구매수량: <input type="number" id="cartCnt" name="cartCnt">
-								<button class="btn btn-outline-secondary btn-sm" type="button" id="cartBtn" form="addCart">장바구니 추가</button>
-							</form>
-						</td>
-					</tr>
-					<tr>
-						<th>앨범명</th>
-						<td>
-							<%=p.getProductName()%>
-						</td>
-					</tr>
-					<tr>
-						<th>가수명</th>
-						<td>
-							<%=p.getProductSinger()%>
-						</td>
-					</tr>
-					<tr>
-						<th>총 재생 시간</th>
-						<td>
-							<%=md.calculateTime(p.getTrackSumTime())%>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<%=p.getProductInfo()%>
-						</td>
-					</tr>
-				</table>
-		    </div>
-		</div>
-	</div>
-	<h4>수록곡(<%=trackList.size()%>)</h4>
-	<table class="table">
-		<tr>
-			<th>번호</th>
-			<th>곡정보</th>
-			<th>재생시간</th>
-		</tr>
-	<%
-		for (Track t : trackList){
-	%>
-		<tr>
-			<td rowspan="2">
-				<%=t.getTrackNo()%>
-			</td>
-			<td>
-				<%=t.getTrackName()%>
-			</td>
-			<td rowspan="2">
-				<%=md.calculateTime(t.getTrackTime())%>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<%=t.getProductSinger()%>
-			</td>
-		</tr>
-	<%
-		}
-	%>
-	</table>
-	<div>
-		<jsp:include page="/inc/reviewList.jsp"></jsp:include>
-	</div>
-	<div>
-		<jsp:include page="/cs/productCsList.jsp"></jsp:include>
-	</div>
+	<div class="banner-section spad">
+		<h3>
+			앨범 정보
+			<%
+				if(checkId > 0){
+			%>
+				<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=productNo%>">
+					수정
+				</a>
+				<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=productNo%>">
+					삭제
+				</a>
+			<%
+				}
+			%>
+		</h3>
+		<hr>
+	 <!-- Product Shop Section Begin -->
+	    <section class="product-shop spad page-details">
+	        <div class="container">
+	            <div class="row">
+	                <div class="col-lg-6">
+				        <div class="product-item">
+				            <div class="pi-pic">
+				                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+									<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+								</a>
+				            </div>
+				        </div>
+	                </div>
+	                <div class="col-lg-6">
+	                    <div class="product-details">
+	                        <div class="pd-title">
+	                            <span><%=p.getProductSinger()%></span>
+	                            <h3><%=p.getProductName()%></h3>
+	                        </div>
+	                        <div class="pd-desc">
+	                            <p>
+	                            	<%=p.getProductInfo()%>
+	                            </p>
+	                            <h4>
+	                            <%
+									if (productOne.getProductDiscountPrice() == productOne.getProductPrice()){
+								%>
+										    <%=productOne.getProductPrice()%>원
+								<%
+									} else {
+								%>
+											<%=productOne.getProductDiscountPrice()%>원
+										  	<span><%=productOne.getProductPrice()%>원</span>
+								<%
+									}
+								%>
+	                            </h4>
+	                        </div>
+	                        <div class="quantity">
+	                        	<form action="<%=request.getContextPath()%>/product/addCartAction.jsp" method="post" id="addCart">
+									<input type="hidden" name="id" value="<%=id%>">
+									<input type="hidden" name="productNo" value="<%=productNo%>">
+									<button class="primary-btn pd-cart" type="button" id="cartBtn" form="addCart">장바구니 추가</button>
+	                            <div class="pro-qty">
+									<input type="number" id="cartCnt" name="cartCnt" value="1">
+	                            </div>
+								</form>
+	                        </div>
+	                        <ul class="pd-tags">
+	                            <li><span>카테고리</span>: <%=mainCategory%>, <%=subCategory%></li>
+	                        </ul>
+	                    </div>
+	                </div>
+	            </div>
+				<div class="product-tab">
+	                <div class="tab-item">
+	                    <ul class="nav" role="tablist">
+	                        <li>
+	                            <a class="active" data-toggle="tab" href="#tab-1" role="tab">수록곡</a>
+	                        </li>
+	                        <li>
+	                            <a data-toggle="tab" href="#tab-2" role="tab">리뷰</a>
+	                        </li>
+	                        <li>
+	                            <a data-toggle="tab" href="#tab-3" role="tab">문의</a>
+	                        </li>
+	                    </ul>
+	                </div>
+	                <div class="tab-item-content">
+	                    <div class="tab-content">
+	                        <div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
+	                            <div class="product-content">
+	                                <div class="row">
+	                                    <div class="col-lg-7">
+	                                        <table class="table">
+												<tr>
+													<th>번호</th>
+													<th>곡정보</th>
+													<th>재생시간</th>
+												</tr>
+											<%
+												for (Track t : trackList){
+											%>
+												<tr>
+													<td rowspan="2">
+														<%=t.getTrackNo()%>
+													</td>
+													<td>
+														<%=t.getTrackName()%>
+													</td>
+													<td rowspan="2">
+														<%=md.calculateTime(t.getTrackTime())%>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<%=t.getProductSinger()%>
+													</td>
+												</tr>
+											<%
+												}
+											%>
+											</table>
+	                                    </div>
+	                                    <div class="col-lg-5">
+	                                        <img src="img/product-single/tab-desc.jpg" alt="">
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="tab-pane fade" id="tab-2" role="tabpanel">
+		                        <div>
+									<jsp:include page="/inc/reviewList.jsp"></jsp:include>
+								</div>
+	                        </div>
+	                        <div class="tab-pane fade" id="tab-3" role="tabpanel">
+	                        	<div>
+									<jsp:include page="/cs/productCsList.jsp"></jsp:include>
+								</div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+    <!-- Product Shop Section End -->
+    </div>
 </body>
 </html>
