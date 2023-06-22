@@ -27,7 +27,6 @@
 	System.out.println(list + "<-- orderMyPage orderList");
 	
 	
-	
 %>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -87,7 +86,27 @@
                                     <td class="cart-pic first-row"><%=(Integer)(m.get("orderNo"))%></td>
                                     <td class="p-price first-row"><%=(String)(m.get("productName"))%></td>
                                     <td class="p-price first-row"><%=(Integer)(m.get("productPrice"))%></td>
-                                    <td class="qua-col first-row"><%=(Integer)(m.get("orderCnt"))%></td>
+                                    <td class="p-price first-row">
+									<%
+										switch((Integer)m.get("orderStatus")){
+											case 0:
+												out.print("결제 미완료");
+												break;
+											case 1:
+												out.print("결제 완료");
+												break;
+											case 2:
+												out.print("배송 중");
+												break;
+											case 3:
+												out.print("배송 완료");
+												break;
+											case 4:
+												out.print("구매 확정");
+												break;
+										}
+									%>
+									</td>
                                     <td class="total-price first-row"><%=(String)(m.get("createdate"))%></td>
                                 </tr>
                                 
@@ -97,18 +116,6 @@
                  			%>
                         </table>
                         
-                    </div>
-                    <div class="row">
-                       
-                        <div class="col-lg-4 offset-lg-4">
-                            <div class="proceed-checkout">
-                                <ul>
-                                    <li class="subtotal">Subtotal <span>$240.00</span></li>
-                                    <li class="cart-total">Total <span>$240.00</span></li>
-                                </ul>
-                                <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -226,16 +233,16 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.zoom.min.js"></script>
-    <script src="js/jquery.dd.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="<%=request.getContextPath()%>/template/js/jquery-3.3.1.min.js"></script>
+    <script src="<%=request.getContextPath()%>/template/js/bootstrap.min.js"></script>
+    <script src="<%=request.getContextPath()%>/template/js/jquery-ui.min.js"></script>
+    <script src="<%=request.getContextPath()%>/template/js/jquery.countdown.min.js"></script>
+    <script src="<%=request.getContextPath()%>/template/js/jquery.nice-select.min.js"></script>
+    <script src="<%=request.getContextPath()%>/template/js/jquery.zoom.min.js"></script>
+    <script src="<%=request.getContextPath()%>/template/js/jquery.dd.min.js"></script>
+    <script src="<%=request.getContextPath()%>/template/js/jquery.slicknav.js"></script>
+    <script src="<%=request.getContextPath()%>/template/js/owl.carousel.min.js"></script>
+    <script src="<%=request.getContextPath()%>/template/js/main.js"></script>
 </body>
 
 </html>
