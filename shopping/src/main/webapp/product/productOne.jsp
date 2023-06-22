@@ -92,10 +92,10 @@
 			<%
 				if(checkId > 0){
 			%>
-				<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=productNo%>">
+				<a class="btn btn-outline-danger " href="<%=request.getContextPath()%>/product/updateProduct.jsp?productNo=<%=productNo%>">
 					수정
 				</a>
-				<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=productNo%>">
+				<a class="btn btn-outline-danger " href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=productNo%>">
 					삭제
 				</a>
 			<%

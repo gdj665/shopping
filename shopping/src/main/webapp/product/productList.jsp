@@ -99,6 +99,9 @@
 					<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/product/deleteProductAction.jsp?productNo=<%=p.getProductNo()%>">
 						삭제
 					</a>
+					<div style="line-height:50%;">
+							<br>
+					</div>
 			<%
 				}
 			
