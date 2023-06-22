@@ -125,15 +125,15 @@
 											<%
 												if(((int)m.get("productStatus"))==1){
 											%>
-												판매중
+												<span style="font-weight: bold;">판매중</span>
 											<%
 												} else if (((int)m.get("productStatus"))==2){
 											%>
-												품절	
+												<span style="color:red; font-weight: bold;">품절</span>	
 											<%
 												} else {
 											%>
-												단종											
+												<span style="color:red; text-decoration:line-through; font-weight: bold;">단종</span>											
 											<%
 												}
 											%>
