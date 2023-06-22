@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="vo.id.Employees"%>
 <%@page import="dao.main.EmployeesDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -14,7 +15,8 @@
 	
 	EmployeesDao ed = new EmployeesDao();
 	if (ed.checkId(empId)){
-		response.sendRedirect(request.getContextPath() + "/employees/insertEmployees.jsp");
+		String msg = URLEncoder.encode("중복된 id 입니다","utf-8");
+		response.sendRedirect(request.getContextPath() + "/employees/insertEmployees.jsp?msg=" + msg);
 		return;
 	}
 	int checkInsert = ed.insertEmployees(employees);

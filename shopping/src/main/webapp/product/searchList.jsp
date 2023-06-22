@@ -18,10 +18,6 @@
 	// dao 선언
 	SearchDao sd = new SearchDao();
 	MainDao md = new MainDao();
-	
-	// 검색된 가수 받아오는 리스트
-	ArrayList<Product> searchSingerList = new ArrayList<>(); 
-	searchSingerList = sd.searchSinger(splitSearchWord);
 
 	// 검색된 트랙 받아오는 리스트 with 가수명
 	ArrayList<Product> searchTrackWithSingerList = new ArrayList<>(); 
@@ -55,25 +51,6 @@
 	</div>
 	<div class="banner-section spad">
 		<h3>'<%=searchWord%>'에 대한 검색 결과 입니다.</h3>
-		<hr>
-		<h3>가수(<%=searchSingerList.size()%>)</h3>
-		<hr>
-		<table class="table">
-			<tr>
-				<th colspan="<%=searchSingerList.size()%>">가수명</th>
-			</tr>
-			<tr>
-		<%
-				for(Product p : searchSingerList){
-		%>
-					<td>
-						<%=p.getProductSinger()%>
-					</td>
-		<%
-				}
-		%>
-			</tr>
-		</table>
 		<hr>
 		<h3>곡(<%=searchTrackWithSingerList.size() + searchTrackNameList.size() + searchTrackWithProductNameList.size()%>)</h3>
 		<hr>

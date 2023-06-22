@@ -1,7 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	if (request.getParameter("msg") != null){
+		String msg = request.getParameter("msg");
+		String redirectUrl = request.getContextPath() + "/employees/insertEmployees.jsp";
+		//alert 메세지 출력
+		String script = 
+				"<script>"+
+					"alert('" + msg + "');"+
+					"window.location.href='" + redirectUrl + "';" +
+				"</script>";
+		response.getWriter().println(script);
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('#btn').click(function(){
+				if ($('#employeesPw').val() != $('#checkPw').val()){
+					alert('비밀번호가 같지 않습니다.');
+				} else {
+					$('#form').submit();
+				}
+			})
+		})
+	</script>
 </head>
 <style>
 	.subBtn {
@@ -38,7 +63,7 @@
                             관리자 추가 관리
                         </div>
                         <div class="card-body">
-	                        <form action="<%=request.getContextPath()%>/employees/insertEmployeesAction.jsp" method="post">
+	                        <form action="<%=request.getContextPath()%>/employees/insertEmployeesAction.jsp" method="post" id="form">
 	                            <table class="table">
 	                                <tr>
 										<th>아이디</th>
@@ -49,13 +74,13 @@
 									<tr>
 										<th>비밀번호</th>
 										<td>
-											<input class="form-control" type="password" name="employeesPw" required="required">
+											<input class="form-control" type="password" name="employeesPw" id="employeesPw" required="required">
 										</td>
 									</tr>
 									<tr>
 										<th>비밀번호 확인</th>
 										<td>
-											<input class="form-control" type="password" name="checkPw" required="required">
+											<input class="form-control" type="password" name="checkPw" id="checkPw" required="required">
 										</td>
 									</tr>
 									<tr>
@@ -71,7 +96,7 @@
 										</td>
 									</tr>
 	                            </table>
-                           		<button class="btn btn-outline-secondary" type="submit">추가</button>
+                           		<button class="btn btn-outline-secondary" type="button" id="btn">추가</button>
 							</form>
                         </div>
                     </div>
