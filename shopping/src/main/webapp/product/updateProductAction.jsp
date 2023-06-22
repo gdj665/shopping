@@ -139,6 +139,6 @@
 	System.out.println(checkUpdateTrack + " <- checkUpdateTrack");
 	
 	
-	response.sendRedirect(request.getContextPath() + "/product/updateProduct.jsp?productNo=" + productNo);
+	response.sendRedirect(request.getContextPath() + "/product/productOne.jsp?productNo=" + productNo);
 	return;
 %>

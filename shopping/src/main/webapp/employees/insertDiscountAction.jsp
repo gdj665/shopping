@@ -1,3 +1,5 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="vo.product.Discount"%>
 <%@page import="dao.main.EmployeesDao"%>
 <%@page import="vo.product.Product"%>
@@ -38,9 +40,21 @@
 	
 	// param 값 선언
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
-	String discountBegin = request.getParameter("discountBegin");
-	String discountEnd = request.getParameter("discountEnd");
 	double discountRate = (double)Integer.parseInt(request.getParameter("discountRate")) / 100;
+
+	// 날짜 데이터 입력 안하면 오늘 자로 입력
+	String discountBegin = request.getParameter("discountBegin");
+	if ("".equals(request.getParameter("discountBegin"))){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = new Date();
+		discountBegin = dateFormat.format(today);
+	}
+	String discountEnd = request.getParameter("discountEnd");
+	if ("".equals(request.getParameter("discountEnd"))){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = new Date();
+		discountEnd = dateFormat.format(today);
+	}
 	
 	// productNo 유효성 체크
 	MainDao md = new MainDao();

@@ -87,19 +87,19 @@
 												<input class="form-control" type="number" name="productNo" required="required">
 											</td>
 											<td>
-												<input class="form-control" type="date" name="discountBegin">
+												<input class="form-control" type="date" name="discountBegin" id="discountBegin">
 											</td>
 											<td>
 											~
 											</td>
 											<td>
-												<input class="form-control" type="date" name="discountEnd">
+												<input class="form-control" type="date" name="discountEnd" id="discountEnd">
 											</td>
 											<td>
 												<input class="form-control" type="number" name="discountRate" required="required">
 											</td>
 											<td>
-												<button class="btn btn-outline-secondary" type="submit">추가</button>
+												<button class="btn btn-outline-secondary" type="submit" id="btn">추가</button>
 											</td>
 										</tr>
 									</tbody>

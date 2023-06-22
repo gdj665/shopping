@@ -101,6 +101,7 @@ public class MainDao {
 		}
 		return productList;
 	}
+	
 	// 받아온 mainName과 subName, beginRow, rowPerPage를 이용해서 페이지를 출력한다.
 	// subName이 전체일때 mainName에 해당하는 값을 주기위해 분기를 줬음 
 	public ArrayList<Product> selectProduct(String mainName, String subName, int beginRow, int rowPerPage) throws Exception {
@@ -112,7 +113,7 @@ public class MainDao {
 				+ " ON p.product_no = pi.product_no "
 				+ " INNER JOIN category c"
 				+ " ON p.category_no = c.category_no"
-				+ " WHERE c.category_main_name = ? AND c.category_sub_name = ?"
+				+ " WHERE c.category_main_name = ? AND c.category_sub_name = ? AND p.product_status != '3'"
 				+ " ORDER BY p.createdate DESC LIMIT ?, ?";
 		if ("전체".equals(subName)) {
 			sql = "SELECT p.product_no productNo, p.product_name productName, p.product_status productStatus, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype,"
@@ -121,7 +122,7 @@ public class MainDao {
 					+ " ON p.product_no = pi.product_no "
 					+ " INNER JOIN category c"
 					+ " ON p.category_no = c.category_no"
-					+ " WHERE c.category_main_name = ?"
+					+ " WHERE c.category_main_name = ? AND p.product_status != '3'"
 					+ " ORDER BY p.createdate DESC LIMIT ?, ?";
 		}
 		PreparedStatement stmt = conn.prepareStatement(sql);

@@ -140,6 +140,9 @@
 	                            </h4>
 	                        </div>
 	                        <div class="quantity">
+	                        <%
+	                        	if("1".equals(p.getProductStatus())){
+	                       	%>
 	                        	<form action="<%=request.getContextPath()%>/product/addCartAction.jsp" method="post" id="addCart">
 									<input type="hidden" name="id" value="<%=id%>">
 									<input type="hidden" name="productNo" value="<%=productNo%>">
@@ -148,6 +151,17 @@
 									<input type="number" id="cartCnt" name="cartCnt" value="1">
 	                            </div>
 								</form>
+	                       	<%
+	                        	} else if("2".equals(p.getProductStatus())) {
+	                        %>
+	                        	<h5>품절</h5>
+	                        <%
+	                        	} else {
+	                        %>
+	                        	<h5>단종</h5>
+	                        <%
+	                        	}
+	                        %>
 	                        </div>
 	                        <ul class="pd-tags">
 	                            <li><span>카테고리</span>: <%=mainCategory%>, <%=subCategory%></li>

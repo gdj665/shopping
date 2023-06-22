@@ -12,9 +12,10 @@
 	
 	// categoryNo 매개변수
 	String mainName = "한국";
-	if (request.getParameter("mainName") != null){
+	if (request.getParameter("mainName") != null ){
 		mainName = request.getParameter("mainName");
 	}
+	
 	String subName = "전체";
 	if (request.getParameter("subName") != null){
 		subName = request.getParameter("subName");
@@ -100,8 +101,18 @@
 					</a>
 			<%
 				}
+			
+				// 일반 판매중
+				if("1".equals(p.getProductStatus())){
 			%>
 		            <div class="pi-pic">
+		    <%
+					if (productOne.getProductDiscountPrice() != productOne.getProductPrice()){
+			%>
+						<div class="sale pp-sale">할인</div>
+			<%
+					}
+			%>
 		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
 							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
 						</a>
@@ -111,23 +122,44 @@
 		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
 		                    <h5><%=p.getProductName()%></h5>
 		                </a>
-				<%
+			<%
 					if (productOne.getProductDiscountPrice() == productOne.getProductPrice()){
-				%>
+			%>
 						<div class="product-price">
 						    <%=productOne.getProductPrice()%>원
 						</div>
-				<%
+			<%
 					} else {
-				%>
+			%>
 						<div class="product-price">
 							<%=productOne.getProductDiscountPrice()%>원
 						    <span><%=productOne.getProductPrice()%>원</span>
 						</div>
-				<%
+			<%
 					}
-				%>
+			%>
+					</div>
+			<%
+				}
+				
+				// 품절
+				if("2".equals(p.getProductStatus())){
+			%>
+		            <div class="pi-pic">
+						<div class="sale pp-sale">품절</div>
+		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+							<img src="<%=request.getContextPath() + "/img/productImg/" + p.getProductSaveFilename()%>">
+						</a>
 		            </div>
+		            <div class="pi-text">
+		                <div class="catagory-name"><%=p.getCategorySubName()%></div>
+		                <a href="<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=p.getProductNo()%>">
+		                    <h5><%=p.getProductName()%></h5>
+		                </a>
+		            </div>
+			<%
+				}
+			%>
 		        </div>
 		    </div>
 		<%
