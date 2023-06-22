@@ -166,11 +166,13 @@
 								<form action="<%=request.getContextPath()%>/cs/productCsListAction.jsp">
 									<table style="width:100%; background-color: #F6F6F6;">
 										<tr>
-											<th><label style="margin-left:10px; margin-top:10px;">&nbsp;&nbsp;↳&nbsp;답변작성필요</label></th>
+											<th colspan="2"><label style="margin-left:10px; margin-top:10px;">&nbsp;&nbsp;↳&nbsp;답변작성필요</label></th>
 										</tr>
 										<tr>
 											<td>
 												<textarea rows="3" style="margin-left:10px; margin-bottom:20px;" class="form-control" name="aContent" placeholder="답변을 입력해주시기 바랍니다"></textarea>
+											</td>
+											<td style="width:100px;">
 												<button style="margin-right:30px; margin-top:30px; float:right;" class="btn btn-outline-dark" type="submit">작성</button>
 											</td>
 										</tr>

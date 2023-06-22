@@ -15,6 +15,7 @@
 	
 	//값 받기
 	String id = (String)session.getAttribute("loginId");
+	String employeesId = request.getParameter("employeesId");
 	
 	// EmployeesDao 선언
 	EmployeesDao ed = new EmployeesDao();
@@ -28,7 +29,7 @@
 		return;
 	}
 	Employees employees = new Employees();
-	employees = ed.selectEmployees(id);
+	employees = ed.selectEmployees(employeesId);
 %>
 <!DOCTYPE html>
 <html>

@@ -65,6 +65,7 @@
 			// 로그인 할시에 비회원 장바구니에 데이터가 있었다면 모두 로그인한 계정 장바구니로 이동
 			OrderDao orderDao = new OrderDao();
 			orderDao.noLoginAddCart(id, request);
+			int rowRank = orderDao.threeMonthAmount(id);
 			response.sendRedirect(request.getContextPath()+"/home.jsp");
 			return;
 		}

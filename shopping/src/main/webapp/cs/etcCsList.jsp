@@ -84,10 +84,10 @@
 								<tr>
 									<th style="width:100px;">번호</th>
 									<th style="width:200px;">제목</th>
-									<th style="width:500px;">내용</th>
+									<th style="width:300px;">내용</th>
 									<th style="width:200px;">등록일</th>
 									<th style="width:200px;">최종수정일</th>
-									<th style="width:100px;">답변확인</th>
+									<th style="width:150px;">답변확인</th>
 								</tr>	
 							</thead>
 							<% 

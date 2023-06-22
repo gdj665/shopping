@@ -371,15 +371,33 @@ public class OrderDao {
 		int row = 0;
 		int pointcnt = 0;
 		int usePoint = 0;
+		double pointStat = 0;
+		String rank = null;
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
 		
-		String pointSql = "SELECT floor(0.01*(order_price-order_point_use)) pointcnt,\r\n"
+		String rankSql = "SELECT cstm_rank FROM customer WHERE id = ?";
+		PreparedStatement rankStmt = conn.prepareStatement(rankSql);
+		rankStmt.setString(1, id);
+		ResultSet rankRs = rankStmt.executeQuery();
+		if(rankRs.next()) {
+			rank = rankRs.getString("cstm_rank");
+		}
+		if(rank.equals("Bronze")) {
+			pointStat = 0.01;
+		} else if (rank.equals("Silver")) {
+			pointStat = 0.015;
+		} else if (rank.equals("Gold")) {
+			pointStat = 0.02;
+		}
+		
+		String pointSql = "SELECT floor(?*(order_price-order_point_use)) pointcnt,\r\n"
 				+ "order_point_use\r\n"
 				+ "FROM orders\r\n"
 				+ "WHERE order_no = ?";
 		PreparedStatement pointStmt = conn.prepareStatement(pointSql);
-		pointStmt.setInt(1, orderNo);
+		pointStmt.setDouble(1, pointStat);
+		pointStmt.setInt(2, orderNo);
 		ResultSet pointRs = pointStmt.executeQuery();
 		if(pointRs.next()) {
 			pointcnt = pointRs.getInt("pointcnt");
@@ -655,6 +673,69 @@ public class OrderDao {
 			list.add(m);
 		}
 		return list;
+	}
+	
+	// 28) 비회원 장바구니 출력
+	public ArrayList<HashMap<String,Object>> notLoginCartList(int productNo) throws Exception {
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT p.product_name,pimg.product_save_filename,\r\n"
+				+ "CASE WHEN CURDATE() BETWEEN d.discount_begin AND d.discount_end THEN p.product_price * (1 - IFNULL(d.discount_rate, 0))\r\n"
+				+ "ELSE p.product_price END discount_price\r\n"
+				+ "FROM product p\r\n"
+				+ "	LEFT OUTER JOIN product_img pimg ON p.product_no = pimg.product_no \r\n"
+				+ "	LEFT OUTER JOIN discount d ON p.product_no = d.product_no\r\n"
+				+ "WHERE p.product_no=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1,productNo);
+		ResultSet rs = stmt.executeQuery();
+		
+		ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String,Object>>();
+		if(rs.next()) {
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("productName",rs.getString("p.product_name"));
+			m.put("productSaveFilename",rs.getString("pimg.product_save_filename"));
+			m.put("discountPrice",rs.getInt("discount_price"));
+			list.add(m);
+		}
+		return list;
+	}
+	
+	// 29) 3개월 간 구매 금액 조회
+	public int threeMonthAmount(String id) throws Exception {
+		int row = 0;
+		int threeMonthAmount = 0;
+		String rank = "Bronze";
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT SUM(order_price)\r\n"
+				+ "FROM customer c\r\n"
+				+ "	LEFT OUTER JOIN orders o ON c.id=o.id\r\n"
+				+ "WHERE o.createdate BETWEEN DATE_SUB(NOW(), INTERVAL 3 MONTH) AND NOW()\r\n"
+				+ "AND c.id = ?;";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1,id);
+		ResultSet rs = stmt.executeQuery();
+		
+		if(rs.next()) {
+			threeMonthAmount = rs.getInt("SUM(order_price)");
+		}
+		if(threeMonthAmount>=300000) {
+			rank = "Gold";
+		} else if (threeMonthAmount>=100000 && threeMonthAmount<300000) {
+			rank = "Silver";
+		} else {
+			rank = "Bronze";
+		}
+		
+		String rankSql = "UPDATE customer SET cstm_rank = ? WHERE id = ?";
+		PreparedStatement rankStmt = conn.prepareStatement(rankSql);
+		rankStmt.setString(1,rank);
+		rankStmt.setString(2,id);
+		row = rankStmt.executeUpdate();
+		return row;
 	}
 	//테스트 용
 	public static void main(String[] args) throws Exception {

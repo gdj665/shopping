@@ -62,16 +62,20 @@
 	int row5 = orderdao.updateProductStock(orderNo);
 	System.out.println("row5-->"+row5);
 	
+	// 29) 구매금액조회 후 랭크 변경
+	int row7 = orderdao.threeMonthAmount(id);
+	System.out.println("row7-->"+row7);
+	
 	// 21) 제품 구매할때 최근 사용 주소 변경
+	// 주소 변경 시에만 사용
 	int row6 = orderdao.updateAddressDate(address);
 	System.out.println("row6-->"+row6);
 	
-	
 	// 성공 여부에 따른 페이지 출력
-	if(row>0 && row2>0 && row3>0  && row4>0 && row5>0){
+	if(row>0 && row2>0 && row3>0  && row4>0 && row5>0 && row7>0){
 		System.out.println("주문 결제완료");
 		String msg = "결제가 완료되었습니다";
-		String redirectUrl = request.getContextPath()+"/home.jsp";
+		String redirectUrl = request.getContextPath()+"/customer/orderMyPage.jsp";
 		
 		// alert 메세지 출력
 		String script = 

@@ -132,7 +132,7 @@ public class CsDao {
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
-		String sql = "SELECT oq_title,oq_content,createdate,updatedate FROM one_question WHERE oq_no = ?";
+		String sql = "SELECT oq_title,oq_content,createdate,updatedate,id FROM one_question WHERE oq_no = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1,oqNo);
 		ResultSet rs = stmt.executeQuery();
@@ -141,6 +141,7 @@ public class CsDao {
 			HashMap<String,Object> a = new HashMap<>();
 			a.put("oqTitle", rs.getString("oq_title"));
 			a.put("oqContent", rs.getString("oq_content"));
+			a.put("id", rs.getString("id"));
 			list.add(a);
 		}
 		return list;

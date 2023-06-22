@@ -22,6 +22,7 @@
 	// 값 받아오기
 	int oqNo = Integer.parseInt(request.getParameter("oqNo"));
 	String id = (String)session.getAttribute("loginId");
+	System.out.println(id);
 	
 	//OrderDao 선언
 	CsDao csdao = new CsDao();
@@ -47,7 +48,7 @@
     <meta name="keywords" content="Fashi, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Fashi | Template</title>
+    <title>1대1 문의 상세보기</title>
 </head>
 
 <body>
@@ -72,7 +73,7 @@
                 		<div class="col-lg-8">
 		                	<h2>1대1 상세보기</h2>
 		                	<%
-								for(HashMap<String,Object> m : list2){
+								for(HashMap<String,Object> m : list){
 									if(m.get("id").equals(id)) {
 							%>
 				                	<div>
@@ -107,11 +108,11 @@
 												//일반 고객일 경우 댓글 작성
 												if(empLevel==0){
 											%>
-												<td style="width:780px;">
+												<td>
 													<label for="comment">댓글 작성&nbsp;&nbsp;&nbsp;<sapn style="font-weight:bold;"><%=id %></sapn></label>
 													<textarea class="form-control" rows="5" id="comment" name="oaContent"></textarea>
 												</td>
-												<td>
+												<td style="width:100px;">
 													<button class="btn btn-secondary" style="margin-top: 130px;" type="submit">작성</button>
 													<input type="hidden" name="oqNo" value="<%=oqNo %>">
 												</td>
@@ -119,11 +120,11 @@
 												// 관리자 일경우 댓글작성
 												} else if (empLevel>0){
 											%>
-												<td style="width:780px;">
+												<td>
 													<label for="comment">댓글 작성&nbsp;&nbsp;&nbsp;<sapn style="font-weight:bold;">관리자</sapn></label>
 													<textarea class="form-control" rows="5" id="comment" name="oaContent"></textarea>
 												</td>
-												<td>
+												<td style="width:100px;">
 													<button class="btn btn-secondary" style="margin-top: 130px;" type="submit">작성</button>
 													<input type="hidden" name="oqNo" value="<%=oqNo %>">
 												</td>

@@ -18,6 +18,8 @@
 	
 	// 2) OrderDao 장바구니 각 항목의 총 합계의 최종합계를 구하는 메서드
 	int row = orderdao.totalPrice(id);
+	
+	
 %>
 
 <!DOCTYPE html>
@@ -77,22 +79,29 @@
 	                                    		if(session.getAttribute("loginId")==null){
 	                                    			HashMap<String, Cart> cartMap = (HashMap<String, Cart>) session.getAttribute("cartMap");
 	                                    			if(cartMap != null){
-	                                    			for (Cart c : cartMap.values()) {
+		                                    			for (Cart c : cartMap.values()) {
+		                                    				int productNo = (c.getProductNo());
+		                                    				int cartCnt = (c.getCartCnt());
+		                                    				
+		                                    				// 28) 비회원 장바구니 출력
+		                                    				ArrayList<HashMap<String,Object>> list2 = orderdao.notLoginCartList(productNo);
+		                                    				
+		                                    				for(HashMap<String,Object> m : list2){
 	                                    	%>
-	                                    				<tr>
-			                                            <td class="si-pic">
-			                                            </td>
-			                                            <td class="si-text">
-			                                                <div class="product-selected">
-			                                                	<h6><%=c.getProductNo() %></h6>
-			                                                    <p><%=c.getCartCnt() %></p>
-			                                                </div>
-			                                            </td>
-			                                            <td class="si-close">
-			                                                <i class="ti-close"></i>
-			                                            </td>
+		                                    				<tr>
+					                                            <td class="si-pic">
+					                                            	<img style="width:60px; height:60px;" src="<%=request.getContextPath() + "/img/productImg/" + (String)m.get("productSaveFilename")%>">
+					                                            </td>
+					                                            <td class="si-text">
+					                                                <div class="product-selected">
+					                                                	<h6><%=(String)m.get("productName") %></h6>
+					                                                    <p><%=m.get("discountPrice")%> x <%=cartCnt %></p>
+					                                                </div>
+					                                            </td>
+					                                        </tr>
                                     		<%
-	                                    			}
+		                                    				}
+	                                    				}
 	                                    			}
 	                                    		}else{
 													// 장바구니 리스트 출력
@@ -100,10 +109,6 @@
 														int productNo = (int)m.get("productNo");
 														int cartCnt = (int)m.get("cartCnt");
 														String checked = (String)m.get("checked");
-														
-														
-														// 3) 각 제품의 재고량을 구하는 메서드
-														int tcnt = orderdao.totalstock(productNo);
 											%>
 		                                        <tr>
 		                                            <td class="si-pic">
@@ -115,9 +120,6 @@
 		                                                    <p><%=m.get("discountPrice")%> x <%=cartCnt %></p>
 		                                                </div>
 		                                            </td>
-		                                            <td class="si-close">
-		                                                <i class="ti-close"></i>
-		                                            </td>
 		                                        </tr>
 	                                        <%
 													}
@@ -126,16 +128,38 @@
 	                                    </tbody>
 	                                </table>
 	                            </div>
-	                            <div class="select-total">
-	                                <span>total:</span>
-	                                <h5><%=row%>원</h5>
-	                            </div>
+                                <%
+                               		if(session.getAttribute("loginId")==null){
+                                %>
+                                		 
+                                <%
+                               		}else{
+                               	%>		
+                               		<div class="select-total">
+	                                	<span>total:</span>
+										<h5><%=row%>원</h5>	
+									</div>                               	
+                               	<%
+                               		}
+                                %>
 	                            <div class="select-button">
 	                                <a href="<%=request.getContextPath()%>/order/cart.jsp" class="primary-btn checkout-btn">장바구니 이동</a>
 	                            </div>
 	                        </div>
 	                    </li>
-	                    <li class="cart-price"><%=row%></li>
+	                    <li class="cart-price">
+	                    	<%
+                           		if(session.getAttribute("loginId")==null){
+                            %>
+                            		 
+                            <%
+                           		}else{
+                           	%>		
+	                    		<%=row%>
+	                    	<%
+                           		}
+	                    	%>
+	                    </li>
 	                </ul>
 	            </div>
 	        </div>
