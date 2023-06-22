@@ -65,19 +65,43 @@
 	<%
 		for(HashMap<String, Object> m : list){
 	%>
-		<table>
+		<table border="1px">
 			<tr>
 				<th>주문번호</th>
 				<th>상품이름</th>
 				<th>배송상태</th>
 				<th>구매일</th>
+				<th>구매일</th>
+				<th>구매일</th>
+				<th>구매일</th>
 			</tr>
 			<tr>
-				<td><%=(String)(m.get("saveFile")) %>
-				<td><%=(Integer)(m.get("orderNo"))%></td>
+				<td><%=id%></td>
+				<td><%=(Integer)(m.get("orderNo")) %></td>
+				<td>
+									<%
+												switch((Integer)m.get("orderStatus")){
+													case 0:
+														out.print("결제 미완료");
+														break;
+													case 1:
+														out.print("결제 완료");
+														break;
+													case 2:
+														out.print("배송 중");
+														break;
+													case 3:
+														out.print("배송 완료");
+														break;
+													case 4:
+														out.print("구매 확정");
+														break;
+												}
+									%>
+											</td>
+				<td><%=(Integer)(m.get("orderPrice"))%></td>
+				<td><%=(Integer)(m.get("orderPointUse"))%></td>
 				<td><%=(String)(m.get("productName"))%></td>
-				<td><%=(Integer)(m.get("productPrice"))%></td>
-				<td><%=(Integer)(m.get("orderCnt"))%></td>
 				<td><%=(String)(m.get("createdate"))%></td>
 				
 			</tr>

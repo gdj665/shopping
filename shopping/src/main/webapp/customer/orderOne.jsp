@@ -6,52 +6,28 @@
 <%@ page import = "java.sql.*" %>
 <%@ page import = "java.net.*" %>
 <%
-	// 로그인 세션 확인
 	if(session.getAttribute("loginId") == null ){
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
-
+	
 	//세션아이디 변수에 저장
 	String id = (String)(session.getAttribute("loginId"));
 	
-	//보여줄페이지 첫번째 행 선언
-	int currentPage = 1; 
-	if(request.getParameter("currentPage") != null){
-		currentPage = Integer.parseInt(request.getParameter("currentPage"));
-	}
-	//페이지당 보여줄 행
-	int rowPerPage = 10;
-
-	int beginRow = (currentPage -1) * rowPerPage;
 		
 	//세션아이디 디버깅
 	System.out.println(id+"<--orderMyPage id");	
 	
 	OrderListDao orderDao = new OrderListDao();
-
-	ArrayList<HashMap<String, Object>> list = orderDao.orderList(id, beginRow, rowPerPage);
+	
+	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
+	System.out.println(orderNo + "<-- orderMyPage orderList");
+	
+	ArrayList<HashMap<String, Object>> list = orderDao.orderOne(orderNo);
 	System.out.println(list + "<-- orderMyPage orderList");
 	
 	
-	int totalRow = orderDao.orderCnt();
-	System.out.println(totalRow+"<-- orderMyPage totalRow");
 	
-	// 마지막 페이지 구하는 변수
-	int lastPage = totalRow/rowPerPage;
-	if(totalRow%rowPerPage != 0){
-		lastPage++;
-	}
-	int pageCount = 10;// 페이지당 출력될 페이지수
-	
-	int startPage = ((currentPage -1)/pageCount)*pageCount+1;
-	
-	int endPage = startPage+9;
-	if(endPage > lastPage){
-	endPage = lastPage;
-	}
-	System.out.println(startPage+"<-- orderMyPage startPage");
-	System.out.println(endPage+"<-- orderMyPage endPage");
 %>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -92,13 +68,12 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>주문번호</th>
-                                    <th>상품이름</th>
-                                    <th>배송상태</th>
-                                    <th>주문가격</th>
-                                    <th>사용포인트</th>
-                                    <th>구매일</th>
-                                    <th><i class="ti-close"></i></th>
+                                    <th>상품이미지</th>
+									<th>주문번호</th>
+									<th>상품이름</th>
+									<th>상품가격</th>
+									<th>배송상태</th>
+									<th>구매일</th>
                                 </tr>
                             </thead>
                     <%
@@ -107,32 +82,12 @@
                             <tbody>
                                 <tr>
                                     <td class="cart-title first-row">
-                                        <a href="<%=request.getContextPath()%>/customer/orderOne.jsp?orderNo=<%=(Integer)(m.get("orderNo"))%>"><%=(Integer)(m.get("orderNo"))%></a>
+                                        <img src="<%=request.getContextPath() + "/img/productImg/" + (String)(m.get("saveFile"))%>">
                                     </td>
-                                    <td class="cart-pic first-row"><%=(String)(m.get("productName"))%></td>
-                                    <td class="p-price first-row">
-									<%
-										switch((Integer)m.get("orderStatus")){
-											case 0:
-												out.print("결제 미완료");
-												break;
-											case 1:
-												out.print("결제 완료");
-												break;
-											case 2:
-												out.print("배송 중");
-												break;
-											case 3:
-												out.print("배송 완료");
-												break;
-											case 4:
-												out.print("구매 확정");
-												break;
-										}
-									%>
-									</td>
-                                    <td class="p-price first-row"><%=(Integer)(m.get("orderPrice"))%></td>
-                                    <td class="qua-col first-row"><%=(Integer)(m.get("orderPointUse"))%></td>
+                                    <td class="cart-pic first-row"><%=(Integer)(m.get("orderNo"))%></td>
+                                    <td class="p-price first-row"><%=(String)(m.get("productName"))%></td>
+                                    <td class="p-price first-row"><%=(Integer)(m.get("productPrice"))%></td>
+                                    <td class="qua-col first-row"><%=(Integer)(m.get("orderCnt"))%></td>
                                     <td class="total-price first-row"><%=(String)(m.get("createdate"))%></td>
                                 </tr>
                                 
@@ -141,27 +96,7 @@
 								}
                  			%>
                         </table>
-                        <div>
-	
-							<%
-								if(startPage > 5){
-							%>
-								<a href="<%=request.getContextPath()%>/customer/ordierMyPage.jsp?currentPage=<%=startPage-1%>">이전</a>
-							<%
-								}
-								for(int i = startPage; i<=endPage; i++){
-							%>
-								<a href="<%=request.getContextPath()%>/customer/ordierMyPage.jsp?currentPage=<%=i%>"><%=i%></a>
-							<%
-								}
-								if(endPage<lastPage){
-							%>
-								<a href="<%=request.getContextPath()%>/customer/ordierMyPage.jsp?currentPage=<%=endPage+1%>">다음</a>
-							<%
-								
-								}
-							%>
-						</div>
+                        
                     </div>
                     <div class="row">
                        
