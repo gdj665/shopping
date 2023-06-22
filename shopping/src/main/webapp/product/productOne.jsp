@@ -146,7 +146,7 @@
 	                        	<form action="<%=request.getContextPath()%>/product/addCartAction.jsp" method="post" id="addCart">
 									<input type="hidden" name="id" value="<%=id%>">
 									<input type="hidden" name="productNo" value="<%=productNo%>">
-									<button class="primary-btn pd-cart" type="button" id="cartBtn" form="addCart">장바구니 추가</button>
+									<a href="#" class="primary-btn" id="cartBtn" >장바구니 추가</a>
 	                            <div class="pro-qty">
 									<input type="number" id="cartCnt" name="cartCnt" value="1">
 	                            </div>
