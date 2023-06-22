@@ -55,6 +55,7 @@
 	                <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 	                    <nav class="sb-sidenav-menu-nested nav">
 	                        <a class="nav-link" href="<%=request.getContextPath()%>/employees/discountList.jsp">제품 할인 관리</a>
+	                        <a class="nav-link" href="<%=request.getContextPath()%>/employees/productControlList.jsp">상품 정보 관리</a>
 	                    </nav>
 	                </div>
 	            </div>

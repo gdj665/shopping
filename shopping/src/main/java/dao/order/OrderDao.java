@@ -737,6 +737,54 @@ public class OrderDao {
 		row = rankStmt.executeUpdate();
 		return row;
 	}
+	
+	//30 관리자 주문내역관리 (오더넘버에 맞는 주문내역 출력)
+	public ArrayList<HashMap<String,Object>> productControlList() throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "SELECT p.product_no,c.category_main_name,c.category_sub_name,p.product_name,p.product_price,p.product_status,p.product_stock,p.product_singer,p.createdate,p.updatedate\r\n"
+				+ "FROM product p\r\n"
+				+ " 	LEFT OUTER JOIN category c ON p.category_no=c.category_no";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		while(rs.next()){
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("productNo",rs.getInt("p.product_no"));
+			m.put("categoryMainName",rs.getString("c.category_main_name"));
+			m.put("categorySubName",rs.getString("c.category_sub_name"));
+			m.put("productName",rs.getString("p.product_name"));
+			m.put("productPrice",rs.getInt("p.product_price"));
+			m.put("productStatus",rs.getInt("p.product_status"));
+			m.put("productStock",rs.getInt("p.product_stock"));
+			m.put("productSinger",rs.getString("p.product_singer"));
+			m.put("createdate",rs.getString("p.createdate"));
+			m.put("updatedate",rs.getString("p.updatedate"));
+			list.add(m);
+		}
+		return list;
+	}
+	// 31) 할인상품조회
+		public int discountProductCheck(int productNo) throws Exception {
+			int row = 0;
+			DBUtil dbUtil = new DBUtil();
+			Connection conn = dbUtil.getConnection();
+			
+			String sql = "SELECT COUNT(*)\r\n"
+					+ "FROM product p\r\n"
+					+ "	LEFT OUTER JOIN discount d  ON p.product_no=d.product_no\r\n"
+					+ "WHERE CURDATE() BETWEEN d.discount_begin AND d.discount_end\r\n"
+					+ "AND p.product_no = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,productNo);
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				row = rs.getInt("count(*)");
+			}
+			return row;
+		}
 	//테스트 용
 	public static void main(String[] args) throws Exception {
 		
