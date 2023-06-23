@@ -44,20 +44,6 @@
 	</div>
 
 
-    <!-- Breadcrumb Section Begin -->
-    <div class="breacrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text">
-                        <a href="#"><i class="fa fa-home"></i> Home</a>
-                        <span>Register</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Breadcrumb Form Section Begin -->
 <!-- -------------------------------------------------------------마이페이지--------------------------------------------------------------- -->
     <!-- Register Section Begin -->
     <div class="register-login-section spad">
@@ -125,7 +111,8 @@
                                             </tr>
                                         </table>
 				                            <a style="float:right; margin-left:10px;" class="btn btn-outline-danger" href="<%=request.getContextPath()%>/customer/memberOut.jsp?id=<%=id%>" class="or-login">회원탈퇴</a>
-                                            <a style="float:right;" class="btn btn-outline-danger" href="<%=request.getContextPath()%>/customer/updateMember.jsp?id=<%=id%>">회원정보수정</a>
+                                            <a style="float:right; " class="btn btn-outline-danger" href="<%=request.getContextPath()%>/customer/updatePassword.jsp?id=<%=id%>">비밀번호변경</a>
+                                            <a style="float:right; margin-right: 10px; " class="btn btn-outline-danger" href="<%=request.getContextPath()%>/customer/updateMember.jsp?id=<%=id%>">회원정보수정</a>
                                     </div>
                         <div class="switch-login">
                         </div>
@@ -177,16 +164,16 @@
 
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.zoom.min.js"></script>
-    <script src="js/jquery.dd.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/jquery-3.3.1.min.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/bootstrap.min.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/jquery-ui.min.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/jquery.countdown.min.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/jquery.nice-select.min.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/jquery.zoom.min.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/jquery.dd.min.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/jquery.slicknav.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
+    <script src="<%=request.getContextPath() %>/template/js/main.js"></script>
 </body>
 
 </html>
