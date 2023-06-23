@@ -82,6 +82,7 @@
 											<th>주문번호</th>
 											<th>총가격</th>
 											<th>포인트사용</th>
+											<th>결제금액</th>
 											<th>주문상태</th>
 											<th>주문날짜</th>
 											<th>상세보기</th>
@@ -92,6 +93,7 @@
 										for (Orders o : ordersList){
 											//System.out.println("checkListPage");
 											ordersHistoryList = (ArrayList<OrdersHistory>)o.getOrdersHistoryList();
+											int totalAmount = o.getOrderPrice() - o.getOrderPointUse();
 									%>
 										<tr>
 											<td>
@@ -109,6 +111,9 @@
 											</td>
 											<td>
 												<%=o.getOrderPointUse()%>
+											</td>
+											<td>
+												<span style="font-weight:bold"><%=totalAmount %></span>
 											</td>
 											<td>
 									<%

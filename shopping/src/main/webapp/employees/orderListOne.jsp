@@ -35,7 +35,11 @@
 	//model
 	OrderDao od = new OrderDao();
 	
+	// 구매내역 출력
 	ArrayList<HashMap<String,Object>> list = od.orderHistoryOne(orderNo);
+	// 주소출력
+	ArrayList<HashMap<String,Object>> list2 = od.orderAddress(orderNo);
+	System.out.println("list2-->"+list2);
 %>
 <!DOCTYPE html>
 <html>
@@ -110,6 +114,15 @@
 									%>
 	                                </tbody>
 	                            </table>
+	                            <br>
+	                            <%
+									for (HashMap<String,Object> m2 : list2){
+										System.out.println("address-->"+(String)m2.get("address"));
+								%>
+										<span style="font-weight: bold;">주소지: </span><%=(String)m2.get("address")%>
+								<%
+									}
+								%>
 	                        </div>
 	                    </div>
 	                </div>

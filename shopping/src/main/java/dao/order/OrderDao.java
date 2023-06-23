@@ -666,15 +666,31 @@ public class OrderDao {
 		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
 		while(rs.next()){
 			HashMap<String,Object> m = new HashMap<String,Object>();
-			m.put("productNo",rs.getString("oh.product_no"));
+			m.put("productNo",rs.getInt("oh.product_no"));
 			m.put("productName",rs.getString("p.product_name"));
-			m.put("orderCnt",rs.getString("oh.order_cnt"));
+			m.put("orderCnt",rs.getInt("oh.order_cnt"));
 			m.put("productDiscountPrice",rs.getString("productDiscountPrice"));
 			list.add(m);
 		}
 		return list;
 	}
-	
+	// 27-1 주문 주소 출력
+	public ArrayList<HashMap<String,Object>> orderAddress(int orderNo) throws Exception {
+		DBUtil DBUtil = new DBUtil();
+		Connection conn = DBUtil.getConnection();
+		
+		String sql = "SELECT address FROM orders WHERE order_no=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, orderNo);
+		ResultSet rs = stmt.executeQuery();
+		ArrayList<HashMap<String,Object>> list = new ArrayList<>();
+		if(rs.next()){
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("address",rs.getString("address"));
+			list.add(m);
+		}
+		return list;
+	}
 	// 28) 비회원 장바구니 출력
 	public ArrayList<HashMap<String,Object>> notLoginCartList(int productNo) throws Exception {
 		DBUtil dbUtil = new DBUtil();
