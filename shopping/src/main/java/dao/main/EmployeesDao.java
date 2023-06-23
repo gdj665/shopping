@@ -60,7 +60,7 @@ public class EmployeesDao {
 		Connection conn = DBUtil.getConnection();
 		String sql = "SELECT id, last_pw lastPw\r\n"
 				+ "FROM id_list\r\n"
-				+ "WHERE id = ? AND last_pw = ?";
+				+ "WHERE id = ? AND last_pw = PASSWORD(?)";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, employees.getId());
 		stmt.setString(2, employees.getEmpPw());
@@ -732,7 +732,7 @@ public class EmployeesDao {
 		if(checkId(employees.getId())) {
 			return 0;
 		}
-		String updateIdSql = "UPDATE id_list SET id = ?, last_pw = ? WHERE id = ?";
+		String updateIdSql = "UPDATE id_list SET id = ?, last_pw = PASSWORD(?) WHERE id = ?";
 		PreparedStatement updateIdStmt = conn.prepareStatement(updateIdSql);
 		updateIdStmt.setString(1, employees.getId());
 		updateIdStmt.setString(2, employees.getEmpPw());
@@ -740,7 +740,7 @@ public class EmployeesDao {
 		int row = updateIdStmt.executeUpdate();
 		if (row != 1) {
 			System.out.println("아이디, 비번 수정실패");
-			return 0;
+			return 1;
 		}
 		String updateEmpSql = "UPDATE employees SET emp_name = ?, emp_level = ?, updatedate = NOW() WHERE id = ?";
 		PreparedStatement updateEmpStmt = conn.prepareStatement(updateEmpSql);
@@ -748,14 +748,14 @@ public class EmployeesDao {
 		updateEmpStmt.setInt(2, employees.getEmpLevel());
 		updateEmpStmt.setString(3, employees.getId());
 		row = updateEmpStmt.executeUpdate();
-		return row;
+		return 2;
 	} 
 	
 	// employees 수정
 	public int updateEmployees(Employees employees) throws Exception {
 		DBUtil DBUtil = new DBUtil();
 		Connection conn = DBUtil.getConnection();
-		String updateIdSql = "UPDATE id_list SET last_pw = ? WHERE id = ?";
+		String updateIdSql = "UPDATE id_list SET last_pw = PASSWORD(?) WHERE id = ?";
 		PreparedStatement updateIdStmt = conn.prepareStatement(updateIdSql);
 		updateIdStmt.setString(1, employees.getEmpPw());
 		updateIdStmt.setString(2, employees.getId());
@@ -763,6 +763,9 @@ public class EmployeesDao {
 		if (row != 1) {
 			System.out.println("비번 수정실패");
 			return 0;
+		} else {
+			System.out.println("비번 수정성공");
+			System.out.println(employees.getEmpPw());
 		}
 		String updateEmpSql = "UPDATE employees SET emp_name = ?, emp_level = ?, updatedate = NOW() WHERE id = ?";
 		PreparedStatement updateEmpStmt = conn.prepareStatement(updateEmpSql);
@@ -770,6 +773,7 @@ public class EmployeesDao {
 		updateEmpStmt.setInt(2, employees.getEmpLevel());
 		updateEmpStmt.setString(3, employees.getId());
 		row = updateEmpStmt.executeUpdate();
+		System.out.println("수정 성공");
 		return row;
 	} 
 	

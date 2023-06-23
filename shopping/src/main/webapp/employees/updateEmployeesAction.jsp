@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="vo.id.Employees"%>
 <%@page import="dao.main.EmployeesDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -34,14 +35,15 @@
 	String preEmployeesId = request.getParameter("preEmployeesId");
 	String employeesName = request.getParameter("employeesName");
 	int employeesLevel = Integer.parseInt(request.getParameter("employeesLevel"));
-	//System.out.println(employeesId + " <-employeesId");
+	System.out.println(employeesNewPw + " <-employeesNewPw");
 	//System.out.println(preEmployeesId + " <-preEmployeesId");
 	//System.out.println(employeesLevel + " <-employeesLevel");
 	
 	// 비밀번호 유의성 검사
 	if (employeesPw.equals(employeesNewPw)){
+		String msg = URLEncoder.encode("다른비번 입력","utf-8");
 		System.out.println("다른비번 입력");
-		response.sendRedirect(request.getContextPath() + "/employees/employeesOneControl.jsp?employeesId=" + employeesId);
+		response.sendRedirect(request.getContextPath() + "/employees/employeesOneControl.jsp?employeesId=" + preEmployeesId + "&msg=" + msg);
 		return;
 	}
 	
@@ -54,15 +56,19 @@
 	
 	// 비밀번호 체크
 	if (!ed.checkPw(employees)){
+		String msg = URLEncoder.encode("비번틀림","utf-8");
 		System.out.println("비번틀림");
-		response.sendRedirect(request.getContextPath() + "/employees/employeesOneControl.jsp?employeesId=" + employeesId);
+		response.sendRedirect(request.getContextPath() + "/employees/employeesOneControl.jsp?employeesId=" + preEmployeesId + "&msg=" + msg);
 		return;
 	}
 	
 	// 새 비밀번호 기존 비밀번호랑 교체 
-	if (request.getParameter("employeesNewPw") != null){
+	if (!"".equals(employeesNewPw)){
 		employees.setEmpPw(employeesNewPw);
+		System.out.println("새비번 입력");
+		System.out.println(employees.getEmpPw() + " <- 새비번");
 	}
+	System.out.println(employees.getEmpPw() + " <- 새비번");
 	
 	// id 바꾼지 안바꾼지에 대한 분기
 	int checkUpdateEmp = 0; 
@@ -70,6 +76,15 @@
 		checkUpdateEmp = ed.updateEmployees(employees);
 	} else {
 		checkUpdateEmp = ed.updateEmployees(preEmployeesId, employees);
+		if(checkUpdateEmp == 0){
+			String msg = URLEncoder.encode("중복된Id","utf-8");
+			response.sendRedirect(request.getContextPath() + "/employees/employeesOneControl.jsp?employeesId=" + preEmployeesId + "&msg=" + msg);
+			return;
+		} else if(checkUpdateEmp == 1){
+			String msg = URLEncoder.encode("비번 틀림","utf-8");
+			response.sendRedirect(request.getContextPath() + "/employees/employeesOneControl.jsp?employeesId=" + preEmployeesId + "&msg=" + msg);
+			return;
+		}
 	}
 	System.out.println(checkUpdateEmp + " <- checkUpdateEmp");
 	response.sendRedirect(request.getContextPath() + "/employees/employeesOneControl.jsp?employeesId=" + employeesId);

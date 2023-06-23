@@ -5,17 +5,27 @@
 <%
 	//한글 깨짐 방지
 	request.setCharacterEncoding("utf-8");
-	
 	//유효성 검사
 	if(session.getAttribute("loginId") == null){
 		// null값이 있을 경우 홈으로 이동
 		response.sendRedirect(request.getContextPath()+"/home.jsp");
 		return;
 	}
-	
 	//값 받기
 	String id = (String)session.getAttribute("loginId");
 	String employeesId = request.getParameter("employeesId");
+	if (request.getParameter("msg") != null){
+		String msg = request.getParameter("msg");
+		String redirectUrl = request.getContextPath() + "/employees/employeesOneControl.jsp?employeesId=" + employeesId;
+		//alert 메세지 출력
+		String script = 
+				"<script>"+
+					"alert('" + msg + "');"+
+					"window.location.href='" + redirectUrl + "';" +
+				"</script>";
+		response.getWriter().println(script);
+	}
+	
 	
 	// EmployeesDao 선언
 	EmployeesDao ed = new EmployeesDao();
