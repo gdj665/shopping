@@ -1,3 +1,4 @@
+<%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import = "dao.main.*" %>
 <%@ page import = "vo.product.*" %>
@@ -45,9 +46,13 @@
 	ArrayList<Track> trackList = new ArrayList<>();
 	trackList = md.selectTrack(productNo);
 	
+	// 카테고리 입력을 위한 카테고리 분할
 	String[] categoryName = md.printCategory(p.getCategoryNo());
 	String mainCategory = categoryName[0];
 	String subCategory = categoryName[1];
+	
+	// 금액 , 표시
+	DecimalFormat priceFormat = new DecimalFormat("###,###");
 %>
 <!DOCTYPE html>
 <html>
@@ -136,12 +141,12 @@
 	                            <%
 									if (productOne.getProductDiscountPrice() == productOne.getProductPrice()){
 								%>
-										    <%=productOne.getProductPrice()%>원
+										    <%=priceFormat.format(productOne.getProductPrice())%>원
 								<%
 									} else {
 								%>
-											<%=productOne.getProductDiscountPrice()%>원
-										  	<span><%=productOne.getProductPrice()%>원</span>
+										    <%=priceFormat.format(productOne.getProductPrice())%>원
+										  	<span><%=priceFormat.format(productOne.getProductPrice())%>원</span>
 								<%
 									}
 								%>
@@ -150,6 +155,9 @@
                        		<div>
                        			재고량 : <%=p.getProductStock()%>
                             </div>
+                            <div style="line-height:50%;">
+								<br>
+							</div>
 	                        <div class="quantity">
 	                        <%
 	                        	if("1".equals(p.getProductStatus())){
