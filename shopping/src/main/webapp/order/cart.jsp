@@ -205,6 +205,13 @@
 		cartQtyInputs[i].addEventListener("input", handleInputChange);
 		cartQtyInputs[i].addEventListener("blur", handleInputChange);
 	}
+	// div 요소의 class가 "pro-qty"인 경우 buyButton2를 클릭하도록 처리
+	var proQtyDivs = document.getElementsByClassName("pro-qty");
+	for (var i = 0; i < proQtyDivs.length; i++) {
+		proQtyDivs[i].addEventListener("click", function() {
+			buyButton2.click();
+		});
+	}
 </script>
 <script>
 	// 구매하기 버튼을 눌럿는대 장바구니에서 체크된 항목이 없으면 장바구니에 선택된 제품이 없다고 메세지 출력
