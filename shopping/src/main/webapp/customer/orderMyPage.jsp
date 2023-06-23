@@ -130,6 +130,9 @@
 											case 4:
 												out.print("구매 확정");
 												break;
+											case 5:
+												out.print("주문 취소");
+												break;
 										}
 									%>
 									</td>

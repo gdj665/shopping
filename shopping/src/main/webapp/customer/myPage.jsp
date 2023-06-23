@@ -17,6 +17,13 @@
 	
 	System.out.println(m + "<-- myPage list");
 	
+	PointDao pointDao = new PointDao();
+	
+	PointDao totalPoint = new PointDao();
+	
+	int row = pointDao.totalpoint(id);
+	System.out.println(row);
+	
 %>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -103,7 +110,7 @@
                                             <tr>
                                                 <td class="p-catagory">포인트</td>
                                                 <td>
-                                                    <div class="p-code"><%=(Integer)(m.get("cstmPoint"))%></div>
+                                                    <div class="p-code"><%=row%></div>
                                                 </td>
                                             </tr>
                                             <tr>

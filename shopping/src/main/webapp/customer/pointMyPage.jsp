@@ -87,7 +87,6 @@
                                     <th>사용</th>
                                     <th>포인트</th>
                                     <th>적립일자</th>
-                                    <th><i class="ti-close"></i></th>
                                 </tr>
                             </thead>
                              <%
@@ -124,19 +123,19 @@
                         </table>
 							<div>
 						<%
-							if(startPage > 5){
+							if(currentPage > 1){
 						%>
-							<a href="<%=request.getContextPath()%>/customer/pointList.jsp?currentPage=<%=startPage-1%>">이전</a>
+							<a class="btn btn-sm" href="<%=request.getContextPath()%>/customer/pointMyPage.jsp?currentPage=<%=startPage-1%>">이전</a>
 						<%
 							}
 							for(int i = startPage; i<=endPage; i++){
 						%>
-							<a href="<%=request.getContextPath()%>/customer/pointList.jsp?currentPage=<%=i%>"><%=i%></a>
+							<a href="<%=request.getContextPath()%>/customer/pointMyPage.jsp?currentPage=<%=i%>"><%=i%></a>
 						<%
 							}
-							if(endPage<lastPage){
+							if(currentPage < lastPage){
 						%>
-							<a href="<%=request.getContextPath()%>/customer/pointList.jsp?currentPage=<%=endPage+1%>">다음</a>
+							<a class="btn btn-sm" href="<%=request.getContextPath()%>/customer/pointMyPage.jsp?currentPage=<%=endPage+1%>">다음</a>
 						<%
 							}
 						%>
