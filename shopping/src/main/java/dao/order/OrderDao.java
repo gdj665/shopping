@@ -504,6 +504,13 @@ public class OrderDao {
 			stmt2.setInt(1, (int)m.get("orderCnt"));
 			stmt2.setInt(2, (int)m.get("productNo"));
 			row = stmt2.executeUpdate();
+			
+			if((int)m.get("orderCnt")==0) {
+				String sql3 = "UPDATE product SET product_status = 2 WHERE product_no = ?";
+				PreparedStatement stmt3 = conn.prepareStatement(sql3);
+				stmt3.setInt(1, (int)m.get("productNo"));
+				row = stmt3.executeUpdate();
+			}
 		}
 		return row;
 	}
@@ -801,6 +808,7 @@ public class OrderDao {
 			}
 			return row;
 		}
+		
 	//테스트 용
 	public static void main(String[] args) throws Exception {
 		

@@ -79,7 +79,7 @@
 	if(row>0){
 		System.out.println("updateCartAction row값 정상");
 		// 성공시에 다시 카트 페이지로 이동
-		response.sendRedirect(request.getContextPath()+"/order/cartAction.jsp?id="+id);
+		response.sendRedirect(request.getContextPath()+"/order/cart.jsp?id="+id);
 		return;
 	}else{
 		System.out.println("updateCartAction row값 오류");

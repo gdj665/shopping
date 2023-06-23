@@ -77,11 +77,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cart-table">
-                    	<form id="cart" action="<%=request.getContextPath() %>/order/updateCartAction.jsp" method="post">
+                    	<form id="cart" action="<%=request.getContextPath() %>/order/updateCartAutoAction.jsp" method="post">
 	                        <table>
 	                            <thead>
 		                            <tr>
-										<th>선택</th>
+										<th style="width:50px;">선택</th>
 										<th>이미지</th>
 										<th class="p-name">상품명</th>
 										<th>가격</th>
@@ -108,7 +108,7 @@
 	                                	<!-- 장바구니 체크박스 -->
 	                                	<td>
 											<input type="hidden" name="cartNo" value="<%=(int)m.get("cartNo")%>">
-											<input name="checked<%=cnt%>" value="Y" class="form-check-input" type="checkbox" <%= (checked != null && checked.equals("Y")) ? "checked" : "" %>/>
+											<input name="checked<%=cnt%>" value="Y" class="form-check-input" onclick="handleInputChange()" type="checkbox" <%= (checked != null && checked.equals("Y")) ? "checked" : "" %>/>
 										</td>
 										<!-- 장바구니 사진삽입 -->
 	                                    <td class="cart-pic first-row">
@@ -125,7 +125,7 @@
 	                                    <!-- 해당 제품의 재고량 안에서 수량 선택 가능 -->
 	                                    <td class="qua-col first-row">
 		                                    <div class="pro-qty">
-												<input name="cartCnt" id="cartQty" value="<%=cartCnt %>" type="text">
+												<input name="cartCnt" class="cartQty" id="cartQty" value="<%=cartCnt %>" type="text">
 											</div>
 										</td>
 										<!-- 제품과 갯수를 고른 뒤 총 합을 출력 (장바구니 전체 출력 X) -->
@@ -150,9 +150,6 @@
                                 <div>
                                 	<a href="<%=request.getContextPath() %>/home.jsp" class="primary-btn continue-shop">쇼핑 계속하기</a>
                                 </div>
-                                <div>
-                                	<button form="cart" type="submit" class="primary-btn up-cart">장바구니 정보 변경</button>
-                                </div>
                             </div>
                         </div>
                         <div class="col-lg-4 offset-lg-4">
@@ -160,8 +157,9 @@
 								<ul>
 									<li class="cart-total">Total <span><%=row%>원</span></li>
 								</ul>
-									<a id="buyButton" href="#" class="proceed-btn" onclick="checkCart()">구매하기</a>
-							</div><!-- proceed-checkout -->
+								<a id="buyButton" href="#" class="proceed-btn" onclick="checkCart()">구매하기</a>
+								<button style="display:none; width:100%;" form="cart" id="buyButton2" class="proceed-btn" type="submit">업데이트</button>
+							</div>
                         </div>
                     </div>
                 </div><!-- col-lg-12종료 -->
@@ -183,6 +181,32 @@
 <script src="<%=request.getContextPath() %>/template/js/owl.carousel.min.js"></script>
 <script src="<%=request.getContextPath() %>/template/js/main.js"></script>
 <script>
+	// 입력 값이 변경될 때 호출되는 함수
+	function handleInputChange() {
+		var checkedValue = document.querySelector('input[name^="checked"]').value;
+		var cartCntValue = document.getElementsByClassName("cartQty");
+		var buyButton2 = document.getElementById("buyButton2");
+
+		// 입력 값이 변경되었을 때 buyButton2를 클릭하도록 처리
+		setTimeout(function() {
+			buyButton2.click();
+		}, 300);
+	}
+
+	// class="form-check-out" 요소의 값 변경 이벤트 감지
+	var formCheckOutInputs = document.getElementsByClassName("form-check-out");
+	for (var i = 0; i < formCheckOutInputs.length; i++) {
+		formCheckOutInputs[i].addEventListener("change", handleInputChange);
+	}
+
+	// class="cartQty" 요소의 값 변경 이벤트 감지
+	var cartQtyInputs = document.getElementsByClassName("cartQty");
+	for (var i = 0; i < cartQtyInputs.length; i++) {
+		cartQtyInputs[i].addEventListener("input", handleInputChange);
+		cartQtyInputs[i].addEventListener("blur", handleInputChange);
+	}
+</script>
+<script>
 	// 구매하기 버튼을 눌럿는대 장바구니에서 체크된 항목이 없으면 장바구니에 선택된 제품이 없다고 메세지 출력
 	// 장바구니에 제품이 있을 경우 구매 페이지로 이동
 	$('#buyButton').click(function(){
@@ -192,7 +216,7 @@
 		if (totalAmount === 0) {
 		// 제품이 한개도 없다면 alert메세지로 하단의 문구 출력
 			alert("장바구니에서 선택된 제품이 없습니다.");
-		} else {
+		}else {
 		// 제품이 있다면 cartAction.jsp 실행
 			location.href = "<%=request.getContextPath()%>/order/cartAction.jsp?id=<%=id%>";
 		}
