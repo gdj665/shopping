@@ -6,7 +6,7 @@
 	MainDao md = new MainDao();
 	ArrayList<Product> recentlyList = new ArrayList<>();
 	ArrayList<Product> popularList = new ArrayList<>();
-	int viewNum = 6;
+	int viewNum = 8;
 	recentlyList = md.selectRecentlyProduct(viewNum);
 	popularList = md.selectPopularProduct(viewNum);
 	
