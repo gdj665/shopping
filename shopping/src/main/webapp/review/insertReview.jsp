@@ -6,7 +6,9 @@
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
 	}
+
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
+	
 	ReviewDao rd = new ReviewDao();
 	String id = (String)session.getAttribute("loginId");
 	boolean checkId = rd.checkId(id, productNo);

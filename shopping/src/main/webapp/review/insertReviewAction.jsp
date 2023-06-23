@@ -20,13 +20,15 @@
 	MultipartRequest mRequest = new MultipartRequest(request, dir, maxFileSize, "utf-8", new DefaultFileRenamePolicy());
 	
 	// 유의성 검사
+	System.out.println(mRequest.getParameter("productNo") + " <- productNo");
 	if (mRequest.getParameter("productNo") == null){
 		response.sendRedirect(request.getContextPath() + "/home.jsp");
 		return;
 	}
 	
 	// input type="text" 값 반환 API --> board 테이블 저장
-	String id = (String)session.getAttribute("loiginId");
+	String id = (String)session.getAttribute("loginId");
+	System.out.println(id + " <- id");
 	int productNo = Integer.parseInt(mRequest.getParameter("productNo"));
 	String reviewTitle = mRequest.getParameter("reviewTitle");
 	String reviewContent = mRequest.getParameter("reviewContent");
@@ -41,13 +43,12 @@
 	// review img 입력
 	ArrayList<String> checkReviewImgList = new ArrayList<>();
 	int maxImgCnt = Integer.parseInt(mRequest.getParameter("imgCnt"));
-	System.out.println(maxImgCnt);
+	System.out.println(maxImgCnt + " <- maxImgCnt");
 	for (int i = 1; i <= maxImgCnt; i++){
 		String reviewImgFile = "reviewImgFile" + i;
 		System.out.println(reviewImgFile);
 		String reviewImg = mRequest.getContentType(reviewImgFile);
-		System.out.println(mRequest.getContentType(reviewImgFile));
-		System.out.println(reviewImg);
+		System.out.println(reviewImg + " <- reviewImg");
 		if (reviewImg != null){
 			checkReviewImgList.add(reviewImg);
 		}

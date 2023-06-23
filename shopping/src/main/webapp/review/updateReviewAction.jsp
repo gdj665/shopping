@@ -26,7 +26,7 @@
 	}
 	
 	// input type="text" 값 반환 API --> board 테이블 저장
-	String id = (String)session.getAttribute("loiginId");
+	String id = (String)session.getAttribute("loginId");
 	int productNo = Integer.parseInt(mRequest.getParameter("productNo"));
 	String reviewTitle = mRequest.getParameter("reviewTitle");
 	String reviewContent = mRequest.getParameter("reviewContent");

@@ -102,36 +102,44 @@
 			</tr>
 		</table>
 		<div>
-			리뷰 이미지
+			<h5>
+				리뷰 이미지
+				<button class="btn btn-sm btn-outline-danger" id="addFile" type="button">파일추가</button>
+				<button class="btn btn-sm btn-outline-danger" id="delFile" type="button">파일추가 취소</button>
+				<button class="btn btn-sm btn-outline-danger" type="submit">수정</button>
+			</h5>
 		</div>
-	<%
-			// 리뷰 이미지 있는것만 출력
-			// 이전 save file 넘겨서 리뷰 파일에 데이터 있으면 이전 파일 삭제하고 새파일 저장 없으면 x 
-			int cnt = 0;
-			for(Review r : reviewImgList){
-				cnt++;
-	%>
-				<div>
-					<img src="<%=request.getContextPath() + "/img/reviewImg/" + r.getReviewSaveFilename()%>">
-				</div>
-				<div>
-					jpg 파일만 선택하세요.<input type="file" name="reviewImgFile<%=cnt%>">
-					<input type="hidden" name="preSaveFilename<%=cnt%>" value="<%=r.getReviewSaveFilename()%>">
-					<a href="<%=request.getContextPath()%>/review/deleteReviewImgAction.jsp?reviewNo=<%=reviewNo%>&reviewSaveFilename=<%=r.getReviewSaveFilename()%>">
-						삭제
-					</a>
-				</div>
-	<%	
-			}
-	%>
 		<div>
 			jpg 파일만 업로드 가능합니다.
 		</div>
 		<div id="files"></div>
-		<div>
-			<button class="btn btn-sm btn-outline-danger" id="addFile" type="button">파일추가</button>
-			<button class="btn btn-sm btn-outline-danger" id="delFile" type="button">파일추가 취소</button>
-			<button class="btn btn-sm btn-outline-danger" type="submit">수정</button>
+		<div class="product-list">
+			<div class="row">
+		<%
+				// 리뷰 이미지 있는것만 출력
+				// 이전 save file 넘겨서 리뷰 파일에 데이터 있으면 이전 파일 삭제하고 새파일 저장 없으면 x 
+				int cnt = 0;
+				for(Review r : reviewImgList){
+					cnt++;
+		%>
+				    <div class="col-lg-2 col-sm-2">
+				        <div class="product-item">
+				            <div class="pi-pic">
+								<img src="<%=request.getContextPath() + "/img/reviewImg/" + r.getReviewSaveFilename()%>">
+				            </div>
+							<div>
+								jpg 파일만 선택하세요.<input type="file" name="reviewImgFile<%=cnt%>">
+								<input type="hidden" name="preSaveFilename<%=cnt%>" value="<%=r.getReviewSaveFilename()%>">
+								<a class="btn btn-outline-danger btn-sm" href="<%=request.getContextPath()%>/review/deleteReviewImgAction.jsp?reviewNo=<%=reviewNo%>&reviewSaveFilename=<%=r.getReviewSaveFilename()%>">
+									삭제
+								</a>
+							</div>
+				        </div>
+				    </div>
+		<%	
+				}
+		%>
+			</div>
 		</div>
 	</form>
 </body>
