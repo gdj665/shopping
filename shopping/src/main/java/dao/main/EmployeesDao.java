@@ -257,7 +257,8 @@ public class EmployeesDao {
 			stmt.setInt(2, i);
 			int row = stmt.executeUpdate();
 			checkUpdateList.add(row);
-			if(orderStatus==4) {
+			// 주문 취소가 될경우
+			if(orderStatus==5) {
 				int buyPoint = 0;
 				int usePoint = 0;
 				String pointSql = "SELECT point_pm,point FROM point_history WHERE order_no=?";

@@ -128,6 +128,9 @@
 													case 4:
 														out.print("구매 확정");
 														break;
+													case 5:
+														out.print("주문 취소");
+														break;
 												}
 									%>
 											</td>
@@ -147,10 +150,11 @@
 		                            <div>
 			                   			<button style="float:right;" class="btn btn-outline-secondary" type="submit" form="update">변경</button>
 										<select style="width: 300px; float:right; margin-right: 20px;" class="form-select" name="orderStatus">
-											<option value="1">주문완료</option>
-											<option value="2">배송중</option>
-											<option value="3">배송완료</option>
-											<option value="4">주문취소</option>
+											<option value="1">결제 완료</option>
+											<option value="2">배송 중</option>
+											<option value="3">배송 완료</option>
+											<option value="4">구매 확정</option>
+											<option value="5">주문 취소</option>
 										</select>
 									</div>
 								</div>
