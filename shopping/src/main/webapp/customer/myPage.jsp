@@ -15,6 +15,10 @@
 	HashMap<String, Object> m = new HashMap<>();
 	m = mamDao.selectCstmList(id);
 	
+	String address = (String)(m.get("cstmAddress"));
+	String Address = address.replace(",", " ");
+	System.out.println(Address + "test");
+	
 	System.out.println(m + "<-- myPage list");
 	
 	PointDao pointDao = new PointDao();
@@ -82,7 +86,7 @@
                                             <tr>
                                                 <td class="p-catagory">주소</td>
                                                 <td>
-                                                    <div class="p-stock"><%=(String)(m.get("cstmAddress"))%></div>
+                                                    <div class="p-stock"><%=Address%></div>
                                                 </td>
                                             </tr>
                                             <tr>

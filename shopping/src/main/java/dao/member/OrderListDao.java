@@ -48,8 +48,8 @@ public class OrderListDao {
 			DBUtil dbUtil = new DBUtil(); 
 			Connection conn =  dbUtil.getConnection();
 			
-			PreparedStatement stmt = conn.prepareStatement("SELECT i.product_save_filename saveFile, o.order_no orderNo, p.product_no productNo, p.product_name productName, p.product_price productPrice, \r\n"
-					+ "r.order_status orderStatus, o.createdate createdate \r\n"
+			PreparedStatement stmt = conn.prepareStatement("SELECT i.product_save_filename saveFile, o.order_no orderNo, o.order_cnt orderCnt, p.product_no productNo, p.product_name productName, p.product_price productPrice, \r\n"
+					+ "r.order_status orderStatus, o.createdate createdate, (o.order_cnt * p.product_price) totalrow\r\n"
 					+ "FROM customer c \r\n"
 					+ "INNER JOIN orders r ON c.id = r.id\r\n"
 					+ "INNER JOIN orders_history o ON r.order_no = o.order_no\r\n"
@@ -68,6 +68,8 @@ public class OrderListDao {
 				m.put("productName", rs.getString("productName"));
 				m.put("productPrice", rs.getInt("productPrice"));
 				m.put("orderStatus", rs.getInt("orderStatus"));
+				m.put("orderCnt", rs.getInt("orderCnt"));
+				m.put("totalrow", rs.getInt("totalrow"));
 				m.put("createdate", rs.getString("createdate"));
 				list.add(m);
 			}
@@ -80,7 +82,7 @@ public class OrderListDao {
 					DBUtil dbUtil = new DBUtil(); 
 					Connection conn =  dbUtil.getConnection();
 				
-					PreparedStatement stmt = conn.prepareStatement("SELECT o.id, o.order_no orderNo, o.order_status orderStatus, \r\n"
+					PreparedStatement stmt = conn.prepareStatement("SELECT o.id, o.order_no orderNo, o.address Address, o.order_status orderStatus, \r\n"
 							+ "o.order_price orderPrice, o.order_point_use orderPointUse,\r\n"
 							+ "       (o.order_price - o.order_point_use)  totalPrice,\r\n"
 							+ "       o.createdate createdate,\r\n"
@@ -104,6 +106,42 @@ public class OrderListDao {
 						m.put("orderPointUse", rs.getInt("orderPointUse"));
 						m.put("createdate", rs.getString("createdate"));
 						m.put("productName", rs.getString("productName"));
+						m.put("Address", rs.getString("Address"));
+						m.put("totalPrice", rs.getInt("totalPrice"));
+						list.add(m);
+					}
+					return list;
+				}
+				// 총 주문금액구하기
+				public ArrayList<HashMap<String, Object>> totalorder(String id, int orderNo) throws Exception{
+					ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+					DBUtil dbUtil = new DBUtil(); 
+					Connection conn =  dbUtil.getConnection();
+					
+					PreparedStatement stmt = conn.prepareStatement("SELECT o.id, o.order_no orderNo, o.address Address, o.order_status orderStatus, \r\n"
+							+ "o.order_price orderPrice, o.order_point_use orderPointUse,\r\n"
+							+ "       (o.order_price - o.order_point_use)  totalPrice,\r\n"
+							+ "       o.createdate createdate,\r\n"
+							+ "       GROUP_CONCAT(p.product_name) productName\r\n"
+							+ "FROM orders o\r\n"
+							+ "INNER JOIN orders_history oh ON o.order_no = oh.order_no\r\n"
+							+ "INNER JOIN product p ON p.product_no = oh.product_no\r\n"
+							+ "WHERE o.order_status NOT IN (0) AND o.id = ? AND o.order_no = ?\r\n"
+							+ "GROUP BY o.order_no\r\n"
+							+ "ORDER BY o.createdate DESC");
+					
+					stmt.setString(1, id);
+					stmt.setInt(2, orderNo);
+					ResultSet rs = stmt.executeQuery();
+					while(rs.next()) {
+						HashMap<String, Object> m = new HashMap<String, Object>();
+						m.put("orderNo", rs.getInt("orderNo"));
+						m.put("orderStatus", rs.getInt("orderStatus"));
+						m.put("orderPrice", rs.getInt("orderPrice"));
+						m.put("orderPointUse", rs.getInt("orderPointUse"));
+						m.put("createdate", rs.getString("createdate"));
+						m.put("productName", rs.getString("productName"));
+						m.put("Address", rs.getString("Address"));
 						m.put("totalPrice", rs.getInt("totalPrice"));
 						list.add(m);
 					}

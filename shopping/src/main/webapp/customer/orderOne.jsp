@@ -27,6 +27,10 @@
 	System.out.println(list + "<-- orderMyPage orderList");
 	
 	
+	ArrayList<HashMap<String, Object>> li = orderDao.totalorder(id, orderNo);
+	System.out.println(li.size());
+	
+	
 %>
 <!DOCTYPE html>
 <html lang="zxx">
@@ -73,9 +77,10 @@
                             <thead>
                                 <tr>
                                     <th>상품이미지</th>
-									<th>주문번호</th>
 									<th>상품이름</th>
+									<th>주문개수</th>
 									<th>상품가격</th>
+									<th>합계</th>
 									<th>배송상태</th>
 									<th>구매일</th>
                                 </tr>
@@ -88,9 +93,10 @@
                                     <td class="cart-title first-row">
                                         <img src="<%=request.getContextPath() + "/img/productImg/" + (String)(m.get("saveFile"))%>">
                                     </td>
-                                    <td class="cart-pic first-row"><%=(Integer)(m.get("orderNo"))%></td>
                                     <td class="p-price first-row"><%=(String)(m.get("productName"))%></td>
+                                    <td class="p-price first-row"><%=(Integer)(m.get("orderCnt"))%></td>
                                     <td class="p-price first-row"><%=(Integer)(m.get("productPrice"))%></td>
+                                    <td class="p-price first-row"><%=(Integer)(m.get("totalrow"))%></td>
                                     <td class="p-price first-row">
 									<%
 										switch((Integer)m.get("orderStatus")){
@@ -120,7 +126,22 @@
 								}
                  			%>
                         </table>
-                        
+                         <%
+						for(HashMap<String, Object> m : li){
+					%>
+                        <div class="col-lg-4 offset-lg-4">
+                            <div class="proceed-checkout">
+                                <ul>
+                                    <li class="subtotal">총금액 <span><%=(Integer)(m.get("orderPrice"))%></span></li>
+                                    <li class="subtotal">포인트사용 <span><%=(Integer)(m.get("orderPointUse"))%></span></li>
+                                    <li class="cart-total">결제금액 <span><%=(Integer)(m.get("totalPrice"))%></span></li>
+                                </ul>
+                                <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                            </div>
+                        </div>
+                        <%
+								}
+                 			%>
                     </div>
                 </div>
             </div>

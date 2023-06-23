@@ -100,8 +100,7 @@
                                 <tr>
                                     <th>상품이름</th>
                                     <th>배송상태</th>
-                                    <th>주문금액</th>
-                                    <th>사용포인트</th>
+                                    <th>주소</th>
                                     <th>결제금액</th>
                                     <th>구매일</th>
                                 </tr>
@@ -136,8 +135,7 @@
 										}
 									%>
 									</td>
-                                    <td class="qua-col first-row"><%=(Integer)(m.get("orderPrice"))%></td>
-                                    <td class="qua-col first-row"><%=(Integer)(m.get("orderPointUse"))%></td>
+                                    <td class="qua-col first-row"><%=(String)(m.get("Address"))%></td>
                                     <td class="p-price first-row"><%=(Integer)(m.get("totalPrice"))%></td>
                                     <td class="qua-col first-row"><%=(String)(m.get("createdate"))%></td>
                                 </tr>
