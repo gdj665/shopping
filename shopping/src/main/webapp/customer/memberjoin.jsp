@@ -96,6 +96,13 @@
                                 <label for="username">휴대전화</label>
                                 <input type="tel"  name="cstmPhone" required="required">
                             </div>
+                            <tr>
+								<td>마케팅 메일 수신</td>
+								<td>
+									<input type="checkbox" name="cstmAgree" value="y" >수신동의
+									<input type="checkbox" name="cstmAgree" value="n" >수신하지않음
+								</td>
+							</tr>
                             <button type="submit" class="site-btn register-btn">회원가입</button>
                         </form>
                         <div class="switch-login">

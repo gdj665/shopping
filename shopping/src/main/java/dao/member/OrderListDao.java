@@ -48,7 +48,7 @@ public class OrderListDao {
 			DBUtil dbUtil = new DBUtil(); 
 			Connection conn =  dbUtil.getConnection();
 			
-			PreparedStatement stmt = conn.prepareStatement("SELECT i.product_save_filename saveFile, o.order_no orderNo, p.product_name productName, p.product_price productPrice, \r\n"
+			PreparedStatement stmt = conn.prepareStatement("SELECT i.product_save_filename saveFile, o.order_no orderNo, p.product_no productNo, p.product_name productName, p.product_price productPrice, \r\n"
 					+ "r.order_status orderStatus, o.createdate createdate \r\n"
 					+ "FROM customer c \r\n"
 					+ "INNER JOIN orders r ON c.id = r.id\r\n"
@@ -64,6 +64,7 @@ public class OrderListDao {
 				HashMap<String, Object> m = new HashMap<String, Object>();
 				m.put("saveFile", rs.getString("saveFile"));
 				m.put("orderNo", rs.getInt("orderNo"));
+				m.put("productNo", rs.getInt("productNo"));
 				m.put("productName", rs.getString("productName"));
 				m.put("productPrice", rs.getInt("productPrice"));
 				m.put("orderStatus", rs.getInt("orderStatus"));

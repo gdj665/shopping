@@ -30,6 +30,11 @@
 %>
 <!DOCTYPE html>
 <html lang="zxx">
+<!-- Latest compiled and minified CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <div id="preloder">
         <div class="loader"></div>
@@ -64,7 +69,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cart-table">
-                        <table>
+                        <table class="table-hover">
                             <thead>
                                 <tr>
                                     <th>상품이미지</th>
@@ -79,7 +84,7 @@
 						for(HashMap<String, Object> m : list){
 					%>
                             <tbody>
-                                <tr>
+                                <tr onclick="location.href='<%=request.getContextPath()%>/product/productOne.jsp?productNo=<%=(Integer)(m.get("productNo"))%>'" style="cursor: pointer; width: 10px; height: 10;">
                                     <td class="cart-title first-row">
                                         <img src="<%=request.getContextPath() + "/img/productImg/" + (String)(m.get("saveFile"))%>">
                                     </td>

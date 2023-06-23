@@ -55,6 +55,11 @@
 %>
 <!DOCTYPE html>
 <html lang="zxx">
+<!-- Latest compiled and minified CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Latest compiled JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <div id="preloder">
         <div class="loader"></div>
@@ -89,10 +94,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cart-table">
-                        <table>
+                        <table class="table-hover">
+                        
                             <thead>
                                 <tr>
-                                    <th>주문번호</th>
                                     <th>상품이름</th>
                                     <th>배송상태</th>
                                     <th>주문금액</th>
@@ -105,10 +110,7 @@
 						for(HashMap<String, Object> m : list){
 					%>
                             <tbody>
-                                <tr>
-                                    <td class="cart-title first-row">
-                                        <a href="<%=request.getContextPath()%>/customer/orderOne.jsp?orderNo=<%=(Integer)(m.get("orderNo"))%>"><%=(Integer)(m.get("orderNo"))%></a>
-                                    </td>
+                                <tr onclick="location.href='<%=request.getContextPath()%>/customer/orderOne.jsp?orderNo=<%=(Integer)(m.get("orderNo"))%>'" style="cursor: pointer; ">
                                     <td class="cart-pic first-row"><%=(String)(m.get("productName"))%></td>
                                     <td class="p-price first-row">
 									<%
