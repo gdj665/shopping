@@ -169,76 +169,127 @@ public class MemberDao {
 	}
 		
 	// 로그인
-	   public int login(IdList id) throws Exception {
-	      int row = 0;
-	      DBUtil dbUtil = new DBUtil(); 
-	      Connection conn =  dbUtil.getConnection();
-	      PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = 1");
-	      stmt.setString(1, id.getId());
-	      stmt.setString(2, id.getLastPw());
-	      ResultSet loginRs = stmt.executeQuery();
-	      if(loginRs.next()) {
-	         row=loginRs.getInt(1);
-	      }
-	      if(row > 0) {
-	         PreparedStatement csLoginStmt = conn.prepareStatement("UPDATE customer SET cstm_last_login = now() WHERE id = ?");
-	         csLoginStmt.setString(1, id.getId());
-	         int upRow = csLoginStmt.executeUpdate();
-	         if(upRow > 0 ) {
-	            System.out.println("고객 마지막로그인 업데이트");
-	         }else if(upRow == 0) {
-	            System.out.println("관리자입니다");
-	         }
-	         return row;
-	      } 
-	      if(row == 0) {
-	         PreparedStatement falStmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = 2");
-	         falStmt.setString(1, id.getId());
-	         falStmt.setString(2, id.getLastPw());
-	         ResultSet rs = falStmt.executeQuery();
-	         if(rs.next()) {
-	            row = 3;
-	         }
-	            return row;
-	      }
-	      return row;
-	   }
-	
+	public int login(IdList id) throws Exception {
+		int row = 0;
+		int ckId = 0;
+		int active = 0;
+		int ckLogin = 0;
+		DBUtil dbUtil = new DBUtil(); 
+		Connection conn =  dbUtil.getConnection();
+		PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ?");
+		stmt.setString(1, id.getId());
+		stmt.setString(2, id.getLastPw());
+		ResultSet loginRs = stmt.executeQuery();
+		if(loginRs.next()) {
+			ckId=loginRs.getInt(1);
+		}
+		if(ckId==0) {
+			row = 4;
+			return row;
+		} else if(ckId>0) {
+			PreparedStatement ckActiveStmt = conn.prepareStatement("SELECT active FROM id_list WHERE id = ?");
+			ckActiveStmt.setString(1, id.getId());
+			ResultSet ckActiveRs = ckActiveStmt.executeQuery();
+			if(ckActiveRs.next()) {
+				active = ckActiveRs.getInt("active");
+			}
+			
+			// 사용 가능로그인
+			if(active==1) {
+				PreparedStatement falStmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = ?");
+				falStmt.setString(1, id.getId());
+				falStmt.setString(2, id.getLastPw());
+				falStmt.setInt(3,active);
+				System.out.println("getId-->"+id.getId());
+				System.out.println("getLastPw-->"+id.getLastPw());
+				System.out.println("getActive-->"+id.getActive());
+				ResultSet falRs = falStmt.executeQuery();
+				if(falRs.next()) {
+					ckLogin = falRs.getInt(1);
+					System.out.println("ckLogin-->"+ckLogin);
+					if(ckLogin==1) {
+						row = 1;
+					}
+				}
+				PreparedStatement csLoginStmt = conn.prepareStatement("UPDATE customer SET cstm_last_login = now() WHERE id = ?");
+				csLoginStmt.setString(1, id.getId());
+				int upRow = csLoginStmt.executeUpdate();
+				if(upRow > 0 ) {
+					System.out.println("고객 마지막로그인 업데이트");
+				}else if(upRow == 0) {
+					System.out.println("관리자입니다");
+				}
+			// 휴면계정
+			} else if (active==2) {
+				PreparedStatement falStmt2 = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = ?");
+				falStmt2.setString(1, id.getId());
+				falStmt2.setString(2, id.getLastPw());
+				falStmt2.setInt(3, active);
+				ResultSet falRs2 = falStmt2.executeQuery();
+				if(falRs2.next()) {
+					ckLogin = falRs2.getInt(1);
+					if(ckLogin==1) {
+						row = 2;
+					}
+				}
+			// 탈퇴 계정
+			} else if (active==3) {
+				PreparedStatement falStmt3 = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = ?");
+				falStmt3.setString(1, id.getId());
+				falStmt3.setString(2, id.getLastPw());
+				falStmt3.setInt(3, active);
+				ResultSet falRs3 = falStmt3.executeQuery();
+				if(falRs3.next()) {
+					if(falRs3.next()) {
+						ckLogin = falRs3.getInt(1);
+						if(ckLogin==1) {
+							row = 3;
+						}
+					}
+				}
+			}
+		}
+		System.out.println("login row값-->"+row);
+		return row;
+	}
+  
 	// 로그인 test
-	   public int exlogin(IdList id) throws Exception {
-		      int row = 0;
-		      DBUtil dbUtil = new DBUtil(); 
-		      Connection conn =  dbUtil.getConnection();
-		      PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = 1");
-		      stmt.setString(1, id.getId());
-		      stmt.setString(2, id.getLastPw());
-		      ResultSet loginRs = stmt.executeQuery();
-		      if(loginRs.next()) {
-		         row=loginRs.getInt(1);
-		      }
-		      if(row > 0) {
-		         PreparedStatement csLoginStmt = conn.prepareStatement("UPDATE customer SET cstm_last_login = now() WHERE id = ?");
-		         csLoginStmt.setString(1, id.getId());
-		         int upRow = csLoginStmt.executeUpdate();
-		         if(upRow > 0 ) {
-		            System.out.println("고객 마지막로그인 업데이트");
-		         }else if(upRow == 0) {
-		            System.out.println("관리자입니다");
-		         }
-		         return row;
-		      } 
-		      if(row == 0) {
-		         PreparedStatement falStmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = 2");
-		         falStmt.setString(1, id.getId());
-		         falStmt.setString(2, id.getLastPw());
-		         ResultSet rs = falStmt.executeQuery();
-		         if(rs.next()) {
-		            row = 3;
-		         }
-		            return row;
-		      }
-		      return row;
-		   }
+	public int exlogin(IdList id) throws Exception {
+		int row = 0;
+		DBUtil dbUtil = new DBUtil(); 
+		Connection conn =  dbUtil.getConnection();
+		
+		PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = 1");
+		stmt.setString(1, id.getId());
+		stmt.setString(2, id.getLastPw());
+		ResultSet loginRs = stmt.executeQuery();
+		if(loginRs.next()) {
+			row=loginRs.getInt(1);
+		}
+		
+		if(row > 0) {
+			PreparedStatement csLoginStmt = conn.prepareStatement("UPDATE customer SET cstm_last_login = now() WHERE id = ?");
+			csLoginStmt.setString(1, id.getId());
+			int upRow = csLoginStmt.executeUpdate();
+			if(upRow > 0 ) {
+				System.out.println("고객 마지막로그인 업데이트");
+			}else if(upRow == 0) {
+				System.out.println("관리자입니다");
+			}
+		return row;
+		}
+		
+		if(row == 0) {
+			PreparedStatement falStmt = conn.prepareStatement("SELECT COUNT(*) FROM id_list WHERE id = ? AND last_pw = PASSWORD(?) AND active = 2");
+			falStmt.setString(1, id.getId());
+			falStmt.setString(2, id.getLastPw());
+			ResultSet rs = falStmt.executeQuery();
+			if(rs.next()) {
+				row = 3;
+			}
+		}
+		return row;
+	}
 	   
 	// 아이디 확인
 	public int loginCstmId(IdList idList) throws Exception {

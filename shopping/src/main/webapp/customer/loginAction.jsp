@@ -42,34 +42,41 @@
 	MemberDao memDao = new MemberDao();
 	int row = memDao.login(idList);
 	
-	if(row == 3){
-		msg = URLEncoder.encode("탈퇴한 아이디 입니다","utf-8");
+	if(row == 4){
+		msg = URLEncoder.encode("존재하지 않는 ID입니다","utf-8");
+		response.sendRedirect(request.getContextPath()+"/customer/login.jsp?msg="+msg);
+		return;
+	} else if (row == 3){
+		msg = URLEncoder.encode("탈퇴한 계정 입니다","utf-8");
+		response.sendRedirect(request.getContextPath()+"/customer/login.jsp?msg="+msg);
+		return;
+	} else if (row == 2){
+		msg = URLEncoder.encode("휴면 계정 입니다","utf-8");
+		response.sendRedirect(request.getContextPath()+"/customer/login.jsp?msg="+msg);
+		return;
+	} else if (row == 0){
+		msg = URLEncoder.encode("잘못된 계정 입니다","utf-8");
 		response.sendRedirect(request.getContextPath()+"/customer/login.jsp?msg="+msg);
 		return;
 	}
-	if(row == 0){
-			msg = URLEncoder.encode("없는 아이디 입니다","utf-8");
-			response.sendRedirect(request.getContextPath()+"/customer/login.jsp?msg="+msg);
-			return;
-	}
+	
 	if(row == 1){
-		
 		//dao 사용하여 고객인지 확인
 		MemberDao checkCstmId = new MemberDao();
 		int cstmCnt = checkCstmId.loginCstmId(idList);
 		
-		
 		if(cstmCnt > 0){
 			session.setAttribute("loginId", id);
 			System.out.print("고객로그인 : " + session.getAttribute("loginId"));
+			
 			// 로그인 할시에 비회원 장바구니에 데이터가 있었다면 모두 로그인한 계정 장바구니로 이동
 			OrderDao orderDao = new OrderDao();
 			orderDao.noLoginAddCart(id, request);
 			int rowRank = orderDao.threeMonthAmount(id);
+			
 			response.sendRedirect(request.getContextPath()+"/home.jsp");
 			return;
 		}
-		
-		}
+	}
 
 %>
