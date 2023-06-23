@@ -139,6 +139,7 @@
 	                            </p>
 	                            <h4>
 	                            <%
+	                         		// 할인금액이랑 일반 금액이랑 같으면 할인 x
 									if (productOne.getProductDiscountPrice() == productOne.getProductPrice()){
 								%>
 										    <%=priceFormat.format(productOne.getProductPrice())%>원
