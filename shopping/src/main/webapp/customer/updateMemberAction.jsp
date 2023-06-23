@@ -29,7 +29,7 @@
 	String id = request.getParameter("id");
 	String pw = request.getParameter("pw");
 	String cstmName = request.getParameter("cstmName");
-	String cstmAddress = request.getParameter("cstmAddress");
+	String cstmAddress = request.getParameter("cstmAddress1")+","+request.getParameter("cstmAddress2");
 	String cstmEmail = request.getParameter("cstmEmail");
 	String cstmPhone = request.getParameter("cstmPhone");
 	//비밀번호 확인에 필요한 클래스 선언

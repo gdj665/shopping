@@ -20,7 +20,7 @@
 	}
 	
 	// 값 받아오기
-	String address = request.getParameter("address1")+" "+request.getParameter("address2");
+	String address = request.getParameter("address1")+","+request.getParameter("address2");
 	String id = (String)session.getAttribute("loginId");
 	
 	// OrderDao 사용 선언

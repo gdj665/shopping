@@ -18,7 +18,10 @@
 	MemberDao mamDao = new MemberDao();
 	HashMap<String, Object> m = new HashMap<>();
 	m = mamDao.selectCstmList(id);
-	
+	String address = (String)(m.get("cstmAddress"));
+	String splitAddress[] = address.split(",");
+	String address1 = splitAddress[0];
+	String address2 = splitAddress[1];
 	System.out.println(m + "<-- myPage list");
 %>
 <!DOCTYPE html>
@@ -70,8 +73,8 @@
                                 <label for="con-pass">주소*</label>
                                 <input class="form-control" type="text" id="sample6_postcode" placeholder="우편번호"><br>
 								<input class="form-control" type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-								<input class="form-control" name="cstmAddress1" type="text" id="sample6_address" placeholder="주소" value="<%=(String)(m.get("cstmAddress"))%>"><br>
-								<input class="form-control" name="cstmAddress2" type="text" id="sample6_detailAddress" placeholder="상세주소">
+								<input class="form-control" name="cstmAddress1" type="text" id="sample6_address" placeholder="주소" value="<%=address1%>" readonly="readonly"><br>
+								<input class="form-control" name="cstmAddress2" type="text" id="sample6_detailAddress" placeholder="상세주소" value="<%=address2%>">
 								<input class="form-control" type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
                             </div>
                             <div class="group-input">

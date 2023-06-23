@@ -59,7 +59,7 @@
 	String id = request.getParameter("id");
 	String pw = request.getParameter("pw");
 	String cstmName = request.getParameter("cstmName");
-	String cstmAddress = request.getParameter("cstmAddress1")+" "+request.getParameter("cstmAddress2");
+	String cstmAddress = request.getParameter("cstmAddress1")+","+request.getParameter("cstmAddress2");
 	String cstmEmail = request.getParameter("cstmEmail");
 	String cstmBirth = request.getParameter("cstmBirth");
 	String cstmPhone = request.getParameter("cstmPhone");
