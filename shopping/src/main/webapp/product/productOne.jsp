@@ -65,7 +65,15 @@
 					$('#addCart').submit();
 				}
 			})
+			$('#cartCnt').on('input', function() {
+				var maxValue = <%=p.getProductStock()%>;
+				var currentValue = $(this).val();
+				if (currentValue > maxValue) {
+					$(this).val(maxValue);
+				}
+			});
 		})
+		
 	</script>
 </head>
 <style>
@@ -139,6 +147,9 @@
 								%>
 	                            </h4>
 	                        </div>
+                       		<div>
+                       			재고량 : <%=p.getProductStock()%>
+                            </div>
 	                        <div class="quantity">
 	                        <%
 	                        	if("1".equals(p.getProductStatus())){
@@ -148,7 +159,7 @@
 									<input type="hidden" name="productNo" value="<%=productNo%>">
 									<a href="#" class="primary-btn" id="cartBtn" >장바구니 추가</a>
 	                            <div class="pro-qty">
-									<input type="number" id="cartCnt" name="cartCnt" value="1">
+									<input type="number" id="cartCnt" name="cartCnt" value="1" max="<%=p.getProductStock()%>">
 	                            </div>
 								</form>
 	                       	<%
