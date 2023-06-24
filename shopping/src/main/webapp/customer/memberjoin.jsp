@@ -63,11 +63,20 @@
 								<input class="site-btn register-btn" type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 								<input class="form-control" name="cstmAddress1" type="text" id="sample6_address" placeholder="주소"><br>
 								<input class="form-control" name="cstmAddress2" type="text" id="sample6_detailAddress" placeholder="상세주소">
-								<input class="form-control" type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
+								<input class="form-contro
+								l" type="hidden" id="sample6_extraAddress" placeholder="참고항목"><br>
                             </div>
                             <div class="group-input">
                                 <label for="username">E-mail</label>
-                                <input type="email" id="email" name="cstmEmail" required="required">
+                                <input style="width: 267px" type="text" id="email" name="cstmEmail1" required="required">@
+                                <input style="width: 267px" type="text" id="email2" name="cstmEmail2" readonly="readonly">
+
+								<select id="emailSelection" name="emailSelection">
+									<option value="1" selected="selected">==선택하세요==</option>
+									<option value="naver.com">네이버</option>
+									<option value="gmail.com">구글</option>
+									<option value="daum.net">다음</option>
+								</select>
                             </div>
                             <div class="group-input">
                                 <label for="username">생년월일</label>
@@ -200,6 +209,34 @@
 		        }).open();
 		    }
 		</script>
+		
+		<script> 
+		$(function(){	
+
+			$(document).ready(function(){
+
+				$('select[name=emailSelection]').change(function() {
+
+					if($(this).val()=="1"){
+
+						$('#email2').val("");
+
+					} else {
+
+						$('#email2').val($(this).val());
+
+						$("#email2").attr("readonly", true);
+
+					}
+
+				});
+
+			});
+
+		});
+    
+</script>
+		
 </body>
 
 </html>

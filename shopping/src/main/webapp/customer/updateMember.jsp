@@ -22,6 +22,7 @@
 	String splitAddress[] = address.split(",");
 	String address1 = splitAddress[0];
 	String address2 = splitAddress[1];
+	
 	System.out.println(m + "<-- myPage list");
 %>
 <!DOCTYPE html>
@@ -80,6 +81,7 @@
                         <div class="switch-login">
                             <a href="<%=request.getContextPath()%>/customer/myPage.jsp" class="or-login">돌아가기</a>
                         </div>
+                        
                     </div>
                 </div>
             </div>
