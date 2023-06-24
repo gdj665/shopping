@@ -55,6 +55,7 @@
 	System.out.println("row2-->"+row2);
 	
 	// 15) point_history 테이블에 결제금액 의 1퍼센트 적립
+	// 랭크에 따른 적립량 다름 브론즈 1퍼 실버 1.5퍼 골드 2퍼
 	int row3 = orderdao.pointstat(orderNo,id);
 	System.out.println("row3-->"+row3);
 	
