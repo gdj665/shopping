@@ -71,6 +71,7 @@
                 		<div class="col-lg-1" style="border-left: 1px solid #D5D5D5;">
                 		</div>
                 		<div class="col-lg-8">
+                			<!-- 수정과 삭제 버튼 (작성자와 동일한 ID로 로그인 시에 활성화) -->
 		                	<h2>1대1 상세보기</h2>
 		                	<%
 								for(HashMap<String,Object> m : list){
@@ -85,6 +86,7 @@
 								}
 		                	%>
 		                	<br><br>
+		                	<!-- 본문내용 -->
 		                	<form action="<%=request.getContextPath() %>/cs/insertEtcCsAnswerAction.jsp" method="post">
 			                	<table class="table">
 									<%
@@ -106,6 +108,7 @@
 										<tr>
 											<%
 												//일반 고객일 경우 댓글 작성
+												// 해당 글상태를 답변 미완료 상태로 변경
 												if(empLevel==0){
 											%>
 												<td>
@@ -118,6 +121,7 @@
 												</td>
 											<%
 												// 관리자 일경우 댓글작성
+												// 해당 글상태를 답변완료 상태로 변경
 												} else if (empLevel>0){
 											%>
 												<td>
@@ -134,22 +138,24 @@
 										</tr>
 								</table>
 							</form>
+							<!-- 댓글창 -->
 							<h4>💬댓글</h4>
 							<hr>
 							<%
 								for(HashMap<String,Object> m : list2){
 							%>
+							<!-- 댓글 창 출력 -->
 							<table class="table">
 								<tr>
 									<th style="font-size:10pt; background-color: #F6F6F6;">
 										<%
 											if((int)m.get("checked")==1){
 										%>
-											관리자
+												관리자
 										<%
 											} else {
 										%>
-											<%=(String)m.get("id") %>
+												<%=(String)m.get("id") %>
 										<%
 											}
 										%>
@@ -158,7 +164,7 @@
 										<%
 											if(m.get("id").equals(id) || empLevel>0){
 										%>
-											<a style="text-decoration: none; color:#000000;" href="<%=request.getContextPath()%>/cs/deleteEtcCsCommentAction.jsp?oaNo=<%=(int)m.get("oaNo") %>&oqNo=<%=oqNo%>">삭제</a>
+												<a style="text-decoration: none; color:#000000;" href="<%=request.getContextPath()%>/cs/deleteEtcCsCommentAction.jsp?oaNo=<%=(int)m.get("oaNo") %>&oqNo=<%=oqNo%>">삭제</a>
 										<%
 											}
 										%>
