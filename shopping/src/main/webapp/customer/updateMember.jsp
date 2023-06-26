@@ -22,6 +22,11 @@
 	String splitAddress[] = address.split(",");
 	String address1 = splitAddress[0];
 	String address2 = splitAddress[1];
+
+	String Email = (String)(m.get("cstmEmail"));
+	String splitEmail[] = Email.split("@");
+	String email1 = splitEmail[0];
+	String email2 = splitEmail[1];
 	
 	System.out.println(m + "<-- myPage list");
 %>
@@ -66,7 +71,14 @@
                             </div>
                             <div class="group-input">
                                 <label for="pass">이메일*</label>
-                                <input type="email" id="email" name="cstmEmail" required="required" value="<%=(String)(m.get("cstmEmail"))%>">
+                                <input style="width: 267px" type="email" id="email1" name="cstmEmail1" required="required" value="<%=email1%>">
+                                <input style="width: 267px" type="email" id="email2" name="cstmEmail2" readonly="readonly" required="required" value="<%=email2%>">
+                                <select id="emailSelection" name="emailSelection">
+									<option value="1" selected="selected">==선택하세요==</option>
+									<option value="naver.com">네이버</option>
+									<option value="gmail.com">구글</option>
+									<option value="daum.net">다음</option>
+								</select>
                             </div>
                             <div class="group-input">
                                 <label for="pass">전화번호*</label>
@@ -187,6 +199,34 @@
 		        }).open();
 		    }
 		</script>
+		
+		<script> 
+		$(function(){	
+
+			$(document).ready(function(){
+
+				$('select[name=emailSelection]').change(function() {
+
+					if($(this).val()=="1"){
+
+						$('#email2').val("");
+
+					} else {
+
+						$('#email2').val($(this).val());
+
+						$("#email2").attr("readonly", true);
+
+					}
+
+				});
+
+			});
+
+		});
+    
+</script>
+
 </body>
 
 </html>
