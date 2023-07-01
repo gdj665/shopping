@@ -29,7 +29,10 @@
 			<table border="1">
 				<tr>
 					<td>사용자 ID</td>
-					<td><input type="text" id="id" name="id" required="required"></td>
+					<td>
+					    <input type="text" id="id" name="id" required="required" onkeyup="checkIdDuplication()">
+					    <span id="idDuplicationResult"></span>
+					  </td>
 				</tr>
 				<tr>
 					<td>비밀번호</td>
@@ -190,6 +193,33 @@
             }
         }).open();
     }
+</script>
+
+<script>
+  var delayTimer;
+  
+  function checkIdDuplication() {
+    clearTimeout(delayTimer);
+    
+    delayTimer = setTimeout(function() {
+      var id = document.getElementById("id").value;
+
+      // 서버에 비동기적으로 ID 중복을 확인하기 위한 요청을 수행합니다.
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var response = xhr.responseText;
+
+          // ID 중복 결과 메시지를 업데이트합니다.
+          var idDuplicationResult = document.getElementById("idDuplicationResult");
+          idDuplicationResult.innerHTML = response;
+        }
+      };
+
+      xhr.open("GET", "<%=request.getContextPath()%>/customer/checkIdDuplication.jsp?id=" + id, true);
+      xhr.send();
+    }, 500); // 0.5초 딜레이를 설정하여 사용자의 연속 입력을 기다립니다.
+  }
 </script>
 </body>
 </html>

@@ -392,6 +392,33 @@ public class MemberDao {
 		return row;
 	}
 	
+	// 아이디중복체크
+	public boolean checkIdDuplication(String id) throws Exception {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        boolean isDuplicated = false;
+
+        try {
+        	DBUtil dbUtil = new DBUtil(); 
+            conn =  dbUtil.getConnection();
+            String sql = "SELECT COUNT(*) FROM customer WHERE id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                isDuplicated = (count > 0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+        }
+
+        return isDuplicated;
+    }
+	
 	
 	
 }
