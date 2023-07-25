@@ -267,8 +267,8 @@ public class MainDao {
 		Connection conn = DBUtil.getConnection();
 		String sql = "SELECT SUM(oh.order_cnt) SUM, p.product_no productNo, p.product_name productName, p.product_status productStatus, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype,\r\n"
 				+ " p.product_singer productSinger, c.category_sub_name categorySubName\r\n"
-				+ "FROM orders_history oh INNER JOIN product_img PI\r\n"
-				+ "			ON oh.product_no = PI.product_no\r\n"
+				+ "FROM orders_history oh INNER JOIN product_img pi\r\n"
+				+ "			ON oh.product_no = pi.product_no\r\n"
 				+ "			INNER JOIN product p\r\n"
 				+ "			ON oh.product_no = p.product_no\r\n"
 				+ "			INNER JOIN category c\r\n"
