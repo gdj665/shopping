@@ -164,7 +164,7 @@ public class MainDao {
 		
 		// cnt의 유무에 따라 where 조건문 변경
 		String sql = "SELECT p.product_name productName, p.product_status productStatus, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype, "
-				+ "p.product_price productPrice, p.product_price * (1 - NVL(d.discount_rate, 0)) productDiscountPrice, p.product_info productInfo, p.product_stock productStock, "
+				+ "p.product_price productPrice, p.product_price * (1 - IFNULL(d.discount_rate, 0)) productDiscountPrice, p.product_info productInfo, p.product_stock productStock, "
 				+ "p.product_singer productSinger, p.category_no categryNo, SUM(pt.track_time) sum"
 				+ " FROM product p INNER JOIN product_img pi"
 				+ " ON p.product_no = pi.product_no"
