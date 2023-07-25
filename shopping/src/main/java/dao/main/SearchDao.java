@@ -142,7 +142,7 @@ public class SearchDao {
 		}
 		String sql = "SELECT p.product_no productNo, p.product_singer productSinger, p.product_name productName, pi.product_save_filename productSaveFilename, pi.product_filetype productFiletype\r\n"
 				+ "FROM product p INNER JOIN product_img pi\r\n"
-				+ "	ON p.product_no = PI.product_no\r\n"
+				+ "	ON p.product_no = pi.product_no\r\n"
 				+ likeSql;
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		int pramCnt = 1;
